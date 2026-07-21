@@ -160,20 +160,35 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
   box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.7);
 }
 
-/* ── CodeBlock (copy button + optional line numbers) ────────────────── */
-.deck-code { position: relative; }
-.deck-code .astro-code { margin: 0; }
+/* ── CodeBlock — macOS-style window (title bar + traffic lights) ─────── */
+.deck-code {
+  position: relative; border-radius: 14px; overflow: hidden; background: #121212;
+  border: 1px solid var(--deck-line-strong); box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.7);
+}
+/* Inside the window the code fills below the bar — the frame owns the chrome. */
+.deck-code .astro-code { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+.deck-code__bar {
+  position: relative; display: flex; align-items: center; gap: 14px; height: 48px; padding: 0 18px;
+  background: color-mix(in oklab, #fff 4%, #16161a); border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.deck-code__dots { display: inline-flex; gap: 9px; }
+.deck-code__dots i { width: 14px; height: 14px; border-radius: 50%; }
+.deck-code__dots i:nth-child(1) { background: #ff5f56; }
+.deck-code__dots i:nth-child(2) { background: #ffbd2e; }
+.deck-code__dots i:nth-child(3) { background: #27c93f; }
+.deck-code__title {
+  position: absolute; left: 50%; transform: translateX(-50%);
+  font-family: var(--deck-font-mono); font-size: 18px; color: #8b8b8b; white-space: nowrap;
+}
 .deck-code__copy {
-  position: absolute; top: 14px; right: 14px; z-index: 2;
-  display: inline-flex; align-items: center; justify-content: center;
-  width: 42px; height: 42px; border-radius: 10px; cursor: pointer;
-  border: 1px solid color-mix(in oklab, currentColor 22%, transparent);
-  background: color-mix(in oklab, #000 35%, transparent); color: #c9c9c9;
-  opacity: 0; transition: opacity 0.2s ease, color 0.15s ease, border-color 0.15s ease;
+  margin-left: auto; display: inline-flex; align-items: center; justify-content: center;
+  width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
+  border: 1px solid transparent; background: transparent; color: #8b8b8b;
+  opacity: 0; transition: opacity 0.2s ease, color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
 }
 .deck-code:hover .deck-code__copy, .deck-code__copy:focus-visible { opacity: 1; }
-.deck-code__copy:hover { color: #fff; border-color: var(--deck-accent); }
-.deck-code__copy.is-copied { color: var(--deck-success); border-color: var(--deck-success); opacity: 1; }
+.deck-code__copy:hover { color: #fff; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); }
+.deck-code__copy.is-copied { color: var(--deck-success); opacity: 1; }
 .deck-code__i--check { display: none; }
 .deck-code__copy.is-copied .deck-code__i--copy { display: none; }
 .deck-code__copy.is-copied .deck-code__i--check { display: block; }
