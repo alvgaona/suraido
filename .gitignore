@@ -6,3 +6,7 @@ deck.pdf
 .DS_Store
 *.log
 *.tgz
+
+# Local-only demo media (personal recordings — never published)
+demo/public/demo.mp4
+demo/src/slides/03d-local-video.astro
