@@ -28,6 +28,15 @@ export function initDeck(): void {
   });
   const numberedTotal = numbered;
 
+  // Media settles its height only after loading — re-fit the slide it's on.
+  slides.forEach((sl) =>
+    sl.querySelectorAll<HTMLElement>("img, video").forEach((m) => {
+      const refit = () => { if (sl.classList.contains("is-active")) fitContent(sl); };
+      m.addEventListener("load", refit);
+      m.addEventListener("loadedmetadata", refit);
+    }),
+  );
+
   // Preview mode (presenter thumbnails): render a slide, but stay passive — no
   // sync channel, keyboard, or portals, so previews never drive the real deck.
   const preview = new URLSearchParams(location.search).has("preview");
@@ -72,7 +81,21 @@ export function initDeck(): void {
     canvas!.style.height = `${designH}px`;
     canvas!.style.transform = `translate(-50%, -50%) scale(${scale})`;
     canvas!.style.visibility = "visible";
+    fitContent(slides[current]!);
     positionPortals();
+  }
+
+  // ── Fit-to-height ──────────────────────────────────────────────────
+  // If a slide's content is taller than its (fluid) height, scale the content
+  // layer down so it fits — nothing overflows the frame at any window shape.
+  function fitContent(slide: HTMLElement) {
+    const layer = slide.querySelector<HTMLElement>(".slide-fit");
+    if (!layer) return;
+    layer.style.transform = "";
+    const avail = layer.clientHeight;
+    if (avail <= 0) return;
+    const needed = layer.scrollHeight;
+    if (needed > avail + 1) layer.style.transform = `scale(${avail / needed})`;
   }
 
   // ── Fragments (same-document) ──────────────────────────────────────
@@ -124,6 +147,7 @@ export function initDeck(): void {
   function render() {
     slides.forEach((el, i) => el.classList.toggle("is-active", i === current));
     const slide = slides[current]!;
+    fitContent(slide);
     if (titleEl) titleEl.textContent = slide.dataset.title ?? "";
     if (progress) {
       const pct = ((current + 1) / slides.length) * 100;
@@ -187,6 +211,7 @@ export function initDeck(): void {
       cell.className = "deck-ov-cell" + (i === current ? " is-current" : "");
       cell.style.aspectRatio = `${BASE_W} / ${designH}`; // match the live slide shape
       cell.setAttribute("aria-label", `Go to slide ${i + 1}${slide.dataset.title ? `: ${slide.dataset.title}` : ""}`);
+      fitContent(slide); // so the thumbnail matches the fitted live slide
       const clone = slide.querySelector(".slide-root")!.cloneNode(true) as HTMLElement;
       clone.classList.add("deck-ov-thumb");
       clone.style.width = `${BASE_W}px`;
@@ -273,4 +298,5 @@ export function initDeck(): void {
   setFragments(current, "all");
   requestAnimationFrame(fit);
   window.addEventListener("load", fit);
+  document.fonts?.ready.then(() => fitContent(slides[current]!));
 }

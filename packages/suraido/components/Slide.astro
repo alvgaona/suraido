@@ -8,5 +8,5 @@ const { title = "", number = true, notes } = Astro.props;
 ---
 
 <section class="deck-slide" data-title={title} data-number={number ? "true" : "false"} data-notes={notes}>
-  <div class="slide-root"><slot /></div>
+  <div class="slide-root"><div class="slide-fit"><slot /></div></div>
 </section>
