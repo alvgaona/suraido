@@ -1,0 +1,62 @@
+/* Demo theme — "editorial luxe": warm near-black ↔ warm paper, champagne-gold
+   accent, Fraunces serif display. Dual-mode: dark by default, light via the
+   theme toggle ([data-theme]) or the OS preference (no-JS fallback).
+   Font families come from the integration's `fonts` option; this file owns the
+   palette, the display font, and the dark/light switching. */
+
+:root {
+  /* Dark (default). */
+  --deck-bg: #101010;
+  --deck-fg: #f1ede5;
+  --deck-muted: #a5a096;
+  --deck-faint: #6d675d;
+  --deck-accent: #c9a15e;
+  --deck-line: #242320;
+  --deck-line-strong: #35322c;
+  --deck-panel: #161513;
+  --deck-panel-2: #1c1a16;
+  --deck-info: #6ba6ff;
+  --deck-success: #57c99b;
+  --deck-warn: #e0a94e;
+  --deck-danger: #ee6e80;
+
+  /* Fraunces (the serif slot) drives large headings. */
+  --deck-font-display: var(--deck-font-serif);
+  /* Opt this deck into the chrome's dark/light toggle. */
+  --deck-supports-toggle: 1;
+}
+
+:root[data-theme="light"] {
+  --deck-bg: #f4f2eb;
+  --deck-fg: #17150f;
+  --deck-muted: #57524a;
+  --deck-faint: #8a8478;
+  --deck-accent: #8f6c2c;
+  --deck-line: #e5e0d5;
+  --deck-line-strong: #d3cec0;
+  --deck-panel: #faf8f2;
+  --deck-panel-2: #efebe0;
+  --deck-info: #2f6ae0;
+  --deck-success: #0f9d78;
+  --deck-warn: #b7791f;
+  --deck-danger: #d64545;
+}
+
+/* No-JS / pre-hydration fallback: match the OS until the runtime sets a theme. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme]) {
+    --deck-bg: #f4f2eb;
+    --deck-fg: #17150f;
+    --deck-muted: #57524a;
+    --deck-faint: #8a8478;
+    --deck-accent: #8f6c2c;
+    --deck-line: #e5e0d5;
+    --deck-line-strong: #d3cec0;
+    --deck-panel: #faf8f2;
+    --deck-panel-2: #efebe0;
+    --deck-info: #2f6ae0;
+    --deck-success: #0f9d78;
+    --deck-warn: #b7791f;
+    --deck-danger: #d64545;
+  }
+}

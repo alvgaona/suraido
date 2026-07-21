@@ -1,19 +1,21 @@
-/* suraido theme: midnight (default) — dark. */
+/* suraido theme: midnight (default) — an elegant warm dark. */
 :root {
-  --deck-bg: #08090c;
-  --deck-fg: #eef1f6;
-  --deck-muted: #9aa3b2;
-  --deck-faint: #626b7a;
-  --deck-accent: #4c8dff;
-  --deck-line: #232833;
-  --deck-line-strong: #313847;
-  --deck-panel: #12151c;
-  --deck-panel-2: #171b24;
-  --deck-info: #4c8dff;
-  --deck-success: #35d0ba;
-  --deck-warn: #f5b544;
-  --deck-danger: #f2607a;
+  --deck-bg: #101010;
+  --deck-fg: #f1ede5;
+  --deck-muted: #a5a096;
+  --deck-faint: #6d675d;
+  --deck-accent: #c9a15e;
+  --deck-line: #242320;
+  --deck-line-strong: #35322c;
+  --deck-panel: #161513;
+  --deck-panel-2: #1c1a16;
+  --deck-info: #6ba6ff;
+  --deck-success: #57c99b;
+  --deck-warn: #e0a94e;
+  --deck-danger: #ee6e80;
   --deck-font: "Inter Variable", system-ui, -apple-system, sans-serif;
   --deck-font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
   --deck-font-serif: Georgia, "Times New Roman", serif;
+  /* Display font for large headings; defaults to the sans family. */
+  --deck-font-display: var(--deck-font);
 }

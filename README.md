@@ -53,8 +53,24 @@ A custom theme is just a CSS file setting the variable contract:
   --deck-bg: #0d1117;
   --deck-fg: #e6edf3;
   --deck-accent: #ff7b72;
+  --deck-font-display: var(--deck-font-serif); /* font for big headings (defaults to sans) */
   /* …see the built-ins for the full list… */
 }
+```
+
+**Dark / light in one deck.** Define both palettes in one file and opt into the chrome's toggle with
+`--deck-supports-toggle: 1`. suraido then shows a toggle (also the `T` key), follows the OS preference, and
+remembers the choice:
+
+```css
+:root {
+  --deck-bg: #101010; /* … dark palette … */
+  --deck-supports-toggle: 1;
+}
+:root[data-theme="light"] {
+  --deck-bg: #f4f2eb; /* … light palette … */
+}
+/* Optional no-JS fallback: @media (prefers-color-scheme: light) { :root:not([data-theme]) { … } } */
 ```
 
 ### Fonts

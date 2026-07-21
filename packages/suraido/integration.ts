@@ -27,7 +27,7 @@ export interface SuraidoOptions {
 }
 
 /** Fonts suraido bundles (self-hosted via Fontsource, loaded only when selected). */
-type BundledFont = "inter" | "geist" | "jetbrains-mono" | "geist-mono" | "geist-pixel";
+type BundledFont = "inter" | "geist" | "jetbrains-mono" | "geist-mono" | "geist-pixel" | "fraunces";
 // A bundled key (with autocomplete) or any raw CSS font-family string.
 type FontValue = BundledFont | (string & {});
 type Slot = "sans" | "mono" | "serif";
@@ -38,6 +38,7 @@ const FONTS: Record<BundledFont, { pkg: string; family: string }> = {
   "jetbrains-mono": { pkg: "@fontsource-variable/jetbrains-mono", family: '"JetBrains Mono Variable"' },
   "geist-mono": { pkg: "@fontsource-variable/geist-mono", family: '"Geist Mono Variable"' },
   "geist-pixel": { pkg: "@fontsource/geist-pixel", family: '"Geist Pixel"' },
+  fraunces: { pkg: "@fontsource-variable/fraunces", family: '"Fraunces Variable"' },
 };
 
 const FALLBACK: Record<Slot, string> = {

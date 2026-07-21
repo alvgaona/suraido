@@ -4,11 +4,11 @@
 @theme {
   --font-sans: "Inter", system-ui, -apple-system, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, "SF Mono", monospace;
-  --color-accent: #4c8dff;
-  --color-fg: #eef1f6;
-  --color-muted: #9aa3b2;
-  --color-cyan: #35d0ba;
-  --color-amber: #f5b544;
+  --color-accent: #c9a15e;
+  --color-fg: #f1ede5;
+  --color-muted: #a5a096;
+  --color-cyan: #57c99b;
+  --color-amber: #e0a94e;
 }
 
 /* The --deck-* variable contract lives in the injected theme (see the `theme`
@@ -32,6 +32,15 @@ html, body {
 
 /* ── Stage + scaled canvas (single-page runtime) ───────────────────── */
 #deck-stage { position: fixed; inset: 0; overflow: hidden; background: var(--deck-bg); }
+html, body, #deck-stage, #deck-canvas, .slide-root {
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+/* Subtle film grain over the whole stage for a premium, less-flat surface. */
+#deck-stage::after {
+  content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 1;
+  opacity: 0.4; mix-blend-mode: soft-light; background-size: 170px 170px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='170' height='170'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
 #deck-canvas {
   position: absolute;
   left: 50%;
@@ -56,34 +65,40 @@ html, body {
   position: relative;
   width: 1920px;
   height: 1080px;
-  padding: 96px 130px;
+  padding: 100px 132px;
   background:
-    radial-gradient(1200px 700px at 82% -8%, color-mix(in oklab, var(--deck-accent) 12%, transparent), transparent 60%),
+    radial-gradient(1100px 680px at 86% -14%, color-mix(in oklab, var(--deck-accent) 11%, transparent), transparent 62%),
+    radial-gradient(1000px 900px at 4% 112%, color-mix(in oklab, var(--deck-accent) 5%, transparent), transparent 60%),
     var(--deck-bg);
 }
 
 /* ── Chrome ────────────────────────────────────────────────────────── */
 #deck-progress {
-  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  position: fixed; top: 0; left: 0; height: 2px; width: 0;
   background: var(--deck-accent); transition: width 0.3s ease; z-index: 11;
 }
 #deck-chrome {
   position: fixed; left: 0; right: 0; bottom: 0;
   display: flex; align-items: center; justify-content: space-between;
   gap: 16px; padding: 14px 22px;
-  color: #cdcdd4; font-size: 13px; letter-spacing: 0.5px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  color: var(--deck-muted); font-size: 13px; letter-spacing: 0.5px;
+  background: linear-gradient(to top, color-mix(in oklab, var(--deck-bg) 88%, transparent), transparent);
   opacity: 0; transition: opacity 0.35s ease; z-index: 10; user-select: none;
 }
 body.deck-show-chrome #deck-chrome, #deck-chrome:hover { opacity: 1; }
 #deck-chrome .deck-nav { display: flex; gap: 8px; }
 #deck-chrome button {
-  appearance: none; border: 1px solid rgba(255, 255, 255, 0.18);
-  background: rgba(255, 255, 255, 0.06); color: #e8e8ee;
-  width: 34px; height: 30px; border-radius: 8px; font-size: 15px; cursor: pointer; line-height: 1;
+  appearance: none; border: 1px solid var(--deck-line-strong);
+  background: color-mix(in oklab, var(--deck-fg) 5%, transparent); color: var(--deck-fg);
+  min-width: 34px; height: 30px; padding: 0 8px; border-radius: 8px; font-size: 15px; cursor: pointer; line-height: 1;
+  display: inline-flex; align-items: center; justify-content: center;
+  transition: background 0.15s ease, border-color 0.15s ease;
 }
-#deck-chrome button:hover { background: rgba(255, 255, 255, 0.14); }
-#deck-chrome .deck-chrome-title { flex: 1; text-align: center; font-size: 13px; color: #9a9aa4; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+#deck-chrome button:hover { background: color-mix(in oklab, var(--deck-fg) 12%, transparent); border-color: var(--deck-accent); }
+#deck-chrome .deck-chrome-title { flex: 1; text-align: center; font-size: 13px; color: var(--deck-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+/* Theme toggle — hidden unless the active theme opts in (deck-has-toggle). */
+#deck-theme-toggle { display: none; font-size: 16px; }
+body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
 #deck-pageno {
   position: absolute; right: 130px; bottom: 44px;
   color: var(--deck-faint); font: 600 16px/1 var(--deck-font-mono); letter-spacing: 2px; z-index: 15;
@@ -97,13 +112,14 @@ body.deck-show-chrome #deck-chrome, #deck-chrome:hover { opacity: 1; }
 }
 .deck-eyebrow::before { content: ""; width: 30px; height: 2px; background: currentColor; }
 .deck-title {
-  font-family: var(--deck-font); font-weight: 700; font-size: 76px; line-height: 1.02;
-  letter-spacing: -0.02em; color: var(--deck-fg); margin: 0;
+  font-family: var(--deck-font-display); font-weight: 600; font-size: 78px; line-height: 1.03;
+  letter-spacing: -0.018em; color: var(--deck-fg); margin: 0; font-optical-sizing: auto;
 }
 .deck-lead { font-size: 30px; line-height: 1.5; color: var(--deck-muted); max-width: 60ch; margin: 0; }
 .deck-card {
   border: 1px solid var(--deck-line); border-radius: 20px;
   background: linear-gradient(180deg, var(--deck-panel-2), var(--deck-panel)); padding: 40px;
+  box-shadow: 0 1px 0 color-mix(in oklab, var(--deck-fg) 6%, transparent) inset, 0 24px 60px -40px rgba(0, 0, 0, 0.7);
 }
 .deck-card--accent {
   border-color: color-mix(in oklab, var(--deck-accent) 45%, transparent);
@@ -122,7 +138,7 @@ body.deck-show-chrome #deck-chrome, #deck-chrome:hover { opacity: 1; }
 .deck-callout--warn { --c: var(--deck-warn); }
 .deck-callout--danger { --c: var(--deck-danger); }
 .deck-stat { display: flex; flex-direction: column; gap: 6px; }
-.deck-stat__num { font-family: var(--deck-font); font-size: 72px; font-weight: 700; line-height: 1; color: var(--deck-fg); font-variant-numeric: tabular-nums; }
+.deck-stat__num { font-family: var(--deck-font-display); font-size: 76px; font-weight: 600; line-height: 1; color: var(--deck-fg); font-variant-numeric: tabular-nums; font-optical-sizing: auto; }
 .deck-stat__label { font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-faint); }
 .deck-cols { display: grid; gap: 40px; align-items: start; }
 .deck-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -132,11 +148,12 @@ body.deck-show-chrome #deck-chrome, #deck-chrome:hover { opacity: 1; }
   border-radius: 6px; border: 1px solid var(--deck-line-strong); background: var(--deck-panel); color: var(--deck-fg);
 }
 
-/* Shiki output from <Code> — box it to match the deck. */
+/* Shiki output from <Code> — box it to match the deck. Keep Shiki's own
+   (dark) background so code stays readable in both light and dark themes. */
 .astro-code {
-  padding: 28px 32px; border-radius: 16px; border: 1px solid var(--deck-line-strong);
-  background: var(--deck-bg) !important; font-family: var(--deck-font-mono); font-size: 24px; line-height: 1.55;
-  overflow-x: auto;
+  padding: 28px 32px; border-radius: 14px; border: 1px solid var(--deck-line-strong);
+  font-family: var(--deck-font-mono); font-size: 24px; line-height: 1.55; overflow-x: auto;
+  box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.7);
 }
 
 /* Whole-slide layouts (Cover, Section, Statement). */
@@ -150,16 +167,16 @@ body.deck-show-chrome #deck-chrome, #deck-chrome:hover { opacity: 1; }
 }
 .deck-section .deck-eyebrow { margin: 8px 0 24px; }
 .deck-section__title {
-  font-family: var(--deck-font); font-weight: 700; font-size: 128px; line-height: 0.95;
-  letter-spacing: -0.02em; color: var(--deck-fg); margin: 0;
+  font-family: var(--deck-font-display); font-weight: 600; font-size: 132px; line-height: 0.96;
+  letter-spacing: -0.018em; color: var(--deck-fg); margin: 0; font-optical-sizing: auto;
 }
-.deck-statement { font-size: 88px; font-weight: 700; line-height: 1.05; letter-spacing: -0.02em; color: var(--deck-fg); max-width: 24ch; }
+.deck-statement { font-family: var(--deck-font-display); font-size: 90px; font-weight: 600; line-height: 1.06; letter-spacing: -0.018em; color: var(--deck-fg); max-width: 24ch; font-optical-sizing: auto; }
 
 .deck-quote {
-  font-size: 44px; line-height: 1.3; color: var(--deck-fg);
-  border-left: 4px solid var(--deck-accent); padding-left: 32px; margin: 0;
+  font-family: var(--deck-font-display); font-size: 46px; font-weight: 500; font-style: italic; line-height: 1.32; color: var(--deck-fg);
+  border-left: 3px solid var(--deck-accent); padding-left: 34px; margin: 0; font-optical-sizing: auto;
 }
-.deck-quote cite { display: block; margin-top: 20px; font-size: 24px; font-style: normal; color: var(--deck-faint); }
+.deck-quote cite { display: block; margin-top: 22px; font-family: var(--deck-font-mono); font-size: 22px; font-style: normal; color: var(--deck-faint); }
 
 .deck-badge, .deck-pill {
   display: inline-flex; align-items: center; gap: 0.5rem; padding: 0.35rem 0.85rem;
@@ -206,11 +223,12 @@ body.deck-show-chrome #deck-hint { opacity: 1; }
 #deck-overview {
   position: fixed; inset: 0; z-index: 500; display: none;
   grid-template-columns: repeat(4, 1fr); gap: 18px; padding: 40px;
-  background: rgba(6, 7, 10, 0.94); overflow-y: auto; align-content: start;
+  background: color-mix(in oklab, var(--deck-bg) 92%, transparent); backdrop-filter: blur(8px);
+  overflow-y: auto; align-content: start;
 }
 #deck-overview.open { display: grid; }
 .deck-ov-cell {
-  position: relative; aspect-ratio: 16 / 9; border: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative; aspect-ratio: 16 / 9; border: 1px solid var(--deck-line);
   border-radius: 10px; overflow: hidden; cursor: pointer; background: var(--deck-bg);
   transition: border-color 0.15s ease, transform 0.15s ease; padding: 0;
 }
@@ -219,8 +237,8 @@ body.deck-show-chrome #deck-hint { opacity: 1; }
 .deck-ov-thumb { position: absolute; top: 0; left: 0; transform-origin: top left; pointer-events: none; }
 .deck-ov-label {
   position: absolute; left: 0; right: 0; bottom: 0; padding: 8px 10px;
-  font: 600 12px/1.2 var(--deck-font-mono); color: #cdcdd4;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.85), transparent); display: flex; gap: 8px;
+  font: 600 12px/1.2 var(--deck-font-mono); color: var(--deck-fg);
+  background: linear-gradient(to top, color-mix(in oklab, var(--deck-bg) 92%, transparent), transparent); display: flex; gap: 8px;
 }
 .deck-ov-label b { color: var(--deck-accent); }
 

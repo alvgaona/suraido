@@ -1,19 +1,21 @@
-/* suraido theme: light. */
+/* suraido theme: light — an elegant warm paper. */
 :root {
-  --deck-bg: #ffffff;
-  --deck-fg: #0c0e13;
-  --deck-muted: #4b5563;
-  --deck-faint: #9aa3b2;
-  --deck-accent: #2563eb;
-  --deck-line: #e6e8ec;
-  --deck-line-strong: #d3d7de;
-  --deck-panel: #f6f7f9;
-  --deck-panel-2: #eef1f5;
-  --deck-info: #2563eb;
-  --deck-success: #0e9384;
-  --deck-warn: #b54708;
-  --deck-danger: #d92d20;
+  --deck-bg: #f4f2eb;
+  --deck-fg: #17150f;
+  --deck-muted: #57524a;
+  --deck-faint: #8a8478;
+  --deck-accent: #8f6c2c;
+  --deck-line: #e5e0d5;
+  --deck-line-strong: #d3cec0;
+  --deck-panel: #faf8f2;
+  --deck-panel-2: #efebe0;
+  --deck-info: #2f6ae0;
+  --deck-success: #0f9d78;
+  --deck-warn: #b7791f;
+  --deck-danger: #d64545;
   --deck-font: "Inter Variable", system-ui, -apple-system, sans-serif;
   --deck-font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
   --deck-font-serif: Georgia, "Times New Roman", serif;
+  /* Display font for large headings; defaults to the sans family. */
+  --deck-font-display: var(--deck-font);
 }

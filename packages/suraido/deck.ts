@@ -37,6 +37,29 @@ export function initDeck(): void {
   const sync = !preview && typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(SYNC) : null;
   let current = 0;
   let scale = 1;
+  let toggleTheme: (() => void) | null = null;
+
+  // ── Theme (dark / light) ────────────────────────────────────────────
+  // Applies a stored or system theme, and — only if the active theme opts in
+  // via `--deck-supports-toggle` — wires the chrome toggle + `T` key.
+  function initTheme(): (() => void) | null {
+    const root = document.documentElement;
+    const stored = (() => { try { return localStorage.getItem("deck-theme"); } catch { return null; } })();
+    const system = matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark";
+    root.dataset.theme = stored === "light" || stored === "dark" ? stored : system;
+    const btn = document.getElementById("deck-theme-toggle");
+    const paint = () => { if (btn) btn.textContent = root.dataset.theme === "light" ? "☾" : "☀"; };
+    paint();
+    if (!getComputedStyle(root).getPropertyValue("--deck-supports-toggle").trim()) return null;
+    document.body.classList.add("deck-has-toggle");
+    const toggle = () => {
+      root.dataset.theme = root.dataset.theme === "light" ? "dark" : "light";
+      try { localStorage.setItem("deck-theme", root.dataset.theme); } catch { /* ignore */ }
+      paint();
+    };
+    btn?.addEventListener("click", toggle);
+    return toggle;
+  }
 
   // ── Scaling ─────────────────────────────────────────────────────────
   function fit() {
@@ -209,6 +232,7 @@ export function initDeck(): void {
       case "o": case "O": e.preventDefault(); isOverviewOpen() ? closeOverview() : openOverview(); break;
       case "Escape": if (isOverviewOpen()) { e.preventDefault(); closeOverview(); } break;
       case "p": case "P": e.preventDefault(); openPresenter(); break;
+      case "t": case "T": e.preventDefault(); toggleTheme?.(); break;
       case "f": case "F":
         e.preventDefault();
         if (document.fullscreenElement) void document.exitFullscreen();
@@ -232,6 +256,7 @@ export function initDeck(): void {
   document.querySelector("[data-prev]")?.addEventListener("click", () => prev());
 
   // ── Boot ────────────────────────────────────────────────────────────
+  toggleTheme = initTheme();
   const start = parseInt(location.hash.slice(1), 10);
   if (!Number.isNaN(start)) current = Math.max(0, Math.min(slides.length - 1, start - 1));
   fit();
