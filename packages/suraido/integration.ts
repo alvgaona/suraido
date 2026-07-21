@@ -13,6 +13,13 @@ export interface SuraidoOptions {
    * variables. Default: `"midnight"`.
    */
   theme?: string;
+  /**
+   * Override the font families (the `--deck-font*` variables). Each value is a
+   * CSS font-family string. You still load the font yourself (Fontsource, the
+   * Astro Fonts API, etc.); this only points the deck at it. Defaults: Inter
+   * (sans) + JetBrains Mono (mono), both bundled; serif is a system stack.
+   */
+  fonts?: { sans?: string; mono?: string; serif?: string };
   /** Enable KaTeX/LaTeX math: the `<Math>` component + its stylesheet. Default: true. */
   math?: boolean;
 }
@@ -21,6 +28,16 @@ const V_OPTIONS = "virtual:suraido/options";
 const V_THEME = "virtual:suraido/theme.css";
 const resolved = (id: string) => "\0" + id;
 
+function fontOverrides(fonts?: SuraidoOptions["fonts"]): string {
+  if (!fonts) return "";
+  const decls = [
+    fonts.sans && `--deck-font:${fonts.sans};`,
+    fonts.mono && `--deck-font-mono:${fonts.mono};`,
+    fonts.serif && `--deck-font-serif:${fonts.serif};`,
+  ].filter(Boolean);
+  return decls.length ? `\n:root{${decls.join("")}}` : "";
+}
+
 /**
  * The suraido integration: wires Tailwind v4, injects the /presenter route, the
  * theme, and optional features. Add it to astro.config: `integrations: [suraido()]`.
@@ -28,6 +45,7 @@ const resolved = (id: string) => "\0" + id;
 export default function suraido(options: SuraidoOptions = {}): AstroIntegration {
   const math = options.math ?? true;
   const theme = options.theme ?? "midnight";
+  const fonts = options.fonts;
   return {
     name: "suraido",
     hooks: {
@@ -44,6 +62,11 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
 
         updateConfig({
           vite: {
+            // Fontsource ships CSS-only packages; keep them bundled so Vite
+            // processes the .css import instead of externalizing it to Node's
+            // ESM loader (which can't load .css) during dev SSR.
+            ssr: { noExternal: [/@fontsource/] },
+            resolve: { noExternal: [/@fontsource/] },
             plugins: [
               tailwindcss(),
               {
@@ -56,7 +79,7 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
                 },
                 load(id) {
                   if (id === resolved(V_OPTIONS)) return `export const math = ${JSON.stringify(math)};`;
-                  if (id === resolved(V_THEME)) return readFileSync(themePath, "utf8");
+                  if (id === resolved(V_THEME)) return readFileSync(themePath, "utf8") + fontOverrides(fonts);
                 },
               },
             ],

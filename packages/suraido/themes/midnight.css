@@ -13,6 +13,7 @@
   --deck-success: #35d0ba;
   --deck-warn: #f5b544;
   --deck-danger: #f2607a;
-  --deck-font: "Inter", system-ui, -apple-system, sans-serif;
-  --deck-font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --deck-font: "Inter Variable", system-ui, -apple-system, sans-serif;
+  --deck-font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --deck-font-serif: Georgia, "Times New Roman", serif;
 }
