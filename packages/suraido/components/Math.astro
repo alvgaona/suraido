@@ -1,12 +1,13 @@
 ---
-import "katex/dist/katex.min.css";
 import katex from "katex";
+import { math as enabled } from "virtual:suraido/options";
 interface Props {
   expr: string;
   display?: boolean;
 }
 const { expr, display = false } = Astro.props;
-const html = katex.renderToString(expr, { displayMode: display, throwOnError: false });
+// The katex stylesheet is loaded globally by the integration when math is on.
+const html = enabled ? katex.renderToString(expr, { displayMode: display, throwOnError: false }) : "";
 ---
 
-<span set:html={html} />
+{enabled ? <span set:html={html} /> : <code class="deck-kbd">{expr}</code>}

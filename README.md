@@ -31,6 +31,16 @@ import suraido from "suraido";           // wires Tailwind v4 + injects the /pre
 export default defineConfig({ integrations: [suraido()] });
 ```
 
+**Options:**
+
+| Option | Default | Description |
+|--------|---------|-------------|
+| `math` | `true`  | KaTeX/LaTeX support (the `<Math>` component + its stylesheet). Set `false` to drop KaTeX entirely — no stylesheet is loaded and `<Math>` renders the raw LaTeX. |
+
+```js
+export default defineConfig({ integrations: [suraido({ math: false })] });
+```
+
 ### One slide per file (recommended)
 
 Drop each slide in `src/slides/` — suraido collects them **in filename order** (`01-`, `02-`, …):
