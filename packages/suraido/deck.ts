@@ -37,6 +37,7 @@ export function initDeck(): void {
   const sync = !preview && typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(SYNC) : null;
   let current = 0;
   let scale = 1;
+  let designH = BASE_H; // fluid design height (canvas fills the viewport width)
   let toggleTheme: (() => void) | null = null;
 
   // ── Theme (dark / light) ────────────────────────────────────────────
@@ -62,8 +63,13 @@ export function initDeck(): void {
   }
 
   // ── Scaling ─────────────────────────────────────────────────────────
+  // Fill the full viewport width (design width stays 1920), and let the design
+  // height flex to fill the height too — so the slide takes the whole browser,
+  // no letterbox bars. Export runs at a 1920×1080 viewport, keeping a true 16:9.
   function fit() {
-    scale = Math.min(window.innerWidth / BASE_W, window.innerHeight / BASE_H);
+    scale = window.innerWidth / BASE_W;
+    designH = window.innerHeight / scale;
+    canvas!.style.height = `${designH}px`;
     canvas!.style.transform = `translate(-50%, -50%) scale(${scale})`;
     canvas!.style.visibility = "visible";
     positionPortals();
@@ -179,9 +185,12 @@ export function initDeck(): void {
     slides.forEach((slide, i) => {
       const cell = document.createElement("button");
       cell.className = "deck-ov-cell" + (i === current ? " is-current" : "");
+      cell.style.aspectRatio = `${BASE_W} / ${designH}`; // match the live slide shape
       cell.setAttribute("aria-label", `Go to slide ${i + 1}${slide.dataset.title ? `: ${slide.dataset.title}` : ""}`);
       const clone = slide.querySelector(".slide-root")!.cloneNode(true) as HTMLElement;
       clone.classList.add("deck-ov-thumb");
+      clone.style.width = `${BASE_W}px`;
+      clone.style.height = `${designH}px`;
       clone.style.transform = `scale(${cellScale})`;
       const label = document.createElement("div");
       label.className = "deck-ov-label";

@@ -64,7 +64,7 @@ html, body, #deck-stage, #deck-canvas, .slide-root {
 .slide-root {
   position: relative;
   width: 1920px;
-  height: 1080px;
+  height: 100%;
   padding: 100px 132px;
   background:
     radial-gradient(1100px 680px at 86% -14%, color-mix(in oklab, var(--deck-accent) 11%, transparent), transparent 62%),
