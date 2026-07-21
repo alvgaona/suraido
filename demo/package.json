@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
+    "check": "astro check",
     "export": "astro build && bun run scripts/export.ts"
   },
   "dependencies": {
@@ -13,7 +14,9 @@
     "suraido": "workspace:*"
   },
   "devDependencies": {
+    "@astrojs/check": "^0.9.0",
     "pdf-lib": "^1.17.1",
-    "playwright": "^1.49.0"
+    "playwright": "^1.49.0",
+    "typescript": "^5.6.0"
   }
 }
