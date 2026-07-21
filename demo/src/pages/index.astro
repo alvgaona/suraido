@@ -1,0 +1,81 @@
+---
+import { Code } from "astro:components";
+import DeckLayout from "suraido/DeckLayout.astro";
+import Slide from "suraido/components/Slide.astro";
+import Cover from "suraido/components/Cover.astro";
+import Section from "suraido/components/Section.astro";
+import Statement from "suraido/components/Statement.astro";
+import Columns from "suraido/components/Columns.astro";
+import Card from "suraido/components/Card.astro";
+import Callout from "suraido/components/Callout.astro";
+import Stat from "suraido/components/Stat.astro";
+import Badge from "suraido/components/Badge.astro";
+import Portal from "suraido/components/Portal.astro";
+import Math from "suraido/components/Math.astro";
+
+const configSample = `// astro.config.mjs
+import suraido from "suraido";
+export default defineConfig({
+  integrations: [suraido()],
+});`;
+---
+
+<DeckLayout title="suraido">
+  <Cover eyebrow="スライド · a slide framework on Astro" lead="Author slides as components. One Astro page, a client runtime, native-resolution portals." number={false}>
+    <h1 slot="title" class="deck-title" style="font-size: 132px">suraido<span style="color: var(--deck-accent)">.</span></h1>
+    <Badge>Astro</Badge>
+    <Badge>Tailwind v4</Badge>
+    <Badge>Shiki + KaTeX</Badge>
+  </Cover>
+
+  <Section label="01" title="Author with components" note="props · slots · scoped styles · no runtime framework" />
+
+  <Slide title="Components">
+    <div class="deck-eyebrow" style="margin-bottom: 24px">Components</div>
+    <h1 class="deck-title">Callouts, cards, code.</h1>
+    <div style="margin-top: 48px">
+      <Columns cols={2} gap={72}>
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <Callout variant="info"><Fragment slot="mark">i</Fragment>Real <code class="deck-kbd">.astro</code> components.</Callout>
+          <Callout variant="success"><Fragment slot="mark">✓</Fragment>Rendered to static HTML at build.</Callout>
+          <Callout variant="warn"><Fragment slot="mark">!</Fragment>Slide-scaled for 1920×1080.</Callout>
+        </div>
+        <Card accent>
+          <div class="deck-eyebrow" style="margin-bottom: 20px">config</div>
+          <Code code={configSample} lang="ts" theme="github-dark-default" />
+        </Card>
+      </Columns>
+    </div>
+  </Slide>
+
+  <Slide title="Math & stats">
+    <div class="deck-eyebrow" style="margin-bottom: 24px">Build-time rendering</div>
+    <h1 class="deck-title">Shiki for code. <span style="color: var(--deck-accent)">KaTeX</span> for math.</h1>
+    <div style="margin-top: 48px">
+      <Columns cols={2} gap={48}>
+        <Card>
+          <p style="font-size: 26px; color: var(--deck-muted); margin: 0 0 24px">Math renders at build:</p>
+          <div style="font-size: 40px"><Math display expr={"e^{i\\pi} + 1 = 0"} /></div>
+        </Card>
+        <div style="display: flex; gap: 40px; align-items: center; height: 100%">
+          <Stat value="15" label="components" />
+          <Stat value="1" label="Astro page" />
+          <Stat value="0" label="runtime deps" />
+        </div>
+      </Columns>
+    </div>
+  </Slide>
+
+  <Section label="02" title="Present it" note="overview · fragments · presenter · PDF export" />
+
+  <Slide title="Live viewer" notes="Portals embed any URL at native resolution over the scaled slide.">
+    <Portal
+      label="Portal"
+      title="Native-resolution embeds"
+      src="https://app.rerun.io/version/0.34.1/index.html?url=https://app.rerun.io/version/0.34.1/examples/dna.rrd"
+      caption="A real iframe positioned over the slide — crisp, never through the scale transform."
+    />
+  </Slide>
+
+  <Statement>スライド — <span style="color: var(--deck-accent)">slides, on Astro.</span></Statement>
+</DeckLayout>

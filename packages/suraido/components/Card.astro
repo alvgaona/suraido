@@ -1,0 +1,8 @@
+---
+interface Props {
+  accent?: boolean;
+}
+const { accent = false } = Astro.props;
+---
+
+<div class:list={["deck-card", accent && "deck-card--accent"]}><slot /></div>

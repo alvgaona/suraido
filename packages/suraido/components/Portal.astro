@@ -1,0 +1,30 @@
+---
+// Embeds any URL (Rerun viewer, dashboard, video, web app) in a
+// native-resolution portal: the runtime positions a real iframe over this
+// slot, outside the scaled canvas, so the content stays crisp.
+interface Props {
+  src: string;
+  title?: string;
+  caption?: string;
+  label?: string;
+}
+const { src, title, caption, label = "Embed" } = Astro.props;
+let host = src;
+try {
+  host = new URL(src).host;
+} catch {
+  /* keep raw src */
+}
+---
+
+<div style="display: flex; flex-direction: column; height: 100%">
+  <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px">
+    <div>
+      <div class="deck-eyebrow">{label}</div>
+      {title && <h1 class="deck-title" style="font-size: 52px; margin-top: 12px">{title}</h1>}
+    </div>
+    <span class="deck-badge">{host}</span>
+  </div>
+  <div class="deck-portal-slot" data-portal-src={src} style="flex: 1">loading {host}…</div>
+  {caption && <p style="margin-top: 20px; font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-faint)">{caption}</p>}
+</div>

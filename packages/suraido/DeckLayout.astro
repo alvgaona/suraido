@@ -1,0 +1,40 @@
+---
+import "./styles/global.css";
+interface Props {
+  title?: string;
+}
+const { title = "Deck" } = Astro.props;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+  </head>
+  <body>
+    <div id="deck-progress" role="progressbar" aria-label="Deck progress" aria-valuemin="0" aria-valuemax="100"></div>
+    <div id="deck-live" class="deck-sr-only" aria-live="polite" aria-atomic="true"></div>
+    <div id="deck-stage" role="region" aria-label="Slides">
+      <div id="deck-canvas">
+        <slot />
+        <div id="deck-pageno"></div>
+      </div>
+    </div>
+    <div id="deck-overview" role="dialog" aria-label="Slide overview" aria-modal="true"></div>
+    <div id="deck-hint" aria-hidden="true">← → navigate · F fullscreen · O overview · P presenter</div>
+    <div id="deck-chrome">
+      <div class="deck-nav">
+        <button data-prev title="Previous (←)" aria-label="Previous slide">‹</button>
+        <button data-next title="Next (→)" aria-label="Next slide">›</button>
+      </div>
+      <div class="deck-title" aria-hidden="true"></div>
+    </div>
+
+    <script>
+      import { initDeck } from "./deck";
+      initDeck();
+    </script>
+  </body>
+</html>

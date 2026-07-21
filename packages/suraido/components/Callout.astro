@@ -1,0 +1,11 @@
+---
+interface Props {
+  variant?: "info" | "success" | "warn" | "danger";
+}
+const { variant = "info" } = Astro.props;
+---
+
+<div class:list={["deck-callout", `deck-callout--${variant}`]}>
+  <span class="deck-callout__mark"><slot name="mark" /></span>
+  <div><slot /></div>
+</div>

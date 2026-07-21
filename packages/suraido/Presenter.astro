@@ -1,0 +1,97 @@
+---
+import "./styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Presenter</title>
+  </head>
+  <body>
+    <div class="deck-presenter">
+      <div class="dp-grid">
+        <div class="dp-current">
+          <span class="dp-tag">Current</span>
+          <iframe class="dp-frame" data-current title="Current slide"></iframe>
+        </div>
+        <div class="dp-col">
+          <div class="dp-next">
+            <span class="dp-tag">Next</span>
+            <iframe class="dp-frame" data-next title="Next slide"></iframe>
+          </div>
+          <div class="dp-notes">
+            <span class="dp-tag">Notes</span>
+            <div class="dp-notes-body" data-notes></div>
+          </div>
+        </div>
+      </div>
+      <div class="dp-bar">
+        <div class="dp-timer" data-timer>00:00</div>
+        <div class="dp-counter" data-counter>–</div>
+        <div class="dp-clock" data-clock>--:--</div>
+      </div>
+    </div>
+
+    <script>
+      const SYNC = "deck-sync";
+      const currentFrame = document.querySelector<HTMLIFrameElement>("[data-current]")!;
+      const nextFrame = document.querySelector<HTMLIFrameElement>("[data-next]")!;
+      const notesEl = document.querySelector<HTMLElement>("[data-notes]")!;
+      const timerEl = document.querySelector<HTMLElement>("[data-timer]")!;
+      const counterEl = document.querySelector<HTMLElement>("[data-counter]")!;
+      const clockEl = document.querySelector<HTMLElement>("[data-clock]")!;
+
+      // Passive deck previews (?preview → no sync/keyboard in the iframe).
+      // The deck lives one level up from /presenter/ (robust to a base path).
+      const deckBase = new URL("..", location.href).href;
+      const preview = (n: number) => `${deckBase}?preview#${n}`;
+      const sync = new BroadcastChannel(SYNC);
+      let total = 1;
+      const startMs = Date.now();
+
+      currentFrame.addEventListener("load", () => {
+        try {
+          const slide = currentFrame.contentDocument?.querySelector<HTMLElement>(".deck-slide.is-active");
+          notesEl.textContent = slide?.dataset.notes ?? "";
+        } catch {
+          notesEl.textContent = "";
+        }
+      });
+
+      function show(index: number) {
+        currentFrame.src = preview(index + 1);
+        nextFrame.src = index + 1 < total ? preview(index + 2) : "about:blank";
+        counterEl.textContent = `${index + 1} / ${total}`;
+      }
+
+      sync.onmessage = (e: MessageEvent) => {
+        const m = e.data;
+        if (m?.t === "state") {
+          total = m.total;
+          show(m.index);
+        }
+      };
+
+      addEventListener("keydown", (e) => {
+        if (e.key === "ArrowRight" || e.key === " " || e.key === "PageDown") {
+          e.preventDefault();
+          sync.postMessage({ t: "cmd", cmd: "next" });
+        } else if (e.key === "ArrowLeft" || e.key === "PageUp") {
+          e.preventDefault();
+          sync.postMessage({ t: "cmd", cmd: "prev" });
+        }
+      });
+
+      setInterval(() => {
+        const el = Math.max(0, Math.floor((Date.now() - startMs) / 1000));
+        timerEl.textContent = `${String(Math.floor(el / 60)).padStart(2, "0")}:${String(el % 60).padStart(2, "0")}`;
+        const now = new Date();
+        clockEl.textContent = `${String(now.getHours()).padStart(2, "0")}:${String(now.getMinutes()).padStart(2, "0")}`;
+      }, 500);
+
+      sync.postMessage({ t: "cmd", cmd: "sync" });
+    </script>
+  </body>
+</html>

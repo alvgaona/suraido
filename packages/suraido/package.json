@@ -1,0 +1,28 @@
+{
+  "name": "suraido",
+  "version": "0.1.0",
+  "description": "suraido — an Astro slide framework: single-page runtime, component library, portals, presenter, PDF export",
+  "keywords": ["slides", "presentation", "astro", "deck", "slideshow", "keynote"],
+  "license": "MIT",
+  "author": "Alvaro Gaona (@alvgaona)",
+  "homepage": "https://github.com/alvgaona/suraido",
+  "repository": { "type": "git", "url": "git+https://github.com/alvgaona/suraido.git" },
+  "bugs": "https://github.com/alvgaona/suraido/issues",
+  "type": "module",
+  "exports": {
+    ".": "./integration.ts",
+    "./DeckLayout.astro": "./DeckLayout.astro",
+    "./Presenter.astro": "./Presenter.astro",
+    "./styles.css": "./styles/global.css",
+    "./components/*": "./components/*"
+  },
+  "files": ["components", "styles", "*.astro", "*.ts"],
+  "dependencies": {
+    "@tailwindcss/vite": "^4.1.0",
+    "katex": "^0.16.11",
+    "tailwindcss": "^4.1.0"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0"
+  }
+}

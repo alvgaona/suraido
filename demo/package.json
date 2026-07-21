@@ -1,0 +1,19 @@
+{
+  "name": "suraido-demo",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "export": "astro build && bun run scripts/export.ts"
+  },
+  "dependencies": {
+    "astro": "^5.0.0",
+    "suraido": "workspace:*"
+  },
+  "devDependencies": {
+    "pdf-lib": "^1.17.1",
+    "playwright": "^1.49.0"
+  }
+}

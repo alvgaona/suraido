@@ -1,0 +1,11 @@
+{
+  "name": "suraido-workspace",
+  "private": true,
+  "type": "module",
+  "workspaces": ["packages/*", "demo"],
+  "scripts": {
+    "dev": "bun run --filter suraido-demo dev",
+    "build": "bun run --filter suraido-demo build",
+    "export": "bun run --filter suraido-demo export"
+  }
+}

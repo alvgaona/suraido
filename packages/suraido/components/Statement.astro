@@ -1,0 +1,12 @@
+---
+import Slide from "./Slide.astro";
+interface Props {
+  title?: string;
+  number?: boolean;
+}
+const { title, number = false } = Astro.props;
+---
+
+<Slide title={title} number={number}>
+  <div class="deck-statement"><slot /></div>
+</Slide>

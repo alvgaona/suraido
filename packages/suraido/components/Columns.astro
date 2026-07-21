@@ -1,0 +1,9 @@
+---
+interface Props {
+  cols?: 2 | 3;
+  gap?: number;
+}
+const { cols = 2, gap = 40 } = Astro.props;
+---
+
+<div class:list={["deck-cols", `deck-cols-${cols}`]} style={`gap:${gap}px`}><slot /></div>
