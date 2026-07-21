@@ -10,11 +10,17 @@
     "export": "astro build && bun run scripts/export.ts"
   },
   "dependencies": {
+    "@astrojs/react": "^6.0.1",
     "astro": "^7.0.0",
+    "react": "^19.2.7",
+    "react-dom": "^19.2.7",
+    "recharts": "^3.10.0",
     "suraido": "workspace:*"
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.0",
+    "@types/react": "^19.2.17",
+    "@types/react-dom": "^19.2.3",
     "pdf-lib": "^1.17.1",
     "playwright": "^1.49.0",
     "typescript": "^5.6.0"

@@ -262,10 +262,14 @@ ol.deck-list { list-style: decimal; }
 .deck-event__title { font-size: 30px; font-weight: 600; color: var(--deck-fg); margin: 2px 0 6px; }
 .deck-event__body { font-size: 24px; color: var(--deck-muted); }
 
-/* ── Chart (build-time SVG) ────────────────────────────────────────── */
-.deck-chart { width: 100%; height: auto; overflow: visible; }
-.deck-chart__val { fill: var(--deck-fg); font-family: var(--deck-font); font-weight: 700; font-size: 30px; }
-.deck-chart__lbl { fill: var(--deck-faint); font-family: var(--deck-font-mono); font-size: 22px; }
+/* ── Charts (Recharts, from suraido/react) ─────────────────────────── */
+/* Series colors: bars use fill:currentColor, so `color` themes them. */
+.deck-rc-0 { color: var(--deck-accent); }
+.deck-rc-1 { color: var(--deck-success); }
+.deck-rc-2 { color: var(--deck-warn); }
+.deck-rc-3 { color: var(--deck-info); }
+.deck-rc-4 { color: var(--deck-danger); }
+.recharts-cartesian-axis-tick text { font-family: var(--deck-font-mono); }
 
 /* ── Presenter view (/presenter route) ─────────────────────────────── */
 .deck-presenter {

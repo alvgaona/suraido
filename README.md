@@ -102,12 +102,37 @@ import Math from "suraido/components/Math.astro";
 - **Layouts:** `Cover` · `Section` · `Statement` · `Slide`
 - **Content:** `Columns` · `Grid` · `Card` · `Callout` · `Stat` · `Quote` · `Badge` · `List` · `Table` ·
   `Figure` · `Image` · `Video` · `Steps` + `Step` (fragments)
-- **Data:** `Chart` (build-time SVG bars) · `Timeline` + `Event`
+- **Data:** `Timeline` + `Event` · charts → see below
 - **Rich:** `Portal` (native-resolution embeds) · `Math` (KaTeX, build-time) · `<Code>` (Shiki, from
   `astro:components`)
 
 Underneath, components emit `deck-*` utility classes on a themeable `--deck-*` variable contract — usable
 directly too.
+
+### Charts (React islands)
+
+Charts use battle-tested [Recharts](https://recharts.org) via React islands — opt-in, so decks that don't
+use them stay React-free. Add `@astrojs/react` and install the peers:
+
+```bash
+npx astro add react
+npm i recharts
+```
+
+```astro
+---
+import { BarChart } from "suraido/react";
+---
+<BarChart
+  client:only="react"
+  x="label"
+  series={[{ key: "value", label: "Share %" }]}
+  data={[{ label: "Static", value: 100 }, { label: "Islands", value: 42 }]}
+/>
+```
+
+Series colors follow the theme (`--deck-*`). `react`, `react-dom`, and `recharts` are **optional** peer
+dependencies — only needed if you import `suraido/react`.
 
 ## Runtime
 

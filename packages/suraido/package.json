@@ -15,16 +15,30 @@
     "./Deck.astro": "./Deck.astro",
     "./Presenter.astro": "./Presenter.astro",
     "./slides": "./slides.ts",
+    "./react": "./react/index.ts",
     "./styles.css": "./styles/global.css",
     "./components/*": "./components/*"
   },
-  "files": ["components", "styles", "themes", "*.astro", "*.ts"],
+  "files": ["components", "styles", "themes", "react", "*.astro", "*.ts"],
   "dependencies": {
     "@tailwindcss/vite": "^4.1.0",
     "katex": "^0.16.11",
     "tailwindcss": "^4.1.0"
   },
   "peerDependencies": {
-    "astro": "^7.0.0"
+    "astro": "^7.0.0",
+    "react": ">=18",
+    "react-dom": ">=18",
+    "recharts": ">=2"
+  },
+  "peerDependenciesMeta": {
+    "react": { "optional": true },
+    "react-dom": { "optional": true },
+    "recharts": { "optional": true }
+  },
+  "devDependencies": {
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "recharts": "^3.0.0"
   }
 }
