@@ -1,0 +1,25 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import Card from "suraido/components/Card.astro";
+import Stat from "suraido/components/Stat.astro";
+import Math from "suraido/components/Math.astro";
+---
+
+<Slide title="Math & stats">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Build-time rendering</div>
+  <h1 class="deck-title">Shiki for code. <span style="color: var(--deck-accent)">KaTeX</span> for math.</h1>
+  <div style="margin-top: 48px">
+    <Columns cols={2} gap={48}>
+      <Card>
+        <p style="font-size: 26px; color: var(--deck-muted); margin: 0 0 24px">Math renders at build:</p>
+        <div style="font-size: 40px"><Math display expr={"e^{i\\pi} + 1 = 0"} /></div>
+      </Card>
+      <div style="display: flex; gap: 40px; align-items: center; height: 100%">
+        <Stat value="15" label="components" />
+        <Stat value="1" label="Astro page" />
+        <Stat value="0" label="runtime deps" />
+      </div>
+    </Columns>
+  </div>
+</Slide>

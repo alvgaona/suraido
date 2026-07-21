@@ -1,0 +1,26 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import Card from "suraido/components/Card.astro";
+import Callout from "suraido/components/Callout.astro";
+---
+
+<Slide title="Slides are components">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Authoring</div>
+  <h1 class="deck-title">Compose with components.</h1>
+  <div style="margin-top: 48px">
+    <Columns cols={2} gap={40}>
+      <Card>
+        <p style="font-size: 26px; color: var(--deck-muted); margin: 0">
+          Build with <code class="deck-kbd">&lt;Card&gt;</code>, <code class="deck-kbd">&lt;Callout&gt;</code>,
+          <code class="deck-kbd">&lt;Columns&gt;</code>, <code class="deck-kbd">&lt;Stat&gt;</code>,
+          <code class="deck-kbd">&lt;Quote&gt;</code>, <code class="deck-kbd">&lt;Math&gt;</code>…
+        </p>
+      </Card>
+      <Callout variant="info">
+        <Fragment slot="mark">i</Fragment>
+        Press <code class="deck-kbd">O</code> for overview, <code class="deck-kbd">P</code> for presenter.
+      </Callout>
+    </Columns>
+  </div>
+</Slide>

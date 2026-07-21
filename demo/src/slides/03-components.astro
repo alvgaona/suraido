@@ -1,0 +1,31 @@
+---
+import { Code } from "astro:components";
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import Card from "suraido/components/Card.astro";
+import Callout from "suraido/components/Callout.astro";
+
+const configSample = `// astro.config.mjs
+import suraido from "suraido";
+export default defineConfig({
+  integrations: [suraido()],
+});`;
+---
+
+<Slide title="Components">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Components</div>
+  <h1 class="deck-title">Callouts, cards, code.</h1>
+  <div style="margin-top: 48px">
+    <Columns cols={2} gap={72}>
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <Callout variant="info"><Fragment slot="mark">i</Fragment>Real <code class="deck-kbd">.astro</code> components.</Callout>
+        <Callout variant="success"><Fragment slot="mark">✓</Fragment>Rendered to static HTML at build.</Callout>
+        <Callout variant="warn"><Fragment slot="mark">!</Fragment>Slide-scaled for 1920×1080.</Callout>
+      </div>
+      <Card accent>
+        <div class="deck-eyebrow" style="margin-bottom: 20px">config</div>
+        <Code code={configSample} lang="ts" theme="github-dark-default" />
+      </Card>
+    </Columns>
+  </div>
+</Slide>

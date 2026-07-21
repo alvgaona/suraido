@@ -1,0 +1,13 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Portal from "suraido/components/Portal.astro";
+---
+
+<Slide title="Live viewer" notes="Portals embed any URL at native resolution over the scaled slide.">
+  <Portal
+    label="Portal"
+    title="Native-resolution embeds"
+    src="https://app.rerun.io/version/0.34.1/index.html?url=https://app.rerun.io/version/0.34.1/examples/dna.rrd"
+    caption="A real iframe positioned over the slide — crisp, never through the scale transform."
+  />
+</Slide>

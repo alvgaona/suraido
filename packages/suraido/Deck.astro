@@ -1,0 +1,15 @@
+---
+// A whole deck from a collected list of slide components. Pairs with
+// collectSlides(import.meta.glob(...)) for file-per-slide authoring.
+import DeckLayout from "./DeckLayout.astro";
+
+interface Props {
+  title?: string;
+  slides?: unknown[];
+}
+const { title, slides = [] } = Astro.props;
+---
+
+<DeckLayout title={title}>
+  {slides.map((Slide: any) => <Slide />)}
+</DeckLayout>

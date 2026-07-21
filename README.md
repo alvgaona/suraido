@@ -31,16 +31,41 @@ import suraido from "suraido";           // wires Tailwind v4 + injects the /pre
 export default defineConfig({ integrations: [suraido()] });
 ```
 
+### One slide per file (recommended)
+
+Drop each slide in `src/slides/` — suraido collects them **in filename order** (`01-`, `02-`, …):
+
 ```astro
 ---
 // src/pages/index.astro
+import Deck from "suraido/Deck.astro";
+import { collectSlides } from "suraido/slides";
+const slides = collectSlides(import.meta.glob("../slides/*.astro", { eager: true }));
+---
+<Deck title="My talk" slides={slides} />
+```
+
+```astro
+---
+// src/slides/01-cover.astro
+import Cover from "suraido/components/Cover.astro";
+---
+<Cover eyebrow="…" title="Hello." lead="…" number={false} />
+```
+
+Reorder or drop slides by renaming/removing files — no central list to keep in sync.
+
+### Or all in one file
+
+Prefer everything inline? Use `DeckLayout` directly:
+
+```astro
+---
 import DeckLayout from "suraido/DeckLayout.astro";
 import Slide from "suraido/components/Slide.astro";
-import Cover from "suraido/components/Cover.astro";
 import Math from "suraido/components/Math.astro";
 ---
 <DeckLayout title="My talk">
-  <Cover eyebrow="…" title="…" lead="…" number={false} />
   <Slide title="Transforms">
     <Math display expr={"T^{W}_{C} = T^{W}_{A}\\, T^{A}_{B}\\, T^{B}_{C}"} />
   </Slide>

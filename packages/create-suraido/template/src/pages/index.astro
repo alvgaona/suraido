@@ -1,38 +1,9 @@
 ---
-import DeckLayout from "suraido/DeckLayout.astro";
-import Slide from "suraido/components/Slide.astro";
-import Cover from "suraido/components/Cover.astro";
-import Section from "suraido/components/Section.astro";
-import Statement from "suraido/components/Statement.astro";
-import Columns from "suraido/components/Columns.astro";
-import Card from "suraido/components/Card.astro";
-import Callout from "suraido/components/Callout.astro";
+import Deck from "suraido/Deck.astro";
+import { collectSlides } from "suraido/slides";
+
+// Every file in src/slides/ becomes a slide, ordered by filename (01-, 02-, …).
+const slides = collectSlides(import.meta.glob("../slides/*.astro", { eager: true }));
 ---
 
-<DeckLayout title="My deck">
-  <Cover eyebrow="A suraido deck" title="Hello, world." lead="Edit src/pages/index.astro to build your talk." number={false} />
-
-  <Section label="01" title="Get started" />
-
-  <Slide title="Slides are components">
-    <div class="deck-eyebrow" style="margin-bottom: 24px">Authoring</div>
-    <h1 class="deck-title">Compose with components.</h1>
-    <div style="margin-top: 48px">
-      <Columns cols={2} gap={40}>
-        <Card>
-          <p style="font-size: 26px; color: var(--deck-muted); margin: 0">
-            Build with <code class="deck-kbd">&lt;Card&gt;</code>, <code class="deck-kbd">&lt;Callout&gt;</code>,
-            <code class="deck-kbd">&lt;Columns&gt;</code>, <code class="deck-kbd">&lt;Stat&gt;</code>,
-            <code class="deck-kbd">&lt;Quote&gt;</code>, <code class="deck-kbd">&lt;Math&gt;</code>…
-          </p>
-        </Card>
-        <Callout variant="info">
-          <Fragment slot="mark">i</Fragment>
-          Press <code class="deck-kbd">O</code> for overview, <code class="deck-kbd">P</code> for presenter.
-        </Callout>
-      </Columns>
-    </div>
-  </Slide>
-
-  <Statement>Now go give a <span style="color: var(--deck-accent)">great talk.</span></Statement>
-</DeckLayout>
+<Deck title="My deck" slides={slides} />

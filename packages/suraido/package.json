@@ -12,7 +12,9 @@
   "exports": {
     ".": "./integration.ts",
     "./DeckLayout.astro": "./DeckLayout.astro",
+    "./Deck.astro": "./Deck.astro",
     "./Presenter.astro": "./Presenter.astro",
+    "./slides": "./slides.ts",
     "./styles.css": "./styles/global.css",
     "./components/*": "./components/*"
   },
