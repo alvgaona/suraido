@@ -1,0 +1,11 @@
+---
+interface Props {
+  cols?: number;
+  gap?: number;
+}
+const { cols = 3, gap = 32 } = Astro.props;
+---
+
+<div class="deck-grid" style={`grid-template-columns:repeat(${cols},minmax(0,1fr));gap:${gap}px`}>
+  <slot />
+</div>

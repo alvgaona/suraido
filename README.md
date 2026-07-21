@@ -99,11 +99,15 @@ import Math from "suraido/components/Math.astro";
 
 ## Components
 
-`Slide` · `Cover` · `Section` · `Statement` · `Columns` · `Card` · `Callout` · `Stat` · `Quote` · `Badge` ·
-`Figure` · `Steps` + `Step` (fragments) · `Portal` (native-resolution embeds) · `Math` (KaTeX, build-time).
+- **Layouts:** `Cover` · `Section` · `Statement` · `Slide`
+- **Content:** `Columns` · `Grid` · `Card` · `Callout` · `Stat` · `Quote` · `Badge` · `List` · `Table` ·
+  `Figure` · `Image` · `Video` · `Steps` + `Step` (fragments)
+- **Data:** `Chart` (build-time SVG bars) · `Timeline` + `Event`
+- **Rich:** `Portal` (native-resolution embeds) · `Math` (KaTeX, build-time) · `<Code>` (Shiki, from
+  `astro:components`)
 
 Underneath, components emit `deck-*` utility classes on a themeable `--deck-*` variable contract — usable
-directly too. Code highlighting is Astro's built-in `<Code>` (Shiki).
+directly too.
 
 ## Runtime
 

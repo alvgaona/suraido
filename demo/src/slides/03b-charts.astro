@@ -1,0 +1,29 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import Chart from "suraido/components/Chart.astro";
+import Timeline from "suraido/components/Timeline.astro";
+import Event from "suraido/components/Event.astro";
+---
+
+<Slide title="Charts & timelines">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Data</div>
+  <h1 class="deck-title">Charts and timelines.</h1>
+  <div style="margin-top: 44px">
+    <Columns cols={2} gap={72} align="center">
+      <Chart
+        unit="%"
+        data={[
+          { label: "Static", value: 100 },
+          { label: "Islands", value: 42 },
+          { label: "Runtime", value: 8 },
+        ]}
+      />
+      <Timeline>
+        <Event date="v0.1" title="Core">Runtime + component library.</Event>
+        <Event date="v0.2" title="Options">Themes and integration options.</Event>
+        <Event date="next" title="More">Lists, tables, charts, timelines.</Event>
+      </Timeline>
+    </Columns>
+  </div>
+</Slide>

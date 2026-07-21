@@ -1,0 +1,16 @@
+---
+interface Props {
+  date?: string;
+  title?: string;
+}
+const { date, title } = Astro.props;
+---
+
+<div class="deck-event">
+  <div class="deck-event__dot"></div>
+  <div class="deck-event__body">
+    {date && <div class="deck-event__date">{date}</div>}
+    {title && <div class="deck-event__title">{title}</div>}
+    <slot />
+  </div>
+</div>

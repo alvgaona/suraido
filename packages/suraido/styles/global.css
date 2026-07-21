@@ -219,6 +219,54 @@ body.deck-show-chrome #deck-hint { opacity: 1; }
 }
 .deck-ov-label b { color: var(--deck-accent); }
 
+/* ── List ──────────────────────────────────────────────────────────── */
+.deck-list { font-size: 28px; line-height: 1.5; color: var(--deck-muted); margin: 0; padding-left: 1.3em; list-style: disc; }
+ol.deck-list { list-style: decimal; }
+.deck-list li { margin: 0 0 16px; }
+.deck-list li::marker { color: var(--deck-accent); }
+
+/* ── Image / Video ─────────────────────────────────────────────────── */
+.deck-image { display: flex; flex-direction: column; gap: 16px; margin: 0; }
+.deck-image img, .deck-image video { max-width: 100%; max-height: 100%; display: block; }
+.deck-image figcaption { font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-faint); }
+.deck-image--full { position: absolute; inset: 0; width: 100%; height: 100%; }
+
+/* ── Table ─────────────────────────────────────────────────────────── */
+.deck-table {
+  width: 100%; border-collapse: collapse; font-size: 26px; color: var(--deck-muted);
+  border: 1px solid var(--deck-line); border-radius: 16px; overflow: hidden;
+}
+.deck-table th, .deck-table td { padding: 20px 28px; text-align: left; border-bottom: 1px solid var(--deck-line); }
+.deck-table thead th {
+  font-family: var(--deck-font-mono); font-size: 20px; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--deck-faint); background: var(--deck-panel);
+}
+.deck-table tbody tr:last-child td { border-bottom: 0; }
+.deck-table td:first-child, .deck-table th:first-child { color: var(--deck-fg); }
+
+/* ── Grid ──────────────────────────────────────────────────────────── */
+.deck-grid { display: grid; align-items: stretch; }
+
+/* ── Timeline ──────────────────────────────────────────────────────── */
+.deck-timeline { display: flex; flex-direction: column; }
+.deck-event { position: relative; display: flex; gap: 28px; padding: 0 0 36px 6px; }
+.deck-event::before {
+  content: ""; position: absolute; left: 12px; top: 8px; bottom: -8px; width: 2px; background: var(--deck-line-strong);
+}
+.deck-event:last-child::before { display: none; }
+.deck-event__dot {
+  position: relative; z-index: 1; flex: none; width: 26px; height: 26px; margin-top: 2px;
+  border-radius: 50%; background: var(--deck-bg); border: 4px solid var(--deck-accent);
+}
+.deck-event__date { font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-accent); }
+.deck-event__title { font-size: 30px; font-weight: 600; color: var(--deck-fg); margin: 2px 0 6px; }
+.deck-event__body { font-size: 24px; color: var(--deck-muted); }
+
+/* ── Chart (build-time SVG) ────────────────────────────────────────── */
+.deck-chart { width: 100%; height: auto; overflow: visible; }
+.deck-chart__val { fill: var(--deck-fg); font-family: var(--deck-font); font-weight: 700; font-size: 30px; }
+.deck-chart__lbl { fill: var(--deck-faint); font-family: var(--deck-font-mono); font-size: 22px; }
+
 /* ── Presenter view (/presenter route) ─────────────────────────────── */
 .deck-presenter {
   position: fixed; inset: 0; display: flex; flex-direction: column;

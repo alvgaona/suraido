@@ -1,0 +1,27 @@
+---
+interface Props {
+  src: string;
+  poster?: string;
+  autoplay?: boolean;
+  loop?: boolean;
+  muted?: boolean;
+  controls?: boolean;
+  caption?: string;
+}
+const { src, poster, autoplay = false, loop = false, controls = true, caption } = Astro.props;
+// Autoplay requires muted in browsers.
+const muted = Astro.props.muted ?? autoplay;
+---
+
+<figure class="deck-image">
+  <video
+    src={src}
+    poster={poster}
+    autoplay={autoplay}
+    loop={loop}
+    muted={muted}
+    controls={controls}
+    playsinline
+  ></video>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>

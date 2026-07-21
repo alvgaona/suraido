@@ -2,8 +2,11 @@
 interface Props {
   cols?: 2 | 3;
   gap?: number;
+  align?: "start" | "center" | "end" | "stretch";
 }
-const { cols = 2, gap = 40 } = Astro.props;
+const { cols = 2, gap = 40, align = "start" } = Astro.props;
 ---
 
-<div class:list={["deck-cols", `deck-cols-${cols}`]} style={`gap:${gap}px`}><slot /></div>
+<div class:list={["deck-cols", `deck-cols-${cols}`]} style={`gap:${gap}px;align-items:${align}`}>
+  <slot />
+</div>

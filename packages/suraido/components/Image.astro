@@ -1,0 +1,24 @@
+---
+interface Props {
+  src: string;
+  alt?: string;
+  caption?: string;
+  fit?: "cover" | "contain";
+  rounded?: boolean;
+  /** Fill the slide (absolute cover). Use as the direct child of a <Slide>. */
+  full?: boolean;
+}
+const { src, alt = "", caption, fit = "contain", rounded = true, full = false } = Astro.props;
+const style = [`object-fit:${fit}`, rounded && !full ? "border-radius:16px" : ""].filter(Boolean).join(";");
+---
+
+{
+  full ? (
+    <img src={src} alt={alt} class="deck-image--full" style={`object-fit:${fit}`} />
+  ) : (
+    <figure class="deck-image">
+      <img src={src} alt={alt} style={style} />
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>
+  )
+}
