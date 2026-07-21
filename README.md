@@ -36,7 +36,7 @@ export default defineConfig({ integrations: [suraido()] });
 | Option  | Default      | Description |
 |---------|--------------|-------------|
 | `theme` | `"midnight"` | Color theme. A built-in preset (`"midnight"` \| `"light"`) or a path to your own `.css` file (project-relative) that sets the `--deck-*` variables. |
-| `fonts` | Inter / JetBrains Mono / serif | Override the font families: `{ sans, mono, serif }` (each a CSS `font-family` string). |
+| `fonts` | Inter / JetBrains Mono / serif | Fonts for the three slots: `{ sans, mono, serif }`. Each is a bundled key or a raw `font-family` string. |
 | `math`  | `true`       | KaTeX/LaTeX support (the `<Math>` component + its stylesheet). Set `false` to drop KaTeX entirely — `<Math>` renders the raw LaTeX. |
 
 ```js
@@ -60,16 +60,31 @@ A custom theme is just a CSS file setting the variable contract:
 ### Fonts
 
 Three font slots — **`--deck-font`** (sans), **`--deck-font-mono`**, **`--deck-font-serif`** — with matching
-`.deck-sans` / `.deck-mono` / `.deck-serif` utility classes. Defaults: **Inter** + **JetBrains Mono** (bundled &
-self-hosted), serif = system.
+`.deck-sans` / `.deck-mono` / `.deck-serif` utility classes. Defaults: **Inter** + **JetBrains Mono**, serif =
+system.
 
-To use your own font, **load it** (Fontsource is easiest) and **point a slot at it** via the `fonts` option:
+**Bundled fonts** — pass a key and suraido self-hosts it; only the fonts you actually pick are shipped:
+
+| Key | Font | Good for |
+|-----|------|----------|
+| `inter`          | Inter (variable)         | sans (default) |
+| `geist`          | Geist (variable)         | sans |
+| `jetbrains-mono` | JetBrains Mono (variable)| mono (default) |
+| `geist-mono`     | Geist Mono (variable)    | mono |
+| `geist-pixel`    | Geist Pixel              | display / accents |
 
 ```js
-// astro.config.mjs — you load the font; suraido points the deck at it
-import "@fontsource-variable/geist";  // or the Astro Fonts API, Google Fonts, @font-face
 export default defineConfig({
-  integrations: [suraido({ fonts: { sans: '"Geist Variable", sans-serif' } })],
+  integrations: [suraido({ fonts: { sans: "geist", mono: "geist-mono" } })],
+});
+```
+
+**Your own font** — load it (Fontsource is easiest) and pass a raw `font-family` string instead of a key:
+
+```js
+import "@fontsource-variable/fraunces"; // you load it; suraido just points the slot at it
+export default defineConfig({
+  integrations: [suraido({ fonts: { serif: '"Fraunces Variable", Georgia, serif' } })],
 });
 ```
 

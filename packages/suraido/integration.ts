@@ -14,26 +14,59 @@ export interface SuraidoOptions {
    */
   theme?: string;
   /**
-   * Override the font families (the `--deck-font*` variables). Each value is a
-   * CSS font-family string. You still load the font yourself (Fontsource, the
-   * Astro Fonts API, etc.); this only points the deck at it. Defaults: Inter
-   * (sans) + JetBrains Mono (mono), both bundled; serif is a system stack.
+   * Fonts for the three slots (the `--deck-font`, `--deck-font-mono`,
+   * `--deck-font-serif` variables). Each value is either a **bundled font key**
+   * (suraido self-hosts and loads it — only the ones you pick are shipped) or a
+   * raw CSS `font-family` string (you load it yourself). Bundled keys:
+   * `"inter"`, `"geist"`, `"jetbrains-mono"`, `"geist-mono"`, `"geist-pixel"`.
+   * Defaults: sans → Inter, mono → JetBrains Mono, serif → system.
    */
-  fonts?: { sans?: string; mono?: string; serif?: string };
+  fonts?: { sans?: FontValue; mono?: FontValue; serif?: FontValue };
   /** Enable KaTeX/LaTeX math: the `<Math>` component + its stylesheet. Default: true. */
   math?: boolean;
 }
+
+/** Fonts suraido bundles (self-hosted via Fontsource, loaded only when selected). */
+type BundledFont = "inter" | "geist" | "jetbrains-mono" | "geist-mono" | "geist-pixel";
+// A bundled key (with autocomplete) or any raw CSS font-family string.
+type FontValue = BundledFont | (string & {});
+type Slot = "sans" | "mono" | "serif";
+
+const FONTS: Record<BundledFont, { pkg: string; family: string }> = {
+  inter: { pkg: "@fontsource-variable/inter", family: '"Inter Variable"' },
+  geist: { pkg: "@fontsource-variable/geist", family: '"Geist Variable"' },
+  "jetbrains-mono": { pkg: "@fontsource-variable/jetbrains-mono", family: '"JetBrains Mono Variable"' },
+  "geist-mono": { pkg: "@fontsource-variable/geist-mono", family: '"Geist Mono Variable"' },
+  "geist-pixel": { pkg: "@fontsource/geist-pixel", family: '"Geist Pixel"' },
+};
+
+const FALLBACK: Record<Slot, string> = {
+  sans: "system-ui, -apple-system, sans-serif",
+  mono: "ui-monospace, SFMono-Regular, monospace",
+  serif: 'Georgia, "Times New Roman", serif',
+};
+
+// Default font per slot (serif stays system → no override, uses the theme's).
+const DEFAULT_FONT: Partial<Record<Slot, BundledFont>> = { sans: "inter", mono: "jetbrains-mono" };
 
 const V_OPTIONS = "virtual:suraido/options";
 const V_THEME = "virtual:suraido/theme.css";
 const resolved = (id: string) => "\0" + id;
 
-function fontOverrides(fonts?: SuraidoOptions["fonts"]): string {
-  if (!fonts) return "";
+/** Resolve one slot to its CSS family + (if bundled) the package to load. */
+function resolveSlot(value: FontValue | undefined, slot: Slot): { family?: string; pkg?: string } {
+  const key = value ?? DEFAULT_FONT[slot];
+  if (!key) return {};
+  const bundled = (FONTS as Record<string, { pkg: string; family: string }>)[key];
+  if (bundled) return { family: `${bundled.family}, ${FALLBACK[slot]}`, pkg: bundled.pkg };
+  return { family: key }; // raw font-family string — the user loads it themselves
+}
+
+function fontOverrides(slots: Record<Slot, { family?: string }>): string {
   const decls = [
-    fonts.sans && `--deck-font:${fonts.sans};`,
-    fonts.mono && `--deck-font-mono:${fonts.mono};`,
-    fonts.serif && `--deck-font-serif:${fonts.serif};`,
+    slots.sans.family && `--deck-font:${slots.sans.family};`,
+    slots.mono.family && `--deck-font-mono:${slots.mono.family};`,
+    slots.serif.family && `--deck-font-serif:${slots.serif.family};`,
   ].filter(Boolean);
   return decls.length ? `\n:root{${decls.join("")}}` : "";
 }
@@ -60,6 +93,14 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
           );
         }
 
+        // Resolve the three font slots (defaults: Inter sans + JetBrains mono).
+        const slots = {
+          sans: resolveSlot(fonts?.sans, "sans"),
+          mono: resolveSlot(fonts?.mono, "mono"),
+          serif: resolveSlot(fonts?.serif, "serif"),
+        };
+        const themeCss = fontOverrides(slots);
+
         updateConfig({
           vite: {
             // Fontsource ships CSS-only packages; keep them bundled so Vite
@@ -79,13 +120,20 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
                 },
                 load(id) {
                   if (id === resolved(V_OPTIONS)) return `export const math = ${JSON.stringify(math)};`;
-                  if (id === resolved(V_THEME)) return readFileSync(themePath, "utf8") + fontOverrides(fonts);
+                  if (id === resolved(V_THEME)) return readFileSync(themePath, "utf8") + themeCss;
                 },
               },
             ],
           },
         });
         injectRoute({ pattern: "/presenter", entrypoint: "suraido/Presenter.astro" });
+
+        // Self-host only the bundled fonts actually selected (deduped). Injected
+        // by resolved absolute path so Vite processes the CSS + its woff2.
+        const pkgs = new Set([slots.sans.pkg, slots.mono.pkg, slots.serif.pkg].filter(Boolean) as string[]);
+        for (const pkg of pkgs) {
+          injectScript("page-ssr", `import ${JSON.stringify(require.resolve(pkg))};`);
+        }
 
         // KaTeX stylesheet, globally, only when math is enabled (it lives in
         // node_modules, so an absolute-path import is fine).
