@@ -160,6 +160,31 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
   box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.7);
 }
 
+/* ── CodeBlock (copy button + optional line numbers) ────────────────── */
+.deck-code { position: relative; }
+.deck-code .astro-code { margin: 0; }
+.deck-code__copy {
+  position: absolute; top: 14px; right: 14px; z-index: 2;
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 10px; cursor: pointer;
+  border: 1px solid color-mix(in oklab, currentColor 22%, transparent);
+  background: color-mix(in oklab, #000 35%, transparent); color: #c9c9c9;
+  opacity: 0; transition: opacity 0.2s ease, color 0.15s ease, border-color 0.15s ease;
+}
+.deck-code:hover .deck-code__copy, .deck-code__copy:focus-visible { opacity: 1; }
+.deck-code__copy:hover { color: #fff; border-color: var(--deck-accent); }
+.deck-code__copy.is-copied { color: var(--deck-success); border-color: var(--deck-success); opacity: 1; }
+.deck-code__i--check { display: none; }
+.deck-code__copy.is-copied .deck-code__i--copy { display: none; }
+.deck-code__copy.is-copied .deck-code__i--check { display: block; }
+/* Line numbers via a CSS counter over Shiki's .line spans (no per-line pass). */
+.deck-code--numbers .astro-code code { counter-reset: deck-ln; }
+.deck-code--numbers .astro-code .line { counter-increment: deck-ln; }
+.deck-code--numbers .astro-code .line::before {
+  content: counter(deck-ln); display: inline-block; width: 2ch; margin-right: 1.6em;
+  text-align: right; color: currentColor; opacity: 0.35; user-select: none;
+}
+
 /* Whole-slide layouts (Cover, Section, Statement). */
 .deck-cover, .deck-section, .deck-statement {
   display: flex; flex-direction: column; justify-content: center; height: 100%;

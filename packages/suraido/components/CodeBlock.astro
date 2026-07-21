@@ -1,0 +1,50 @@
+---
+import { Code } from "astro:components";
+
+interface Props {
+  /** The source to highlight. */
+  code: string;
+  /** Language id (any Shiki grammar). Default: `"ts"`. */
+  lang?: string;
+  /** Shiki theme name. Default: `"vitesse-dark"`. */
+  theme?: string;
+  /** Show a line-number gutter. Default: false. */
+  numbers?: boolean;
+  /** Show a hover copy button. Default: true. */
+  copy?: boolean;
+}
+
+const { code, lang = "ts", theme = "vitesse-dark", numbers = false, copy = true } = Astro.props;
+---
+
+<div class:list={["deck-code", numbers && "deck-code--numbers"]}>
+  {
+    copy && (
+      <button class="deck-code__copy" type="button" data-code={code} aria-label="Copy code">
+        <svg class="deck-code__i deck-code__i--copy" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <rect x="9" y="9" width="13" height="13" rx="2" />
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+        </svg>
+        <svg class="deck-code__i deck-code__i--check" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M20 6 9 17l-5-5" />
+        </svg>
+      </button>
+    )
+  }
+  <Code code={code} lang={lang as any} theme={theme as any} />
+</div>
+
+<script>
+  // One delegated handler covers every <CodeBlock> on the page.
+  document.addEventListener("click", async (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>(".deck-code__copy");
+    if (!btn) return;
+    try {
+      await navigator.clipboard.writeText(btn.dataset.code ?? "");
+      btn.classList.add("is-copied");
+      setTimeout(() => btn.classList.remove("is-copied"), 1600);
+    } catch {
+      /* clipboard unavailable — ignore */
+    }
+  });
+</script>

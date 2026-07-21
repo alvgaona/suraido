@@ -1,5 +1,5 @@
 ---
-import { Code } from "astro:components";
+import CodeBlock from "suraido/components/CodeBlock.astro";
 import Slide from "suraido/components/Slide.astro";
 import Columns from "suraido/components/Columns.astro";
 import Card from "suraido/components/Card.astro";
@@ -22,10 +22,10 @@ export default defineConfig({
         <Callout variant="success"><Fragment slot="mark">✓</Fragment>Rendered to static HTML at build.</Callout>
         <Callout variant="warn"><Fragment slot="mark">!</Fragment>Slide-scaled for 1920×1080.</Callout>
       </div>
-      <Card accent>
-        <div class="deck-eyebrow" style="margin-bottom: 20px">config</div>
-        <Code code={configSample} lang="ts" theme="github-dark-default" />
-      </Card>
+      <!-- <Card accent> -->
+        <!-- <div class="deck-eyebrow" style="margin-bottom: 20px">config</div> -->
+        <CodeBlock code={configSample} lang="ts" numbers />
+      <!-- </Card> -->
     </Columns>
   </div>
 </Slide>
