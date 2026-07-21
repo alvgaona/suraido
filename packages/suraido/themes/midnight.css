@@ -1,0 +1,18 @@
+/* suraido theme: midnight (default) — dark. */
+:root {
+  --deck-bg: #08090c;
+  --deck-fg: #eef1f6;
+  --deck-muted: #9aa3b2;
+  --deck-faint: #626b7a;
+  --deck-accent: #4c8dff;
+  --deck-line: #232833;
+  --deck-line-strong: #313847;
+  --deck-panel: #12151c;
+  --deck-panel-2: #171b24;
+  --deck-info: #4c8dff;
+  --deck-success: #35d0ba;
+  --deck-warn: #f5b544;
+  --deck-danger: #f2607a;
+  --deck-font: "Inter", system-ui, -apple-system, sans-serif;
+  --deck-font-mono: "JetBrains Mono", ui-monospace, monospace;
+}

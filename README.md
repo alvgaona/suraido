@@ -33,12 +33,27 @@ export default defineConfig({ integrations: [suraido()] });
 
 **Options:**
 
-| Option | Default | Description |
-|--------|---------|-------------|
-| `math` | `true`  | KaTeX/LaTeX support (the `<Math>` component + its stylesheet). Set `false` to drop KaTeX entirely — no stylesheet is loaded and `<Math>` renders the raw LaTeX. |
+| Option  | Default      | Description |
+|---------|--------------|-------------|
+| `theme` | `"midnight"` | Color theme. A built-in preset (`"midnight"` \| `"light"`) or a path to your own `.css` file (project-relative) that sets the `--deck-*` variables. |
+| `math`  | `true`       | KaTeX/LaTeX support (the `<Math>` component + its stylesheet). Set `false` to drop KaTeX entirely — `<Math>` renders the raw LaTeX. |
 
 ```js
-export default defineConfig({ integrations: [suraido({ math: false })] });
+export default defineConfig({
+  integrations: [suraido({ theme: "light", math: false })],
+});
+```
+
+A custom theme is just a CSS file setting the variable contract:
+
+```css
+/* my-theme.css → suraido({ theme: "./my-theme.css" }) */
+:root {
+  --deck-bg: #0d1117;
+  --deck-fg: #e6edf3;
+  --deck-accent: #ff7b72;
+  /* …see the built-ins for the full list… */
+}
 ```
 
 ### One slide per file (recommended)

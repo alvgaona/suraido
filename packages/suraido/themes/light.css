@@ -1,0 +1,18 @@
+/* suraido theme: light. */
+:root {
+  --deck-bg: #ffffff;
+  --deck-fg: #0c0e13;
+  --deck-muted: #4b5563;
+  --deck-faint: #9aa3b2;
+  --deck-accent: #2563eb;
+  --deck-line: #e6e8ec;
+  --deck-line-strong: #d3d7de;
+  --deck-panel: #f6f7f9;
+  --deck-panel-2: #eef1f5;
+  --deck-info: #2563eb;
+  --deck-success: #0e9384;
+  --deck-warn: #b54708;
+  --deck-danger: #d92d20;
+  --deck-font: "Inter", system-ui, -apple-system, sans-serif;
+  --deck-font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
