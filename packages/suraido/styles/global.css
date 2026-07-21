@@ -65,7 +65,7 @@ html, body, #deck-stage, #deck-canvas, .slide-root {
   position: relative;
   width: 1920px;
   height: 100%;
-  padding: 100px 132px;
+  padding: 50px 66px;
   overflow: hidden;
   background:
     radial-gradient(1100px 680px at 86% -14%, color-mix(in oklab, var(--deck-accent) 11%, transparent), transparent 62%),
@@ -104,7 +104,7 @@ body.deck-show-chrome #deck-chrome, #deck-chrome:hover { opacity: 1; }
 #deck-theme-toggle { display: none; font-size: 16px; }
 body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
 #deck-pageno {
-  position: absolute; right: 130px; bottom: 44px;
+  position: absolute; right: 66px; bottom: 26px;
   color: var(--deck-faint); font: 600 16px/1 var(--deck-font-mono); letter-spacing: 2px; z-index: 15;
 }
 
