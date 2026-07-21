@@ -160,19 +160,20 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
   box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.7);
 }
 
-/* ── CodeBlock — macOS-style window (title bar + traffic lights) ─────── */
+/* ── CodeBlock — macOS-style window; dots + copy float on one surface ── */
 .deck-code {
-  position: relative; border-radius: 14px; overflow: hidden; background: #121212;
-  border: 1px solid var(--deck-line-strong); box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.7);
+  position: relative; border-radius: 16px; overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.09); box-shadow: 0 24px 60px -40px rgba(0, 0, 0, 0.75);
 }
-/* Inside the window the code fills below the bar — the frame owns the chrome. */
-.deck-code .astro-code { margin: 0; border: 0; border-radius: 0; box-shadow: none; }
+/* The code fills the whole surface (keeps Shiki's bg); the top padding clears
+   the dots row, so the window is one continuous color — no separate title bar. */
+.deck-code .astro-code { margin: 0; border: 0; border-radius: 0; box-shadow: none; padding: 62px 34px 30px; }
 .deck-code__bar {
-  position: relative; display: flex; align-items: center; gap: 14px; height: 48px; padding: 0 18px;
-  background: color-mix(in oklab, #fff 4%, #16161a); border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  position: absolute; top: 0; left: 0; right: 0; height: 56px; z-index: 2; pointer-events: none;
+  display: flex; align-items: center; gap: 14px; padding: 0 22px;
 }
 .deck-code__dots { display: inline-flex; gap: 9px; }
-.deck-code__dots i { width: 14px; height: 14px; border-radius: 50%; }
+.deck-code__dots i { width: 13px; height: 13px; border-radius: 50%; }
 .deck-code__dots i:nth-child(1) { background: #ff5f56; }
 .deck-code__dots i:nth-child(2) { background: #ffbd2e; }
 .deck-code__dots i:nth-child(3) { background: #27c93f; }
@@ -181,14 +182,13 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
   font-family: var(--deck-font-mono); font-size: 18px; color: #8b8b8b; white-space: nowrap;
 }
 .deck-code__copy {
-  margin-left: auto; display: inline-flex; align-items: center; justify-content: center;
+  margin-left: auto; pointer-events: auto; display: inline-flex; align-items: center; justify-content: center;
   width: 32px; height: 32px; border-radius: 8px; cursor: pointer;
-  border: 1px solid transparent; background: transparent; color: #8b8b8b;
-  opacity: 0; transition: opacity 0.2s ease, color 0.15s ease, border-color 0.15s ease, background 0.15s ease;
+  border: 1px solid transparent; background: transparent; color: #7d7d7d;
+  transition: color 0.15s ease, background 0.15s ease, border-color 0.15s ease;
 }
-.deck-code:hover .deck-code__copy, .deck-code__copy:focus-visible { opacity: 1; }
-.deck-code__copy:hover { color: #fff; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); }
-.deck-code__copy.is-copied { color: var(--deck-success); opacity: 1; }
+.deck-code__copy:hover, .deck-code__copy:focus-visible { color: #fff; background: rgba(255, 255, 255, 0.08); border-color: rgba(255, 255, 255, 0.14); }
+.deck-code__copy.is-copied { color: var(--deck-success); }
 .deck-code__i--check { display: none; }
 .deck-code__copy.is-copied .deck-code__i--copy { display: none; }
 .deck-code__copy.is-copied .deck-code__i--check { display: block; }
