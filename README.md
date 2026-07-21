@@ -10,18 +10,20 @@ export. Named for the Japanese word for "slide."
 packages/suraido/   the framework — components, DeckLayout, runtime, Presenter, PDF export,
                     KaTeX <Math>, and an Astro integration.
 demo/               a suraido deck about suraido (dev playground + showcase).
+packages/create-suraido/   the `npm create suraido` scaffolder.
 ```
 
-## Quick start
+## Create a deck
 
 ```bash
-bun install
-bun run dev       # serve the demo (astro dev, HMR)
-bun run build     # static site → demo/dist
-bun run export    # static build + deck.pdf  (needs `bunx playwright install chromium`)
+npm create suraido@latest my-deck      # or: bun create suraido my-deck
+cd my-deck
+npm run dev                            # http://localhost:4321
 ```
 
-## Use it in your own deck
+Scaffolds an Astro project wired to suraido with a starter deck. `--no-install` / `--no-git` skip the prompts.
+
+## Use it in an existing project
 
 ```js
 // astro.config.mjs
@@ -58,10 +60,21 @@ directly too. Code highlighting is Astro's built-in `<Code>` (Shiki).
 `←/→` navigate (→ steps through `<Steps>` fragments first) · `Home`/`End` jump · `F` fullscreen ·
 `O` overview grid · `P` presenter · `#3` deep-links a slide.
 
+## Develop this repo
+
+```bash
+bun install
+bun run dev         # serve the demo (astro dev, HMR)
+bun run build       # static build
+bun run typecheck   # astro check
+bun run export      # static build + deck.pdf (needs `bunx playwright install chromium`)
+```
+
 ## Status
 
-Early — the framework builds and runs (scaffold, component library, runtime parity, packaged as `suraido`).
-Next: tests, CI, docs, and a `create-suraido` scaffolder. Contributions welcome once the API settles.
+Early. The framework builds and runs (component library, runtime parity), is packaged as `suraido`, has CI
+(typecheck + build) and a `create-suraido` scaffolder. Next: tests, docs, and npm publish. Contributions
+welcome once the API settles.
 
 ## License
 

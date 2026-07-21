@@ -1,0 +1,19 @@
+{
+  "name": "create-suraido",
+  "version": "0.1.0",
+  "description": "Scaffold a new suraido slide deck — `npm create suraido`",
+  "keywords": ["suraido", "slides", "presentation", "astro", "create", "scaffold"],
+  "license": "MIT",
+  "author": "Alvaro Gaona (@alvgaona)",
+  "homepage": "https://github.com/alvgaona/suraido",
+  "repository": { "type": "git", "url": "git+https://github.com/alvgaona/suraido.git", "directory": "packages/create-suraido" },
+  "bugs": "https://github.com/alvgaona/suraido/issues",
+  "type": "module",
+  "bin": { "create-suraido": "index.js" },
+  "files": ["index.js", "template"],
+  "engines": { "node": ">=18" },
+  "dependencies": {
+    "@clack/prompts": "^0.7.0",
+    "picocolors": "^1.0.0"
+  }
+}

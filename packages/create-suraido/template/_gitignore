@@ -1,8 +1,4 @@
 node_modules/
 dist/
 .astro/
-deck.pdf
-*.tsbuildinfo
 .DS_Store
-*.log
-*.tgz
