@@ -1,4 +1,5 @@
 ---
+import "virtual:suraido/theme.css";
 import "./styles/global.css";
 interface Props {
   title?: string;
@@ -29,7 +30,7 @@ const { title = "Deck" } = Astro.props;
         <button data-prev title="Previous (←)" aria-label="Previous slide">‹</button>
         <button data-next title="Next (→)" aria-label="Next slide">›</button>
       </div>
-      <div class="deck-title" aria-hidden="true"></div>
+      <div class="deck-chrome-title" aria-hidden="true"></div>
     </div>
 
     <script>

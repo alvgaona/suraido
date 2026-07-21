@@ -1,5 +1,5 @@
 import { createRequire } from "node:module";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import tailwindcss from "@tailwindcss/vite";
@@ -17,8 +17,9 @@ export interface SuraidoOptions {
   math?: boolean;
 }
 
-const VIRTUAL_ID = "virtual:suraido/options";
-const RESOLVED_ID = "\0" + VIRTUAL_ID;
+const V_OPTIONS = "virtual:suraido/options";
+const V_THEME = "virtual:suraido/theme.css";
+const resolved = (id: string) => "\0" + id;
 
 /**
  * The suraido integration: wires Tailwind v4, injects the /presenter route, the
@@ -31,27 +32,7 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
     name: "suraido",
     hooks: {
       "astro:config:setup": ({ config, updateConfig, injectRoute, injectScript }) => {
-        updateConfig({
-          vite: {
-            plugins: [
-              tailwindcss(),
-              {
-                // Expose resolved options to suraido's own components (e.g. <Math>).
-                name: "suraido:options",
-                resolveId(id) {
-                  if (id === VIRTUAL_ID) return RESOLVED_ID;
-                },
-                load(id) {
-                  if (id === RESOLVED_ID) return `export const math = ${JSON.stringify(math)};`;
-                },
-              },
-            ],
-          },
-        });
-        injectRoute({ pattern: "/presenter", entrypoint: "suraido/Presenter.astro" });
-
-        // Theme: a built-in preset (bundled) or a custom .css file (project-relative).
-        // Injected globally so it sets the --deck-* variables the deck reads.
+        // Resolve the theme: built-in preset (bundled) or project-relative .css.
         const themePath = theme.endsWith(".css")
           ? fileURLToPath(new URL(theme, config.root))
           : fileURLToPath(new URL(`./themes/${theme}.css`, import.meta.url));
@@ -60,11 +41,31 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
             `suraido: theme "${theme}" not found. Use a built-in ("midnight" | "light") or a path to a .css file.`,
           );
         }
-        injectScript("page-ssr", `import ${JSON.stringify(themePath)};`);
 
-        // Load the KaTeX stylesheet globally only when math is enabled. Resolve
-        // to an absolute path — the injected page-ssr module can't resolve the
-        // bare (transitive) `katex` specifier.
+        updateConfig({
+          vite: {
+            plugins: [
+              tailwindcss(),
+              {
+                // Virtual modules: options for components (<Math>) and the theme
+                // CSS. The theme is inlined here (not served from disk) so it
+                // loads reliably in dev + build regardless of Vite fs limits.
+                name: "suraido:virtual",
+                resolveId(id) {
+                  if (id === V_OPTIONS || id === V_THEME) return resolved(id);
+                },
+                load(id) {
+                  if (id === resolved(V_OPTIONS)) return `export const math = ${JSON.stringify(math)};`;
+                  if (id === resolved(V_THEME)) return readFileSync(themePath, "utf8");
+                },
+              },
+            ],
+          },
+        });
+        injectRoute({ pattern: "/presenter", entrypoint: "suraido/Presenter.astro" });
+
+        // KaTeX stylesheet, globally, only when math is enabled (it lives in
+        // node_modules, so an absolute-path import is fine).
         if (math) {
           const katexCss = require.resolve("katex/dist/katex.min.css");
           injectScript("page-ssr", `import ${JSON.stringify(katexCss)};`);

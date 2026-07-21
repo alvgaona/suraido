@@ -16,7 +16,7 @@ export function initDeck(): void {
   const progress = document.getElementById("deck-progress");
   const pageno = document.getElementById("deck-pageno");
   const overview = document.getElementById("deck-overview");
-  const titleEl = document.querySelector<HTMLElement>("#deck-chrome .deck-title");
+  const titleEl = document.querySelector<HTMLElement>("#deck-chrome .deck-chrome-title");
   const liveEl = document.getElementById("deck-live");
   const slides = Array.from(document.querySelectorAll<HTMLElement>(".deck-slide"));
   if (!canvas || slides.length === 0) return;
