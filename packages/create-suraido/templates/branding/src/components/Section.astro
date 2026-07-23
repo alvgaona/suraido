@@ -1,0 +1,15 @@
+---
+// Divider: the index sits inline above a hairline rule, title in the serif face.
+import Slide from "suraido/components/Slide.astro";
+interface Props { label?: string; title: string; note?: string; number?: boolean }
+const { label, title, note, number = false } = Astro.props;
+---
+
+<Slide title={title} number={number}>
+  <div class="section">
+    {label && <div class="section__index">{label}</div>}
+    <div class="section__rule"></div>
+    <h1 class="section__title">{title}</h1>
+    {note && <p class="deck-lead section__note">{note}</p>}
+  </div>
+</Slide>

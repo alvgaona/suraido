@@ -1,0 +1,28 @@
+/* Styles for this deck's own slide components (src/components/).
+   Order is declared up front so it never depends on import order:
+   framework < these < Tailwind utilities < your unlayered CSS. */
+@layer theme, base, components, suraido, slides, utilities;
+
+@layer slides {
+  .cover, .section { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .cover__eyebrow { margin-bottom: 28px; }
+  .cover__title { font-size: 110px; }
+  .cover__lead { margin-top: 32px; font-size: 32px; }
+  .cover__actions { display: flex; gap: 12px; margin-top: 44px; flex-wrap: wrap; }
+
+  .section__label {
+    font-family: var(--deck-font-mono); font-size: 190px; font-weight: 700;
+    line-height: 1; color: var(--deck-line-strong); user-select: none;
+  }
+  .section__title {
+    font-family: var(--deck-font-display); font-size: 120px; font-weight: 600;
+    line-height: 0.96; letter-spacing: -0.018em; color: var(--deck-fg); margin: 0;
+  }
+  .section__note { margin-top: 28px; font-size: 30px; }
+
+  .statement {
+    display: flex; align-items: center; height: 100%; margin: 0; max-width: 24ch;
+    font-family: var(--deck-font-display); font-size: 88px; font-weight: 600;
+    line-height: 1.06; letter-spacing: -0.018em; color: var(--deck-fg);
+  }
+}

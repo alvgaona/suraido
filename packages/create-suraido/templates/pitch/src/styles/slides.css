@@ -1,0 +1,38 @@
+/* Pitch deck — centred, sans, projector-safe contrast.
+   Order declared up front: framework < these < utilities < your unlayered CSS. */
+@layer theme, base, components, suraido, slides, utilities;
+
+@layer slides {
+  .cover {
+    display: flex; flex-direction: column; justify-content: center; align-items: center;
+    height: 100%; text-align: center;
+  }
+  .cover__title {
+    font-family: var(--deck-font); font-size: 124px; font-weight: 700;
+    line-height: 1; letter-spacing: -0.035em; color: var(--deck-fg); margin: 0;
+  }
+  .cover__lead { margin-top: 26px; max-width: 38ch; font-size: 32px; line-height: 1.4; color: var(--deck-muted); }
+  .cover__meta {
+    margin-top: 44px; font-family: var(--deck-font-mono); font-size: 18px;
+    letter-spacing: 0.18em; text-transform: uppercase; color: var(--deck-faint);
+  }
+  .cover__actions { display: flex; gap: 12px; margin-top: 36px; flex-wrap: wrap; justify-content: center; }
+
+  .section { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .section__chip {
+    display: inline-flex; align-items: center; justify-content: center; width: 72px; height: 72px;
+    border-radius: 999px; background: var(--deck-accent); color: var(--deck-bg);
+    font-family: var(--deck-font-mono); font-weight: 700; font-size: 28px; margin-bottom: 30px;
+  }
+  .section__title {
+    font-family: var(--deck-font); font-size: 100px; font-weight: 700;
+    line-height: 1; letter-spacing: -0.03em; color: var(--deck-fg); margin: 0;
+  }
+  .section__note { margin-top: 24px; max-width: 44ch; font-size: 30px; color: var(--deck-muted); }
+
+  .statement {
+    display: flex; align-items: center; justify-content: center; height: 100%; margin: 0 auto;
+    max-width: 26ch; text-align: center; font-family: var(--deck-font); font-size: 88px;
+    font-weight: 700; line-height: 1.1; letter-spacing: -0.03em; color: var(--deck-fg);
+  }
+}

@@ -1,0 +1,35 @@
+/* Campaign deck — punchy: accent bar, pill eyebrow, heavy sans.
+   Order declared up front: framework < these < utilities < your unlayered CSS. */
+@layer theme, base, components, suraido, slides, utilities;
+
+@layer slides {
+  .cover, .section { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .cover__bar { width: 200px; height: 12px; border-radius: 999px; background: var(--deck-accent); margin-bottom: 38px; }
+  .cover__pill {
+    align-self: flex-start; padding: 0.4rem 1rem; border-radius: 999px;
+    border: 1px solid var(--deck-line-strong); background: var(--deck-panel);
+    font-family: var(--deck-font-mono); font-size: 18px; color: var(--deck-muted); margin-bottom: 26px;
+  }
+  .cover__title {
+    font-family: var(--deck-font); font-size: 138px; font-weight: 800;
+    line-height: 0.94; letter-spacing: -0.04em; color: var(--deck-fg); margin: 0;
+  }
+  .cover__lead { margin-top: 30px; max-width: 36ch; font-size: 32px; line-height: 1.4; color: var(--deck-muted); }
+  .cover__actions { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+
+  .section__num {
+    font-family: var(--deck-font); font-size: 208px; font-weight: 800; line-height: 0.8;
+    letter-spacing: -0.05em; color: var(--deck-accent); user-select: none;
+  }
+  .section__title {
+    font-family: var(--deck-font); font-size: 112px; font-weight: 800; line-height: 0.98;
+    letter-spacing: -0.035em; color: var(--deck-fg); margin: 30px 0 0;
+  }
+  .section__note { margin-top: 24px; max-width: 42ch; font-size: 30px; color: var(--deck-muted); }
+
+  .statement {
+    display: flex; align-items: center; height: 100%; margin: 0; max-width: 22ch;
+    font-family: var(--deck-font); font-size: 100px; font-weight: 800;
+    line-height: 1.02; letter-spacing: -0.04em; color: var(--deck-fg);
+  }
+}

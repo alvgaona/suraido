@@ -1,0 +1,33 @@
+/* Brand deck — editorial: serif display, hairline rules, bottom-anchored cover.
+   Order declared up front: framework < these < utilities < your unlayered CSS. */
+@layer theme, base, components, suraido, slides, utilities;
+
+@layer slides {
+  .cover { display: flex; flex-direction: column; justify-content: flex-end; height: 100%; padding-bottom: 24px; }
+  .cover__rule { width: 128px; height: 3px; background: var(--deck-accent); margin-bottom: 40px; }
+  .cover__eyebrow { margin-bottom: 22px; }
+  .cover__title {
+    font-family: var(--deck-font-display); font-size: 168px; font-weight: 600;
+    line-height: 0.9; letter-spacing: -0.035em; color: var(--deck-fg); margin: 0;
+  }
+  .cover__lead { margin-top: 30px; max-width: 34ch; font-size: 30px; }
+  .cover__actions { display: flex; gap: 12px; margin-top: 40px; flex-wrap: wrap; }
+
+  .section { display: flex; flex-direction: column; justify-content: center; height: 100%; }
+  .section__index {
+    font-family: var(--deck-font-mono); font-size: 26px; font-weight: 700;
+    letter-spacing: 0.28em; color: var(--deck-accent);
+  }
+  .section__rule { height: 1px; background: var(--deck-line-strong); margin: 26px 0 34px; }
+  .section__title {
+    font-family: var(--deck-font-display); font-size: 136px; font-weight: 600;
+    line-height: 0.94; letter-spacing: -0.03em; color: var(--deck-fg); margin: 0;
+  }
+  .section__note { margin-top: 30px; max-width: 40ch; font-size: 30px; }
+
+  .statement {
+    display: flex; align-items: center; height: 100%; margin: 0; max-width: 20ch;
+    font-family: var(--deck-font-display); font-style: italic; font-size: 92px;
+    font-weight: 500; line-height: 1.08; letter-spacing: -0.02em; color: var(--deck-fg);
+  }
+}

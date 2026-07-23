@@ -1,0 +1,16 @@
+---
+// Your cover slide — suraido ships no whole-slide components, so this is yours
+// to reshape. It is ordinary composition over <Slide>.
+import Slide from "suraido/components/Slide.astro";
+interface Props { eyebrow?: string; title?: string; lead?: string; number?: boolean }
+const { eyebrow, title, lead, number = false } = Astro.props;
+---
+
+<Slide title={title ?? eyebrow ?? "Cover"} number={number}>
+  <div class="cover">
+    {eyebrow && <div class="deck-eyebrow cover__eyebrow">{eyebrow}</div>}
+    <slot name="title"><h1 class="deck-title cover__title">{title}</h1></slot>
+    {lead && <p class="deck-lead cover__lead">{lead}</p>}
+    <div class="cover__actions"><slot /></div>
+  </div>
+</Slide>

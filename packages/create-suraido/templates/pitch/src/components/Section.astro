@@ -1,0 +1,14 @@
+---
+// Compact divider — a pitch moves fast, so this stays small and legible.
+import Slide from "suraido/components/Slide.astro";
+interface Props { label?: string; title: string; note?: string; number?: boolean }
+const { label, title, note, number = false } = Astro.props;
+---
+
+<Slide title={title} number={number}>
+  <div class="section">
+    {label && <div class="section__chip">{label}</div>}
+    <h1 class="section__title">{title}</h1>
+    {note && <p class="section__note">{note}</p>}
+  </div>
+</Slide>
