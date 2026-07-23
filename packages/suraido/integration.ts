@@ -137,7 +137,21 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
                 load(id) {
                   if (id === resolved(V_OPTIONS))
                     return `export const math = ${JSON.stringify(math)};\nexport const width = ${JSON.stringify(width)};`;
-                  if (id === resolved(V_THEME)) return readFileSync(themePath, "utf8") + themeCss;
+                  if (id === resolved(V_THEME)) {
+                    // The theme is inlined from disk, so declare the real file as a
+                    // dependency — otherwise Vite has no idea this virtual module
+                    // came from it and would serve the first read forever.
+                    this.addWatchFile(themePath);
+                    return readFileSync(themePath, "utf8") + themeCss;
+                  }
+                },
+                // …and push an update when that file actually changes.
+                handleHotUpdate({ file, server }) {
+                  if (file !== themePath) return;
+                  const mod = server.moduleGraph.getModuleById(resolved(V_THEME));
+                  if (!mod) return;
+                  server.moduleGraph.invalidateModule(mod);
+                  return [mod];
                 },
               },
             ],
