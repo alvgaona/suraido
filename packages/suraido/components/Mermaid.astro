@@ -1,38 +1,19 @@
 ---
 interface Props {
   /**
-   * The Mermaid definition. Omit it to write the diagram as children instead —
-   * in that case add `is:raw` (`<Mermaid is:raw>`) so Astro doesn't parse `{}`
-   * as expressions, which flowchart diamonds and class diagrams rely on.
+   * The Mermaid definition. Keep it in a `.mmd` file and import it with Vite's
+   * `?raw` so you get syntax highlighting and formatters leave it alone:
+   * `import flow from "../diagrams/pipeline.mmd?raw"`.
    */
-  chart?: string;
+  chart: string;
   /** Optional caption under the diagram. */
   caption?: string;
 }
 const { chart, caption } = Astro.props;
-
-// Slot children arrive HTML-escaped; bring them back to plain text.
-const decode = (s: string) =>
-  s
-    .replace(/&lt;/g, "<")
-    .replace(/&gt;/g, ">")
-    .replace(/&quot;/g, '"')
-    .replace(/&#(?:39|x27);/g, "'")
-    .replace(/&amp;/g, "&");
-
-/** Strip the shared indentation the definition picked up from the template. */
-function dedent(text: string): string {
-  const lines = text.replace(/\t/g, "  ").split("\n");
-  const indents = lines.filter((l) => l.trim()).map((l) => l.match(/^ */)![0].length);
-  const shift = indents.length ? Math.min(...indents) : 0;
-  return lines.map((l) => l.slice(shift)).join("\n").trim();
-}
-
-const definition = chart ?? dedent(decode(await Astro.slots.render("default")));
 ---
 
 <figure class="deck-mermaid">
-  <div class="deck-mermaid__graph" data-mermaid={definition}></div>
+  <div class="deck-mermaid__graph" data-mermaid={chart}></div>
   {caption && <figcaption>{caption}</figcaption>}
 </figure>
 
