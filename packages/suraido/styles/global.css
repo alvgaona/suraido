@@ -331,6 +331,45 @@ ol.deck-list { list-style: decimal; }
 .deck-event__title { font-size: 30px; font-weight: 600; color: var(--deck-fg); margin: 2px 0 6px; }
 .deck-event__body { font-size: 24px; color: var(--deck-muted); }
 
+/* ── Theorem environments (amsthm-style) ───────────────────────────── */
+/* Numbering is a CSS counter, so it needs no JS and follows document order.
+   Reset per deck (and per overview clone tree, so thumbnails match). */
+#deck-canvas, #deck-overview { counter-reset: deck-thm; }
+.deck-thm {
+  --c: var(--deck-accent);
+  border-left: 3px solid var(--c);
+  border-radius: 0 14px 14px 0;
+  background: color-mix(in oklab, var(--c) 7%, var(--deck-panel));
+  padding: 26px 34px;
+  font-size: 28px;
+  line-height: 1.45;
+  color: var(--deck-muted);
+}
+.deck-thm--definition { --c: var(--deck-info); }
+.deck-thm--remark { --c: var(--deck-faint); }
+.deck-thm__head {
+  display: flex; flex-wrap: wrap; gap: 0.5rem; align-items: baseline;
+  margin: 0 0 12px; font-weight: 700; font-size: 26px; color: var(--deck-fg);
+}
+.deck-thm__kind { color: var(--c); letter-spacing: 0.02em; }
+.deck-thm__num { color: var(--c); font-variant-numeric: tabular-nums; }
+.deck-thm__name { font-weight: 500; color: var(--deck-faint); }
+.deck-thm__body { margin: 0; }
+/* amsthm "plain" sets the statement in italics; definitions stay upright. */
+.deck-thm--plain .deck-thm__body { font-style: italic; }
+/* Auto-numbered environments share one counter, as in a paper. */
+.deck-thm--auto .deck-thm__kind::after {
+  counter-increment: deck-thm;
+  content: " " counter(deck-thm);
+}
+/* A proof is not a box: quieter, unboxed, closed by the tombstone. */
+.deck-thm--proof {
+  border-left: 0; background: none; border-radius: 0; padding: 8px 0 0;
+}
+.deck-thm--proof .deck-thm__head { color: var(--deck-muted); font-weight: 500; font-style: italic; margin-bottom: 8px; }
+.deck-thm--proof .deck-thm__kind { color: var(--deck-muted); }
+.deck-thm--proof .deck-thm__body::after { content: "∎"; float: right; color: var(--deck-accent); margin-left: 0.5em; }
+
 /* ── Mermaid diagrams ──────────────────────────────────────────────── */
 .deck-mermaid { display: flex; flex-direction: column; align-items: center; gap: 16px; margin: 0; }
 .deck-mermaid__graph { display: flex; justify-content: center; width: 100%; }

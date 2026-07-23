@@ -1,0 +1,33 @@
+---
+// The shared theorem-environment box. The named environments (<Theorem>,
+// <Lemma>, …) are thin wrappers over this — use it directly to invent your own:
+//   <TheoremBox kind="Axiom">…</TheoremBox>
+interface Props {
+  /** Label shown in the heading, e.g. "Theorem". */
+  kind: string;
+  /**
+   * Typographic family, following amsthm:
+   * `plain` — italic body (theorem, lemma, corollary, proposition, conjecture)
+   * `definition` — upright body (definition, example)
+   * `remark` — quieter (remark, note)
+   * `proof` — unboxed, ends with ∎
+   */
+  variant?: "plain" | "definition" | "remark" | "proof";
+  /** Name in parentheses, e.g. "Pythagoras". */
+  name?: string;
+  /** Override the automatic number, or `false` to drop it. */
+  number?: string | false;
+}
+const { kind, variant = "plain", name, number } = Astro.props;
+// Omitted → numbered automatically by a CSS counter in document order.
+const auto = number === undefined;
+---
+
+<div class:list={["deck-thm", `deck-thm--${variant}`, auto && "deck-thm--auto"]}>
+  <p class="deck-thm__head">
+    <span class="deck-thm__kind">{kind}</span>
+    {typeof number === "string" && <span class="deck-thm__num">{number}</span>}
+    {name && <span class="deck-thm__name">({name})</span>}
+  </p>
+  <div class="deck-thm__body"><slot /></div>
+</div>

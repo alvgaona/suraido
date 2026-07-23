@@ -1,0 +1,10 @@
+---
+import TheoremBox from "./TheoremBox.astro";
+interface Props {
+  /** What is being proved, e.g. "of Theorem 1". */
+  name?: string;
+}
+const { name } = Astro.props;
+---
+
+<TheoremBox kind="Proof" variant="proof" name={name} number={false}><slot /></TheoremBox>

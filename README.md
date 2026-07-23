@@ -181,7 +181,8 @@ import Math from "suraido/components/Math.astro";
 </List>
 ```
 - **Data:** `Timeline` + `Event` · charts and diagrams → see below
-- **Rich:** `Portal` (native-resolution embeds) · `Math` (KaTeX, build-time) · `CodeBlock` (Shiki in a
+- **Math:** `Math` (KaTeX, build-time) · theorem environments → see below
+- **Rich:** `Portal` (native-resolution embeds) · `CodeBlock` (Shiki in a
   macOS-style window: traffic lights, optional `title`, copy button, opt-in `numbers`) · `Mermaid`
 
 Underneath, components emit `deck-*` utility classes on a themeable `--deck-*` variable contract — usable
@@ -211,6 +212,32 @@ import { BarChart } from "suraido/react";
 
 Series colors follow the theme (`--deck-*`). `react`, `react-dom`, and `recharts` are **optional** peer
 dependencies — only needed if you import `suraido/react`.
+
+### Theorem environments
+
+amsthm-style environments: `Theorem` · `Lemma` · `Corollary` · `Proposition` · `Conjecture` ·
+`Definition` · `Example` · `Remark` · `Proof`.
+
+```astro
+<Definition name="Prime">
+  An integer <Math expr={"p > 1"} /> is prime when its only divisors are 1 and <Math expr={"p"} />.
+</Definition>
+
+<Theorem name="Euclid">There are infinitely many primes.</Theorem>
+
+<Proof>Suppose the primes are finite… — a contradiction.</Proof>
+```
+
+They **number themselves** off a shared CSS counter in document order (`Definition 1`, `Theorem 2`, …), so
+there is no state to keep in sync. Pass `number="3.1"` to set one yourself, or `number={false}` to drop it.
+Following amsthm, theorem-like statements are set in italics and definitions upright; `Proof` is unboxed and
+closes with ∎.
+
+Need one that isn't listed? `TheoremBox` is the same box with a free label:
+
+```astro
+<TheoremBox kind="Axiom">Every deck has a cover slide.</TheoremBox>
+```
 
 ### Diagrams (Mermaid)
 

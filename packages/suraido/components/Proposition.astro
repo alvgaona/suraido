@@ -1,0 +1,12 @@
+---
+import TheoremBox from "./TheoremBox.astro";
+interface Props {
+  /** Name in parentheses, e.g. "Pythagoras". */
+  name?: string;
+  /** Override the automatic number, or `false` to drop it. */
+  number?: string | false;
+}
+const { name, number } = Astro.props;
+---
+
+<TheoremBox kind="Proposition" variant="plain" name={name} number={number}><slot /></TheoremBox>

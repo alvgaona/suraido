@@ -1,0 +1,32 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import Math from "suraido/components/Math.astro";
+import Theorem from "suraido/components/Theorem.astro";
+import Definition from "suraido/components/Definition.astro";
+import Proof from "suraido/components/Proof.astro";
+---
+
+<Slide title="Theorems">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Mathematics</div>
+  <h1 class="deck-title">Theorem environments.</h1>
+  <div style="margin-top: 40px">
+    <Columns cols={2} gap={56}>
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <Definition name="Prime">
+          An integer <Math expr={"p > 1"} /> is prime when its only positive divisors
+          are <Math expr={"1"} /> and <Math expr={"p"} />.
+        </Definition>
+        <Theorem name="Euclid">
+          There are infinitely many primes.
+        </Theorem>
+      </div>
+      <Proof>
+        Suppose the primes are <Math expr={"p_1, \\dots, p_n"} />. Consider
+        <Math display expr={"N = p_1 p_2 \\cdots p_n + 1."} />
+        No <Math expr={"p_i"} /> divides <Math expr={"N"} />, so <Math expr={"N"} /> has a prime factor
+        outside the list — a contradiction.
+      </Proof>
+    </Columns>
+  </div>
+</Slide>
