@@ -234,8 +234,10 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
 
 /* Steps / fragments — hidden until the runtime reveals them step by step. */
 .deck-steps { display: flex; flex-direction: column; gap: 20px; }
-.deck-fragment { opacity: 0; transform: translateY(6px); transition: opacity 0.35s ease, transform 0.35s ease; }
-.deck-fragment.deck-fragment--visible { opacity: 1; transform: none; }
+.deck-fragment,
+.deck-list--reveal > li { opacity: 0; transform: translateY(6px); transition: opacity 0.35s ease, transform 0.35s ease; }
+.deck-fragment.deck-fragment--visible,
+.deck-list--reveal > li.deck-fragment--visible { opacity: 1; transform: none; }
 
 /* Visually hidden (screen-reader announcements). */
 .deck-sr-only {
@@ -368,5 +370,5 @@ ol.deck-list { list-style: decimal; }
 .dp-clock { font-size: 22px; color: var(--deck-faint); font-variant-numeric: tabular-nums; }
 
 @media (prefers-reduced-motion: reduce) {
-  .deck-slide, #deck-progress, #deck-chrome, .deck-fragment { transition: none; }
+  .deck-slide, #deck-progress, #deck-chrome, .deck-fragment, .deck-list--reveal > li { transition: none; }
 }

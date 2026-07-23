@@ -3,6 +3,7 @@ import Slide from "suraido/components/Slide.astro";
 import Columns from "suraido/components/Columns.astro";
 import Mermaid from "suraido/components/Mermaid.astro";
 import List from "suraido/components/List.astro";
+import ListItem from "suraido/components/ListItem.astro";
 
 const flow = `flowchart LR
   A[".astro slides"] --> B["Astro build"]
@@ -18,13 +19,11 @@ const flow = `flowchart LR
   <div style="margin-top: 44px">
     <Columns cols={2} gap={64} align="center">
       <Mermaid chart={flow} caption="flowchart — renders on the client, follows the theme" />
-      <List
-        items={[
-          "Write <code class='deck-kbd'>flowchart</code>, <code class='deck-kbd'>sequenceDiagram</code>, and the rest",
-          "Colors come from the <code class='deck-kbd'>--deck-*</code> palette",
-          "Re-renders when you flip dark / light",
-        ]}
-      />
+      <List>
+        <ListItem>Write <code class="deck-kbd">flowchart</code>, <code class="deck-kbd">sequenceDiagram</code>, and the rest</ListItem>
+        <ListItem>Colors come from the <code class="deck-kbd">--deck-*</code> palette</ListItem>
+        <ListItem>Re-renders when you flip dark / light</ListItem>
+      </List>
     </Columns>
   </div>
 </Slide>

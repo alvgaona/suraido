@@ -2,6 +2,7 @@
 import Slide from "suraido/components/Slide.astro";
 import Columns from "suraido/components/Columns.astro";
 import List from "suraido/components/List.astro";
+import ListItem from "suraido/components/ListItem.astro";
 import Callout from "suraido/components/Callout.astro";
 ---
 
@@ -12,13 +13,11 @@ import Callout from "suraido/components/Callout.astro";
     <Columns cols={2} gap={48}>
       <div>
         <div style="font-size: 26px; color: var(--deck-faint); margin-bottom: 18px">Use of funds</div>
-        <List
-          items={[
-            "<strong>50%</strong> engineering — integrations and the ledger",
-            "<strong>30%</strong> go-to-market — first two AEs",
-            "<strong>20%</strong> runway buffer to 24 months",
-          ]}
-        />
+        <List>
+          <ListItem><strong>50%</strong> engineering — integrations and the ledger</ListItem>
+          <ListItem><strong>30%</strong> go-to-market — first two AEs</ListItem>
+          <ListItem><strong>20%</strong> runway buffer to 24 months</ListItem>
+        </List>
       </div>
       <Callout variant="info">
         <Fragment slot="mark">→</Fragment>

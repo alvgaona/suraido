@@ -2,6 +2,7 @@
 import Slide from "suraido/components/Slide.astro";
 import Columns from "suraido/components/Columns.astro";
 import List from "suraido/components/List.astro";
+import ListItem from "suraido/components/ListItem.astro";
 import Table from "suraido/components/Table.astro";
 ---
 
@@ -10,13 +11,11 @@ import Table from "suraido/components/Table.astro";
   <h1 class="deck-title">Lists and tables.</h1>
   <div style="margin-top: 48px">
     <Columns cols={2} gap={64}>
-      <List
-        items={[
-          "A styled list with accent markers",
-          "Items can hold <code class='deck-kbd'>inline</code> markup",
-          "Pass <code class='deck-kbd'>reveal</code> to step through them",
-        ]}
-      />
+      <List>
+        <ListItem>A styled list with accent markers</ListItem>
+        <ListItem>Items can hold <code class="deck-kbd">inline</code> markup</ListItem>
+        <ListItem>Pass <code class="deck-kbd">reveal</code> to step through them</ListItem>
+      </List>
       <Table>
         <thead><tr><th>Component</th><th>Kind</th></tr></thead>
         <tbody>

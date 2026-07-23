@@ -1,21 +1,12 @@
 ---
 interface Props {
+  /** Render a numbered <ol> instead of a bulleted <ul>. */
   ordered?: boolean;
-  /** Reveal items one at a time (requires `items`; wraps each as a fragment). */
+  /** Reveal items one at a time as you advance through the slide. */
   reveal?: boolean;
-  /** Items as HTML strings. Omit to write <li> children yourself via the slot. */
-  items?: string[];
 }
-const { ordered = false, reveal = false, items } = Astro.props;
+const { ordered = false, reveal = false } = Astro.props;
 const Tag = ordered ? "ol" : "ul";
 ---
 
-<Tag class="deck-list">
-  {
-    items ? (
-      items.map((it) => <li class:list={[reveal && "deck-fragment"]} set:html={it} />)
-    ) : (
-      <slot />
-    )
-  }
-</Tag>
+<Tag class:list={["deck-list", reveal && "deck-list--reveal"]}><slot /></Tag>

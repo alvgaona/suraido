@@ -99,8 +99,10 @@ export function initDeck(): void {
   }
 
   // ── Fragments (same-document) ──────────────────────────────────────
+  // `<List reveal>` items step like fragments too, so <ListItem> stays plain.
+  const FRAGMENTS = ".deck-fragment, .deck-list--reveal > li";
   const fragmentsIn = (i: number) =>
-    Array.from(slides[i]!.querySelectorAll<HTMLElement>(".deck-fragment"));
+    Array.from(slides[i]!.querySelectorAll<HTMLElement>(FRAGMENTS));
 
   function applyStep(i: number) {
     const frs = fragmentsIn(i);

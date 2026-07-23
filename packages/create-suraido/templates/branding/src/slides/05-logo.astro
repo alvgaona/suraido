@@ -3,6 +3,7 @@ import Slide from "suraido/components/Slide.astro";
 import Columns from "suraido/components/Columns.astro";
 import Callout from "suraido/components/Callout.astro";
 import List from "suraido/components/List.astro";
+import ListItem from "suraido/components/ListItem.astro";
 ---
 
 <Slide title="Logo">
@@ -16,13 +17,11 @@ import List from "suraido/components/List.astro";
         <span style="font-family: var(--deck-font-display); font-size: 96px">Acme.</span>
       </div>
       <div style="display: grid; gap: 28px">
-        <List
-          items={[
-            "Clear space: one cap-height on every side.",
-            "Minimum size: 24&nbsp;px digital, 12&nbsp;mm print.",
-            "One accent color per surface — never two.",
-          ]}
-        />
+        <List>
+          <ListItem>Clear space: one cap-height on every side.</ListItem>
+          <ListItem>Minimum size: 24&nbsp;px digital, 12&nbsp;mm print.</ListItem>
+          <ListItem>One accent color per surface — never two.</ListItem>
+        </List>
         <Callout variant="danger">
           <Fragment slot="mark">✕</Fragment>
           Don't stretch, recolor, outline, or set the mark on a busy photo.

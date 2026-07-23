@@ -171,8 +171,15 @@ import Math from "suraido/components/Math.astro";
 ## Components
 
 - **Layouts:** `Cover` · `Section` · `Statement` · `Slide`
-- **Content:** `Columns` · `Grid` · `Card` · `Callout` · `Stat` · `Quote` · `Badge` · `List` · `Table` ·
-  `Figure` · `Image` · `Video` · `Steps` + `Step` (fragments)
+- **Content:** `Columns` · `Grid` · `Card` · `Callout` · `Stat` · `Quote` · `Badge` · `List` + `ListItem` ·
+  `Table` · `Figure` · `Image` · `Video` · `Steps` + `Step` (fragments)
+
+```astro
+<List reveal>            <!-- `reveal` steps the items; `ordered` makes it an <ol> -->
+  <ListItem>Items take real markup — <code class="deck-kbd">inline</code> or components</ListItem>
+  <ListItem>No HTML strings to escape</ListItem>
+</List>
+```
 - **Data:** `Timeline` + `Event` · charts and diagrams → see below
 - **Rich:** `Portal` (native-resolution embeds) · `Math` (KaTeX, build-time) · `CodeBlock` (Shiki in a
   macOS-style window: traffic lights, optional `title`, copy button, opt-in `numbers`) · `Mermaid`
