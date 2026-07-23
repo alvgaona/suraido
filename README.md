@@ -221,21 +221,8 @@ decks without diagrams ship none of it.
 npm i mermaid
 ```
 
-Write the definition inline as children — add **`is:raw`** so Astro leaves `{ }` alone (flowchart diamonds
-and class diagrams need it). Indentation from your template is stripped for you:
-
-```astro
----
-import Mermaid from "suraido/components/Mermaid.astro";
----
-<Mermaid is:raw caption="how a deck is built">
-  flowchart LR
-    A[".astro slides"] --> B["Astro build"]
-    B --> C{"one HTML page"}
-</Mermaid>
-```
-
-Or keep the diagram in its own `.mmd` file — you get editor tooling for it, and Vite inlines it at build:
+**Keep each diagram in its own `.mmd` file** — recommended. You get Mermaid syntax highlighting, formatters
+and linters leave it alone, and Vite inlines it at build (typed as a `string`, no setup):
 
 ```astro
 ---
@@ -243,6 +230,18 @@ import Mermaid from "suraido/components/Mermaid.astro";
 import flow from "../diagrams/pipeline.mmd?raw";
 ---
 <Mermaid chart={flow} caption="how a deck is built" />
+```
+
+For a throwaway two-liner you can also write it inline as children. Add **`is:raw`** — without it Astro
+parses `{ }` as an expression and flowchart diamonds break. Be aware the tradeoff is tooling: inside an
+`.astro` file this is just text, so there's no highlighting and a formatter may reindent it (which matters,
+since indentation is meaningful inside `subgraph`).
+
+```astro
+<Mermaid is:raw caption="how a deck is built">
+  flowchart LR
+    A[".astro slides"] --> B["Astro build"]
+</Mermaid>
 ```
 
 Diagrams are themed from the `--deck-*` palette and **re-render when you flip dark/light**, so they never

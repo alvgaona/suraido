@@ -4,6 +4,7 @@ import Columns from "suraido/components/Columns.astro";
 import Mermaid from "suraido/components/Mermaid.astro";
 import List from "suraido/components/List.astro";
 import ListItem from "suraido/components/ListItem.astro";
+import pipeline from "../diagrams/pipeline.mmd?raw";
 ---
 
 <Slide title="Diagrams">
@@ -11,16 +12,9 @@ import ListItem from "suraido/components/ListItem.astro";
   <h1 class="deck-title">Mermaid, themed.</h1>
   <div style="margin-top: 44px">
     <Columns cols={2} gap={64} align="center">
-      <Mermaid is:raw caption="written inline — is:raw keeps { } intact">
-        flowchart LR
-          A[".astro slides"] --> B["Astro build"]
-          B --> C["one HTML page"]
-          C --> D{"client runtime"}
-          D --> E["present"]
-          D --> F["PDF export"]
-      </Mermaid>
+      <Mermaid chart={pipeline} caption="kept in its own .mmd file" />
       <List reveal>
-        <ListItem>Write it inline, or import a <code class="deck-kbd">.mmd</code> file</ListItem>
+        <ListItem>Diagrams live in <code class="deck-kbd">.mmd</code> files — real editor tooling</ListItem>
         <ListItem>Colors come from the <code class="deck-kbd">--deck-*</code> palette</ListItem>
         <ListItem>Re-renders when you flip dark / light</ListItem>
       </List>
