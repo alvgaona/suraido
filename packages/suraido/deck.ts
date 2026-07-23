@@ -2,6 +2,7 @@
 // navigation, fragments, overview grid, native-resolution portals, and
 // presenter sync (BroadcastChannel). All same-document — no iframes for slides.
 import { width as BASE_W } from "virtual:suraido/options";
+import { type DeckController, DECK_READY, OPEN_PALETTE } from "./deck-api";
 
 // Nominal 16:9 height for the design width; the live height is fluid (see fit).
 const BASE_H = Math.round((BASE_W * 9) / 16);
@@ -287,9 +288,43 @@ export function initDeck(): void {
   function openPresenter() {
     window.open(`presenter/${location.hash}`, "deck-presenter", "popup,width=1280,height=800");
   }
+  function toggleFullscreen() {
+    if (document.fullscreenElement) void document.exitFullscreen();
+    else void document.documentElement.requestFullscreen();
+  }
+
+  // ── Command palette (⌘K) ───────────────────────────────────────────
+  // The palette is a React island (react/CommandPalette.tsx); the runtime just
+  // publishes a controller it can drive and a flag to make the keyboard inert
+  // while it is open. Keeping the palette in React lets it ride the real cmdk
+  // engine; keeping deck state here keeps a single source of truth.
+  let paletteOpen = false;
+  const controller: DeckController = {
+    next, prev,
+    first: () => go(0),
+    last: () => go(slides.length - 1),
+    goto: (i) => go(i),
+    overview: openOverview,
+    presenter: openPresenter,
+    fullscreen: toggleFullscreen,
+    get toggleTheme() { return toggleTheme; },
+    slides: () => slides.map((sl, i) => ({ index: i, title: sl.dataset.title ?? "", page: numberOf.get(i) ?? null })),
+    setPaletteOpen: (open) => {
+      paletteOpen = open;
+      // Portals paint above slides; drop them under the palette while it's open.
+      if (open) for (const [, frame] of portals) frame.classList.remove("deck-portal--open");
+      else updatePortals();
+    },
+  } as DeckController;
+  window.__suraidoDeck = controller;
+  window.dispatchEvent(new Event(DECK_READY));
+  document.getElementById("deck-cmdk-open")?.addEventListener("click", () => window.dispatchEvent(new Event(OPEN_PALETTE)));
 
   // ── Keyboard + chrome (skipped in passive preview mode) ────────────
   if (!preview) window.addEventListener("keydown", (e) => {
+    // The palette (a React island) owns the keyboard while open, and ⌘K itself.
+    if (paletteOpen) return;
+    if (e.metaKey || e.ctrlKey || e.altKey) return; // leave ⌘K + browser shortcuts to the palette
     if (isOverviewOpen() && e.key !== "o" && e.key !== "O" && e.key !== "Escape") return;
     switch (e.key) {
       case "ArrowRight": case "PageDown": case " ": e.preventDefault(); next(); break;
@@ -300,11 +335,7 @@ export function initDeck(): void {
       case "Escape": if (isOverviewOpen()) { e.preventDefault(); closeOverview(); } break;
       case "p": case "P": e.preventDefault(); openPresenter(); break;
       case "t": case "T": e.preventDefault(); toggleTheme?.(); break;
-      case "f": case "F":
-        e.preventDefault();
-        if (document.fullscreenElement) void document.exitFullscreen();
-        else void document.documentElement.requestFullscreen();
-        break;
+      case "f": case "F": e.preventDefault(); toggleFullscreen(); break;
     }
   });
   window.addEventListener("resize", fit);

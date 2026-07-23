@@ -4,6 +4,7 @@ import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import tailwindcss from "@tailwindcss/vite";
+import react from "@astrojs/react";
 
 const require = createRequire(import.meta.url);
 
@@ -117,6 +118,14 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
     name: "suraido",
     hooks: {
       "astro:config:setup": ({ config, updateConfig, injectRoute, injectScript }) => {
+        // The command palette (⌘K) is a React island, so React rendering has to
+        // be available. Add @astrojs/react ourselves unless the deck already
+        // did — so the palette is genuinely built-in, not something every deck
+        // has to wire up.
+        if (!config.integrations.some((i) => i.name === "@astrojs/react")) {
+          updateConfig({ integrations: [react()] });
+        }
+
         // Resolve the theme: built-in preset (bundled) or project-relative .css.
         const themePath = theme.endsWith(".css")
           ? fileURLToPath(new URL(theme, config.root))
@@ -151,6 +160,12 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
         // locks the deck out of its own src/ and node_modules.
         const assetDirs = [
           fileURLToPath(config.root),
+          // suraido's own source, so a linked checkout can serve its runtime and
+          // the command-palette island (react/CommandPalette.tsx) in dev. Without
+          // this the island 403s and fails to hydrate — the .tsx is a runtime
+          // dynamic import, so unlike statically-imported components it hits the
+          // fs.allow check.
+          fileURLToPath(new URL(".", import.meta.url)),
           ...[...pkgs.values(), ...(katexCss ? ["katex/dist/katex.min.css"] : [])].map((id) =>
             dirname(require.resolve(id)),
           ),
@@ -163,7 +178,12 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
             // processes the .css import instead of externalizing it to Node's
             // ESM loader (which can't load .css) during dev SSR.
             ssr: { noExternal: [/@fontsource/] },
-            resolve: { noExternal: [/@fontsource/] },
+            // The palette island (react/CommandPalette.tsx) lives in suraido, so
+            // cmdk + Radix resolve React from suraido's node_modules, while the
+            // app's @astrojs/react renderer uses the app's copy. Two React
+            // instances break hooks ("Invalid hook call") in dev SSR — bundling
+            // hides it, so it only bites `astro dev`. Dedupe to one copy.
+            resolve: { noExternal: [/@fontsource/], dedupe: ["react", "react-dom"] },
             plugins: [
               tailwindcss(),
               {

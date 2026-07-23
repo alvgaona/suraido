@@ -2,6 +2,7 @@
 import "virtual:suraido/theme.css";
 import "./styles/global.css";
 import { transition } from "virtual:suraido/options";
+import CommandPalette from "./react/CommandPalette";
 interface Props {
   title?: string;
 }
@@ -25,13 +26,14 @@ const { title = "Deck" } = Astro.props;
       </div>
     </div>
     <div id="deck-overview" role="dialog" aria-label="Slide overview" aria-modal="true"></div>
-    <div id="deck-hint" aria-hidden="true">← → navigate · F fullscreen · O overview · P presenter · T theme</div>
+    <CommandPalette client:only="react" />
     <div id="deck-chrome">
       <div class="deck-nav">
         <button data-prev title="Previous (←)" aria-label="Previous slide">‹</button>
         <button data-next title="Next (→)" aria-label="Next slide">›</button>
       </div>
       <div class="deck-chrome-title" aria-hidden="true"></div>
+      <button id="deck-cmdk-open" title="Commands (⌘K)" aria-label="Open command palette">⌘K</button>
       <button id="deck-theme-toggle" title="Toggle light / dark (T)" aria-label="Toggle light or dark theme">☀</button>
     </div>
 

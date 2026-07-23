@@ -297,6 +297,10 @@ end up as a dark diagram on a light slide. `mermaid` is an **optional** peer dep
 `←/→` navigate (→ steps through `<Steps>` fragments first) · `Home`/`End` jump · `F` fullscreen ·
 `O` overview grid · `P` presenter · `#3` deep-links a slide.
 
+**`⌘K` / `Ctrl-K`** opens the command palette — one searchable list of every action (with its shortcut) and
+every slide (jump by title or number). Type to filter, `↑`/`↓` to move, `Enter` to run, `Esc` to close. It's
+also the deck's built-in shortcut reference, so there's no persistent hint strip.
+
 ## Develop this repo
 
 ```bash

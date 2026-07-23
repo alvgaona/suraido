@@ -144,6 +144,7 @@ body.deck-show-chrome #deck-chrome, #deck-chrome:hover { opacity: 1; }
   transition: background 0.15s ease, border-color 0.15s ease;
 }
 #deck-chrome button:hover { background: color-mix(in oklab, var(--deck-fg) 12%, transparent); border-color: var(--deck-accent); }
+#deck-cmdk-open { font: 600 12px/1 var(--deck-font-mono); letter-spacing: 0.5px; color: var(--deck-muted); }
 #deck-chrome .deck-chrome-title { flex: 1; text-align: center; font-size: 13px; color: var(--deck-faint); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 /* Theme toggle — hidden unless the active theme opts in (deck-has-toggle). */
 #deck-theme-toggle { display: none; font-size: 16px; }
@@ -281,12 +282,75 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
   overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
 }
 
-/* Keyboard hint. */
-#deck-hint {
-  position: fixed; top: 14px; right: 18px; color: var(--deck-faint); font-size: 12px;
-  z-index: 10; opacity: 0; transition: opacity 0.35s ease;
+/* Command palette (⌘K) — the cmdk engine (react/CommandPalette.tsx), styled to
+   match lumina's palette (packages/ui command.tsx + kbd.tsx): compact 14px rows,
+   a search-icon input pill, small filled kbd chips, frosted-glass panel. It runs
+   at real pixels (portaled to body, outside the scaled canvas), so lumina's px
+   sizes map 1:1. cmdk renders a Radix dialog: overlay + content + command root. */
+.deck-cmdk-overlay {
+  position: fixed; inset: 0; z-index: 600;
+  background: color-mix(in oklab, var(--deck-bg) 55%, transparent); backdrop-filter: blur(4px);
 }
-body.deck-show-chrome #deck-hint { opacity: 1; }
+.deck-cmdk-content {
+  position: fixed; z-index: 601; left: 50%; top: 18%; transform: translateX(-50%);
+  width: min(640px, 92vw); outline: 0;
+}
+/* rounded-xl, frosted bg-popover/78. */
+.deck-cmdk {
+  display: flex; flex-direction: column; overflow: hidden;
+  border: 1px solid var(--deck-line); border-radius: 12px;
+  background: color-mix(in oklab, var(--deck-panel, var(--deck-bg)) 78%, transparent);
+  backdrop-filter: blur(24px);
+  box-shadow: 0 16px 48px -16px rgba(0, 0, 0, 0.5);
+}
+/* The search input, built into the command surface: a header row with a leading
+   icon and a divider under it — cmdk's own input, not a detached pill. */
+.deck-cmdk__field {
+  display: flex; align-items: center; gap: 10px; height: 46px; padding: 0 14px;
+  border-bottom: 1px solid var(--deck-line);
+}
+.deck-cmdk__field svg { flex: none; width: 16px; height: 16px; color: var(--deck-faint); }
+.deck-cmdk__input {
+  flex: 1; min-width: 0; appearance: none; border: 0; outline: 0; background: transparent;
+  font: 400 14px/1 var(--deck-font); color: var(--deck-fg);
+}
+.deck-cmdk__input::placeholder { color: var(--deck-faint); }
+/* Scroll owned by the Radix ScrollArea viewport (shadcn scrollbar, kept thin). */
+.deck-cmdk-scroll { display: flex; min-height: 0; overflow: hidden; }
+.deck-cmdk-viewport { max-height: 320px; width: 100%; }
+.deck-cmdk__list { padding: 4px; scroll-padding-block: 4px; }
+.deck-cmdk-bar {
+  display: flex; touch-action: none; user-select: none; padding: 2px; width: 10px; background: transparent;
+}
+.deck-cmdk-bar[data-orientation="vertical"] { height: 100%; }
+.deck-cmdk-thumb {
+  position: relative; flex: 1; border-radius: 999px;
+  background: color-mix(in oklab, var(--deck-fg) 16%, transparent); transition: background 0.15s ease;
+}
+.deck-cmdk-thumb:hover { background: color-mix(in oklab, var(--deck-fg) 26%, transparent); }
+/* Group heading: small, medium-weight, muted — not uppercase mono (p-1, px-2 py-1.5, text-xs). */
+.deck-cmdk__group { padding: 4px; }
+.deck-cmdk__group [cmdk-group-heading] {
+  padding: 6px 8px; font: 500 12px/1 var(--deck-font); color: var(--deck-faint);
+}
+.deck-cmdk__group[hidden] { display: none; }
+/* Item: 14px, gap-2, px-2 py-1.5, rounded-lg, subtle selected fill. */
+.deck-cmdk__item {
+  display: flex; align-items: center; gap: 8px; padding: 6px 8px; border-radius: 8px;
+  cursor: default; font: 400 14px/1.3 var(--deck-font); color: var(--deck-fg);
+}
+.deck-cmdk__item[data-selected="true"] { background: color-mix(in oklab, var(--deck-fg) 8%, transparent); }
+.deck-cmdk__label { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.deck-cmdk__hint { font-size: 12px; color: var(--deck-faint); }
+.deck-cmdk__keys { display: inline-flex; align-items: center; gap: 4px; }
+/* kbd: filled, sans, small (h-5 min-w-5 rounded-sm bg-muted text-xs) — not bordered mono. */
+.deck-cmdk__keys kbd {
+  display: inline-flex; align-items: center; justify-content: center;
+  height: 20px; min-width: 20px; padding: 0 5px; border-radius: 4px;
+  background: color-mix(in oklab, var(--deck-fg) 9%, transparent);
+  font: 500 11px/1 var(--deck-font); color: var(--deck-faint);
+}
+.deck-cmdk__empty { padding: 24px; text-align: center; font-size: 14px; color: var(--deck-faint); }
 
 /* Native-resolution portal overlay (Rerun/embed) — real screen pixels. */
 .deck-portal {
