@@ -1,0 +1,29 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+import Card from "suraido/components/Card.astro";
+
+const market = [
+  { size: "$18B", tier: "TAM", note: "Global billing software" },
+  { size: "$3.4B", tier: "SAM", note: "Services firms, 10–500 seats" },
+  { size: "$240M", tier: "SOM", note: "English-speaking, 3-year reach" },
+];
+---
+
+<Slide title="Market">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Market</div>
+  <h1 class="deck-title">Big, boring, and underserved.</h1>
+  <div style="margin-top: 56px">
+    <Grid cols={3} gap={32}>
+      {
+        market.map((m) => (
+          <Card>
+            <div class="deck-mono" style="font-size: 20px; color: var(--deck-faint)">{m.tier}</div>
+            <div class="deck-stat__num" style="margin: 12px 0">{m.size}</div>
+            <p style="font-size: 24px; color: var(--deck-muted); margin: 0">{m.note}</p>
+          </Card>
+        ))
+      }
+    </Grid>
+  </div>
+</Slide>

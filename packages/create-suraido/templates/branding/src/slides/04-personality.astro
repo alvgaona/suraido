@@ -1,0 +1,28 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+import Card from "suraido/components/Card.astro";
+
+const traits = [
+  { name: "Direct", note: "We say the thing. No hedging, no filler." },
+  { name: "Warm", note: "Precise doesn't mean cold. We write like people." },
+  { name: "Crafted", note: "Details are the product. Nothing ships half-made." },
+];
+---
+
+<Slide title="Personality" notes="Three adjectives. If a fourth creeps in, cut it.">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Who we are</div>
+  <h1 class="deck-title">Three traits, no more.</h1>
+  <div style="margin-top: 56px">
+    <Grid cols={3} gap={32}>
+      {
+        traits.map((t) => (
+          <Card>
+            <div style="font-family: var(--deck-font-display); font-size: 42px; margin-bottom: 16px">{t.name}</div>
+            <p style="font-size: 24px; color: var(--deck-muted); margin: 0">{t.note}</p>
+          </Card>
+        ))
+      }
+    </Grid>
+  </div>
+</Slide>

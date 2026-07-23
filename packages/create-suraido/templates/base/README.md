@@ -11,4 +11,7 @@ Each slide is a file in `src/slides/`, collected in filename order (`01-`, `02-`
 slides by editing files there. Compose from components (`Cover`, `Section`, `Slide`, `Card`, `Callout`,
 `Columns`, `Stat`, `Quote`, `Steps`, `Portal`, `Math`, …).
 
+The copy in the slides is placeholder — rewrite it. The look comes from the theme picked in
+`astro.config.mjs` (`midnight` · `light` · `branding` · `pitch` · `marketing`, or a path to your own `.css`).
+
 **Present:** `←/→` navigate · `O` overview · `P` presenter · `F` fullscreen.

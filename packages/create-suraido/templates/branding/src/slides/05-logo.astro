@@ -1,0 +1,33 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import Callout from "suraido/components/Callout.astro";
+import List from "suraido/components/List.astro";
+---
+
+<Slide title="Logo">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Identity</div>
+  <h1 class="deck-title">The mark.</h1>
+  <div style="margin-top: 48px">
+    <Columns cols={2} gap={48}>
+      <div
+        style="display: grid; place-items: center; height: 320px; border: 1px solid var(--deck-line); border-radius: 20px; background: var(--deck-panel)"
+      >
+        <span style="font-family: var(--deck-font-display); font-size: 96px">Acme.</span>
+      </div>
+      <div style="display: grid; gap: 28px">
+        <List
+          items={[
+            "Clear space: one cap-height on every side.",
+            "Minimum size: 24&nbsp;px digital, 12&nbsp;mm print.",
+            "One accent color per surface — never two.",
+          ]}
+        />
+        <Callout variant="danger">
+          <Fragment slot="mark">✕</Fragment>
+          Don't stretch, recolor, outline, or set the mark on a busy photo.
+        </Callout>
+      </div>
+    </Columns>
+  </div>
+</Slide>

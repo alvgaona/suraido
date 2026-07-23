@@ -1,0 +1,24 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+import Card from "suraido/components/Card.astro";
+
+const surfaces = ["Product UI", "Website", "Deck", "Social", "Email", "Print"];
+---
+
+<Slide title="Applications">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">In the wild</div>
+  <h1 class="deck-title">Same system, every surface.</h1>
+  <div style="margin-top: 56px">
+    <Grid cols={3} gap={28}>
+      {
+        surfaces.map((s) => (
+          <Card>
+            <div style="height: 120px; border-radius: 12px; background: var(--deck-panel-2); margin-bottom: 20px" />
+            <div style="font-size: 26px">{s}</div>
+          </Card>
+        ))
+      }
+    </Grid>
+  </div>
+</Slide>

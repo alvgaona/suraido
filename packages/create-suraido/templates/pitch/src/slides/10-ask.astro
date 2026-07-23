@@ -1,0 +1,29 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import List from "suraido/components/List.astro";
+import Callout from "suraido/components/Callout.astro";
+---
+
+<Slide title="The ask" notes="Say the number out loud, then stop talking.">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">The ask</div>
+  <h1 class="deck-title">$2.5M seed.</h1>
+  <div style="margin-top: 48px">
+    <Columns cols={2} gap={48}>
+      <div>
+        <div style="font-size: 26px; color: var(--deck-faint); margin-bottom: 18px">Use of funds</div>
+        <List
+          items={[
+            "<strong>50%</strong> engineering — integrations and the ledger",
+            "<strong>30%</strong> go-to-market — first two AEs",
+            "<strong>20%</strong> runway buffer to 24 months",
+          ]}
+        />
+      </div>
+      <Callout variant="info">
+        <Fragment slot="mark">→</Fragment>
+        Target: $250k ARR and 400 paying teams within 18 months.
+      </Callout>
+    </Columns>
+  </div>
+</Slide>

@@ -1,0 +1,20 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+import Stat from "suraido/components/Stat.astro";
+---
+
+<Slide title="Problem" notes="Lead with the pain, in the customer's words — not the product.">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Problem</div>
+  <h1 class="deck-title">Billing eats a week of every month.</h1>
+  <p class="deck-lead" style="margin-top: 32px">
+    Agencies reconcile timesheets, spreadsheets, and three tools by hand — then chase the invoice.
+  </p>
+  <div style="margin-top: 64px">
+    <Grid cols={3} gap={32}>
+      <Stat value="9 hrs" label="per person, per month" />
+      <Stat value="38%" label="invoices sent late" />
+      <Stat value="$4.2k" label="leaked per employee / yr" />
+    </Grid>
+  </div>
+</Slide>

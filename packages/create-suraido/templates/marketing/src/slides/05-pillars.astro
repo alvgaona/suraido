@@ -1,0 +1,29 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+import Card from "suraido/components/Card.astro";
+
+const pillars = [
+  { n: "01", title: "Proof", note: "Customer stories with real hours saved. Numbers, names, faces." },
+  { n: "02", title: "Speed", note: "Show the 90-second setup. No demo request, no sales call." },
+  { n: "03", title: "Trust", note: "Security page, uptime, and a public changelog." },
+];
+---
+
+<Slide title="Campaign pillars">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Message</div>
+  <h1 class="deck-title">Three things we repeat everywhere.</h1>
+  <div style="margin-top: 56px">
+    <Grid cols={3} gap={32}>
+      {
+        pillars.map((p) => (
+          <Card>
+            <div class="deck-mono" style="font-size: 22px; color: var(--deck-accent)">{p.n}</div>
+            <div style="font-size: 36px; margin: 14px 0">{p.title}</div>
+            <p style="font-size: 24px; color: var(--deck-muted); margin: 0">{p.note}</p>
+          </Card>
+        ))
+      }
+    </Grid>
+  </div>
+</Slide>

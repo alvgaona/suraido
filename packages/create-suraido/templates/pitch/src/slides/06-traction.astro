@@ -1,0 +1,28 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Columns from "suraido/components/Columns.astro";
+import Grid from "suraido/components/Grid.astro";
+import Stat from "suraido/components/Stat.astro";
+import Timeline from "suraido/components/Timeline.astro";
+import Event from "suraido/components/Event.astro";
+---
+
+<Slide title="Traction">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Traction</div>
+  <h1 class="deck-title">Growing without a sales team.</h1>
+  <div style="margin-top: 48px">
+    <Columns cols={2} gap={48}>
+      <Grid cols={2} gap={32}>
+        <Stat value="$41k" label="MRR" />
+        <Stat value="18%" label="MoM growth" />
+        <Stat value="112" label="paying teams" />
+        <Stat value="2.1%" label="monthly churn" />
+      </Grid>
+      <Timeline>
+        <Event date="Q1 2025" title="First 10 design partners" />
+        <Event date="Q3 2025" title="Self-serve launch" />
+        <Event date="Q1 2026" title="$40k MRR, profitable unit economics" />
+      </Timeline>
+    </Columns>
+  </div>
+</Slide>

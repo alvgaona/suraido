@@ -23,6 +23,25 @@ npm run dev                            # http://localhost:4321
 
 Scaffolds an Astro project wired to suraido with a starter deck. `--no-install` / `--no-git` skip the prompts.
 
+### Templates
+
+The scaffolder asks which template to start from (or pass `--template <name>`):
+
+| Template | Theme | What you get |
+|----------|-------|--------------|
+| `default`   | `midnight`  | A minimal starter deck — four slides. |
+| `branding`  | `branding`  | Brand guidelines: mission, personality, logo rules, color, type scale, voice, applications. |
+| `pitch`     | `pitch`     | Investor pitch: problem, solution, market, traction, model, competition, team, ask. |
+| `marketing` | `marketing` | Campaign plan: insight, positioning, pillars, funnel, channels, timeline, KPIs. |
+
+```bash
+npm create suraido@latest my-pitch -- --template pitch
+```
+
+Each template is just an `astro.config.mjs` plus `src/slides/` — the copy is placeholder text, meant to be
+rewritten. Already have a deck? You don't need the scaffolder: every template's look ships as a built-in
+theme, so `suraido({ theme: "pitch" })` gets you the palette without touching your slides.
+
 ## Use it in an existing project
 
 ```js
@@ -35,7 +54,7 @@ export default defineConfig({ integrations: [suraido()] });
 
 | Option  | Default      | Description |
 |---------|--------------|-------------|
-| `theme` | `"midnight"` | Color theme. A built-in preset (`"midnight"` \| `"light"`) or a path to your own `.css` file (project-relative) that sets the `--deck-*` variables. |
+| `theme` | `"midnight"` | Color theme. A built-in preset (`"midnight"` \| `"light"` \| `"branding"` \| `"pitch"` \| `"marketing"`) or a path to your own `.css` file (project-relative) that sets the `--deck-*` variables. |
 | `fonts` | Inter / JetBrains Mono / serif | Fonts for the three slots: `{ sans, mono, serif }`. Each is a bundled key or a raw `font-family` string. |
 | `math`  | `true`       | KaTeX/LaTeX support (the `<Math>` component + its stylesheet). Set `false` to drop KaTeX entirely — `<Math>` renders the raw LaTeX. |
 
@@ -44,6 +63,10 @@ export default defineConfig({
   integrations: [suraido({ theme: "light", math: false })],
 });
 ```
+
+**Built-in themes:** `midnight` (warm dark, default) · `light` (warm paper) · `branding` (studio black, serif
+display — pair with `fonts: { serif: "fraunces" }`) · `pitch` (crisp projector-safe light) · `marketing`
+(violet dark).
 
 A custom theme is just a CSS file setting the variable contract:
 

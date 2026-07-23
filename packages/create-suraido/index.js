@@ -8,13 +8,21 @@ import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { spawnSync } from "node:child_process";
 import { defineCommand, runMain } from "citty";
-import { cancel, confirm, intro, isCancel, note, outro, spinner, text } from "@clack/prompts";
+import { cancel, confirm, intro, isCancel, note, outro, select, spinner, text } from "@clack/prompts";
 import color from "picocolors";
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const { version } = JSON.parse(readFileSync(new URL("./package.json", import.meta.url), "utf8"));
 
-const TEMPLATES = { default: "template" };
+// A deck is scaffolded as `templates/base` (config, tsconfig, entry page) with
+// `templates/<name>` copied over it — so shared files live in exactly one place
+// and a template only ships what it changes: its astro.config + its slides.
+const TEMPLATES = {
+  default: "A minimal starter deck",
+  branding: "Brand guidelines — identity, color, type, voice",
+  pitch: "Investor pitch — problem, market, traction, ask",
+  marketing: "Campaign plan — positioning, funnel, channels, KPIs",
+};
 const PACKAGE_MANAGERS = ["npm", "bun", "pnpm", "yarn"];
 
 function detectPM() {
@@ -38,7 +46,7 @@ const main = defineCommand({
   },
   args: {
     dir: { type: "positional", required: false, description: "Target directory (e.g. my-deck)" },
-    template: { type: "string", description: "Starter template", default: "default", valueHint: "name" },
+    template: { type: "string", description: `Starter template: ${Object.keys(TEMPLATES).join(" | ")}`, valueHint: "name" },
     pm: { type: "string", description: `Package manager: ${PACKAGE_MANAGERS.join(" | ")}`, valueHint: "name" },
     install: { type: "boolean", description: "Install dependencies (--no-install to skip)" },
     git: { type: "boolean", description: "Initialize a git repository (--no-git to skip)" },
@@ -47,7 +55,7 @@ const main = defineCommand({
     // Reliable "was this flag passed?" — independent of boolean defaulting.
     const passed = (name) => rawArgs.includes(`--${name}`) || rawArgs.includes(`--no-${name}`);
 
-    if (!(args.template in TEMPLATES)) {
+    if (args.template && !(args.template in TEMPLATES)) {
       cancel(`Unknown template ${color.yellow(args.template)}. Available: ${Object.keys(TEMPLATES).join(", ")}`);
       process.exit(1);
     }
@@ -77,12 +85,22 @@ const main = defineCommand({
     }
 
     // 2. Options — use the flag when passed, otherwise prompt.
+    const template =
+      args.template ??
+      bail(
+        await select({
+          message: "Which template?",
+          initialValue: "default",
+          options: Object.entries(TEMPLATES).map(([value, hint]) => ({ value, label: value, hint })),
+        }),
+      );
     const install = passed("install") ? args.install : bail(await confirm({ message: "Install dependencies?" }));
     const git = passed("git") ? args.git : bail(await confirm({ message: "Initialize a git repository?" }));
     const pm = args.pm ?? detectPM();
 
-    // 3. Scaffold from the bundled template.
-    await cp(join(HERE, TEMPLATES[args.template]), target, { recursive: true });
+    // 3. Scaffold: the shared base, then the template copied over it.
+    await cp(join(HERE, "templates", "base"), target, { recursive: true });
+    await cp(join(HERE, "templates", template), target, { recursive: true, force: true });
     await rename(join(target, "_gitignore"), join(target, ".gitignore"));
     const pkgPath = join(target, "package.json");
     const pkg = JSON.parse(await readFile(pkgPath, "utf8"));
@@ -109,7 +127,7 @@ const main = defineCommand({
         `${color.dim("cd")} ${dir}`,
         install ? null : `${pm} install`,
         `${run} dev      ${color.dim("# http://localhost:4321")}`,
-        color.dim("edit src/pages/index.astro"),
+        color.dim("edit src/slides/ — one file per slide"),
       ]
         .filter(Boolean)
         .join("\n"),

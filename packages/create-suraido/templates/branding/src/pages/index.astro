@@ -1,0 +1,9 @@
+---
+import Deck from "suraido/Deck.astro";
+import { collectSlides } from "suraido/slides";
+
+// Every file in src/slides/ becomes a slide, ordered by filename (01-, 02-, …).
+const slides = collectSlides(import.meta.glob("../slides/*.astro", { eager: true }));
+---
+
+<Deck title="Brand guidelines" slides={slides} />

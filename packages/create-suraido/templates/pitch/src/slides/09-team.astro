@@ -1,0 +1,30 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+import Card from "suraido/components/Card.astro";
+
+const team = [
+  { name: "A. Founder", role: "CEO", bio: "Ran ops at a 200-person agency. Felt this every month for six years." },
+  { name: "B. Founder", role: "CTO", bio: "Payments infra at Stripe. Built ledgers that don't lose money." },
+  { name: "C. Hire", role: "Design", bio: "Shipped the invoicing flow used by 40k freelancers." },
+];
+---
+
+<Slide title="Team">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Team</div>
+  <h1 class="deck-title">Why us.</h1>
+  <div style="margin-top: 56px">
+    <Grid cols={3} gap={32}>
+      {
+        team.map((p) => (
+          <Card>
+            <div style="width: 72px; height: 72px; border-radius: 999px; background: var(--deck-panel-2); margin-bottom: 22px" />
+            <div style="font-size: 30px">{p.name}</div>
+            <div class="deck-mono" style="font-size: 20px; color: var(--deck-accent); margin-bottom: 14px">{p.role}</div>
+            <p style="font-size: 22px; color: var(--deck-muted); margin: 0">{p.bio}</p>
+          </Card>
+        ))
+      }
+    </Grid>
+  </div>
+</Slide>

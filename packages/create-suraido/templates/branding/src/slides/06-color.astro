@@ -1,0 +1,32 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+
+const swatches = [
+  { name: "Ink", hex: "#0B0B0C", role: "Backgrounds" },
+  { name: "Paper", hex: "#F6F4F0", role: "Type, surfaces" },
+  { name: "Signal", hex: "#FF5A3C", role: "Accent — sparingly" },
+  { name: "Smoke", hex: "#6A6660", role: "Secondary type" },
+];
+---
+
+<Slide title="Color">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Palette</div>
+  <h1 class="deck-title">Four colors. That's the whole system.</h1>
+  <div style="margin-top: 56px">
+    <Grid cols={4} gap={28}>
+      {
+        swatches.map((s) => (
+          <div>
+            <div
+              style={`height: 180px; border-radius: 16px; border: 1px solid var(--deck-line-strong); background: ${s.hex}`}
+            />
+            <div style="margin-top: 18px; font-size: 26px">{s.name}</div>
+            <div class="deck-mono" style="font-size: 20px; color: var(--deck-faint)">{s.hex}</div>
+            <div style="font-size: 20px; color: var(--deck-muted)">{s.role}</div>
+          </div>
+        ))
+      }
+    </Grid>
+  </div>
+</Slide>

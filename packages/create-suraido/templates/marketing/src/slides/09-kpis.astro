@@ -1,0 +1,25 @@
+---
+import Slide from "suraido/components/Slide.astro";
+import Grid from "suraido/components/Grid.astro";
+import Stat from "suraido/components/Stat.astro";
+import Callout from "suraido/components/Callout.astro";
+---
+
+<Slide title="Targets" notes="Agree on these before launch, not after.">
+  <div class="deck-eyebrow" style="margin-bottom: 24px">Success</div>
+  <h1 class="deck-title">What good looks like.</h1>
+  <div style="margin-top: 56px">
+    <Grid cols={4} gap={28}>
+      <Stat value="2,500" label="trials" />
+      <Stat value="$34" label="cost per trial" />
+      <Stat value="22%" label="trial → paid" />
+      <Stat value="$550k" label="new ARR" />
+    </Grid>
+    <div style="margin-top: 48px">
+      <Callout variant="warn">
+        <Fragment slot="mark">!</Fragment>
+        Kill criterion: if cost per trial is above $60 at week 4, we cut paid and move the budget to content.
+      </Callout>
+    </div>
+  </div>
+</Slide>
