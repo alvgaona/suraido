@@ -67,7 +67,7 @@
    styles sit in `@layer suraido`, so they win without !important even though
    suraido's stylesheet loads first. */
 .deck-eyebrow { font-size: 16px; }
-.deck-title { font-size: 62px; }
+.deck-title { font-size: 33px; }
 .deck-cover__wordmark { font-size: 104px; }
 .deck-lead { font-size: 25px; }
 .deck-section__label { font-size: 168px; }
@@ -97,3 +97,8 @@
 .astro-code { font-size: 19px; }
 .deck-code__title { font-size: 15px; }
 .deck-image figcaption, .deck-figure figcaption, .deck-mermaid figcaption { font-size: 16px; }
+.deck-cover__title { font-size: 104px; }
+.deck-cover__lead { font-size: 28px; }
+.deck-section__note { font-size: 25px; }
+.deck-portal__title { font-size: 42px; }
+.deck-portal__caption { font-size: 16px; }

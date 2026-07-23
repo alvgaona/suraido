@@ -14,6 +14,6 @@ const { label, title, note, number = false } = Astro.props;
     {label && <div class="deck-section__label">{label}</div>}
     <div class="deck-eyebrow">Section</div>
     <h1 class="deck-section__title">{title}</h1>
-    {note && <p class="deck-lead" style="margin-top: 32px; font-size: 32px">{note}</p>}
+    {note && <p class="deck-lead deck-section__note">{note}</p>}
   </div>
 </Slide>

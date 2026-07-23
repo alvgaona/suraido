@@ -21,10 +21,10 @@ try {
   <div style="display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 20px">
     <div>
       <div class="deck-eyebrow">{label}</div>
-      {title && <h1 class="deck-title" style="font-size: 52px; margin-top: 12px">{title}</h1>}
+      {title && <h1 class="deck-title deck-portal__title">{title}</h1>}
     </div>
     <span class="deck-badge">{host}</span>
   </div>
   <div class="deck-portal-slot" data-portal-src={src} style="flex: 1">loading {host}…</div>
-  {caption && <p style="margin-top: 20px; font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-faint)">{caption}</p>}
+  {caption && <p class="deck-portal__caption">{caption}</p>}
 </div>

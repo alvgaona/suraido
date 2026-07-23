@@ -210,6 +210,15 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
   display: flex; flex-direction: column; justify-content: center; height: 100%;
 }
 .deck-cover__actions { display: flex; gap: 12px; margin-top: 44px; flex-wrap: wrap; }
+/* Sizes these used to carry as inline styles — inline beats every stylesheet,
+   which made them the one thing a theme could not restyle. */
+.deck-cover__title { font-size: 120px; }
+.deck-cover__lead { margin-top: 36px; font-size: 34px; }
+.deck-section__note { margin-top: 32px; font-size: 32px; }
+.deck-portal__title { font-size: 52px; margin-top: 12px; }
+.deck-portal__caption {
+  margin-top: 20px; font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-faint);
+}
 .deck-section__label {
   font-family: var(--deck-font-mono); font-size: 220px; font-weight: 700; line-height: 1;
   color: var(--deck-line-strong); user-select: none;
