@@ -8,7 +8,19 @@ import { join, resolve } from "node:path";
 
 const CLI = resolve(import.meta.dir, "../packages/create-suraido/index.js");
 const TEMPLATES = ["default", "branding", "pitch", "marketing"] as const;
-const BASE_FILES = ["package.json", "astro.config.mjs", "tsconfig.json", ".gitignore", "src/pages/index.astro"];
+const BASE_FILES = [
+  "package.json",
+  "astro.config.mjs",
+  "tsconfig.json",
+  ".gitignore",
+  "src/pages/index.astro",
+  // Whole-slide components belong to the deck, not the framework — every
+  // scaffold must ship its own copies for the author to edit.
+  "src/components/Cover.astro",
+  "src/components/Section.astro",
+  "src/components/Statement.astro",
+  "src/styles/slides.css",
+];
 
 const workdir = mkdtempSync(join(tmpdir(), "suraido-scaffold-"));
 afterAll(() => rmSync(workdir, { recursive: true, force: true }));

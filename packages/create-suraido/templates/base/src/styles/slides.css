@@ -1,0 +1,30 @@
+/* ── Slide layouts owned by this deck ──────────────────────────────────
+   Cover / Section / Statement are YOUR components (src/components/), not the
+   framework's — suraido deliberately ships no whole-slide components, so the
+   shape of a cover or a divider stays your decision. Edit freely.
+
+   Declaring the order explicitly keeps it independent of import order:
+   framework first, these after it, and unlayered CSS (your theme) beats both. */
+@layer suraido, slides;
+
+@layer slides {
+
+/* Whole-slide layouts (Cover, Section, Statement). */
+.deck-cover, .deck-section, .deck-statement {
+  display: flex; flex-direction: column; justify-content: center; height: 100%;
+}
+.deck-cover__actions { display: flex; gap: 12px; margin-top: 44px; flex-wrap: wrap; }
+.deck-cover__title { font-size: 120px; }
+.deck-cover__lead { margin-top: 36px; font-size: 34px; }
+.deck-section__note { margin-top: 32px; font-size: 32px; }
+.deck-section__label {
+  font-family: var(--deck-font-mono); font-size: 220px; font-weight: 700; line-height: 1;
+  color: var(--deck-line-strong); user-select: none;
+}
+.deck-section .deck-eyebrow { margin: 8px 0 24px; }
+.deck-section__title {
+  font-family: var(--deck-font-display); font-weight: 600; font-size: 132px; line-height: 0.96;
+  letter-spacing: -0.018em; color: var(--deck-fg); margin: 0; font-optical-sizing: auto;
+}
+.deck-statement { font-family: var(--deck-font-display); font-size: 90px; font-weight: 600; line-height: 1.06; letter-spacing: -0.018em; color: var(--deck-fg); max-width: 24ch; font-optical-sizing: auto; }
+}

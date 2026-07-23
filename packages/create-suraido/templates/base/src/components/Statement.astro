@@ -1,0 +1,13 @@
+---
+// A single large statement, centred on the slide.
+import Slide from "suraido/components/Slide.astro";
+interface Props {
+  title?: string;
+  number?: boolean;
+}
+const { title, number = false } = Astro.props;
+---
+
+<Slide title={title} number={number}>
+  <div class="deck-statement"><slot /></div>
+</Slide>

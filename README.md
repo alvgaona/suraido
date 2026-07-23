@@ -164,8 +164,8 @@ const slides = collectSlides(import.meta.glob("../slides/*.astro", { eager: true
 
 ```astro
 ---
-// src/slides/01-cover.astro
-import Cover from "suraido/components/Cover.astro";
+// src/slides/01-cover.astro — Cover is yours, in src/components/
+import Cover from "../components/Cover.astro";
 ---
 <Cover eyebrow="…" title="Hello." lead="…" number={false} />
 ```
@@ -191,7 +191,9 @@ import Math from "suraido/components/Math.astro";
 
 ## Components
 
-- **Layouts:** `Cover` · `Section` · `Statement` · `Slide`
+- **Layout:** `Slide` — the only slide-level component. suraido ships **no** `Cover`/`Section`/`Statement`:
+  what a cover or a divider looks like is a design decision, so the scaffolder puts those in your project
+  (`src/components/`) as ordinary compositions over `Slide` for you to edit.
 - **Content:** `Columns` · `Grid` · `Card` · `Callout` · `Stat` · `Quote` · `Badge` · `List` + `ListItem` ·
   `Table` · `Figure` · `Image` · `Video` · `Steps` + `Step` (fragments)
 

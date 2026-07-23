@@ -1,5 +1,7 @@
 ---
-import Slide from "./Slide.astro";
+// Your cover slide. suraido ships no whole-slide components on purpose — this
+// is ordinary composition over <Slide>, so change the shape however you like.
+import Slide from "suraido/components/Slide.astro";
 interface Props {
   eyebrow?: string;
   title?: string;

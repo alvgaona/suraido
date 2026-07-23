@@ -205,30 +205,12 @@ body.deck-has-toggle #deck-theme-toggle { display: inline-flex; }
   text-align: right; color: currentColor; opacity: 0.35; user-select: none;
 }
 
-/* Whole-slide layouts (Cover, Section, Statement). */
-.deck-cover, .deck-section, .deck-statement {
-  display: flex; flex-direction: column; justify-content: center; height: 100%;
-}
-.deck-cover__actions { display: flex; gap: 12px; margin-top: 44px; flex-wrap: wrap; }
 /* Sizes these used to carry as inline styles — inline beats every stylesheet,
    which made them the one thing a theme could not restyle. */
-.deck-cover__title { font-size: 120px; }
-.deck-cover__lead { margin-top: 36px; font-size: 34px; }
-.deck-section__note { margin-top: 32px; font-size: 32px; }
 .deck-portal__title { font-size: 52px; margin-top: 12px; }
 .deck-portal__caption {
   margin-top: 20px; font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-faint);
 }
-.deck-section__label {
-  font-family: var(--deck-font-mono); font-size: 220px; font-weight: 700; line-height: 1;
-  color: var(--deck-line-strong); user-select: none;
-}
-.deck-section .deck-eyebrow { margin: 8px 0 24px; }
-.deck-section__title {
-  font-family: var(--deck-font-display); font-weight: 600; font-size: 132px; line-height: 0.96;
-  letter-spacing: -0.018em; color: var(--deck-fg); margin: 0; font-optical-sizing: auto;
-}
-.deck-statement { font-family: var(--deck-font-display); font-size: 90px; font-weight: 600; line-height: 1.06; letter-spacing: -0.018em; color: var(--deck-fg); max-width: 24ch; font-optical-sizing: auto; }
 
 .deck-quote {
   font-family: var(--deck-font-display); font-size: 46px; font-weight: 500; font-style: italic; line-height: 1.32; color: var(--deck-fg);

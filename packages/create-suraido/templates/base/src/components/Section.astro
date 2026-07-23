@@ -1,0 +1,22 @@
+---
+// Your section divider. Nothing here is fixed — the label, the eyebrow text and
+// the order are all yours to change.
+import Slide from "suraido/components/Slide.astro";
+interface Props {
+  label?: string;
+  title: string;
+  note?: string;
+  eyebrow?: string;
+  number?: boolean;
+}
+const { label, title, note, eyebrow = "Section", number = false } = Astro.props;
+---
+
+<Slide title={title} number={number}>
+  <div class="deck-section">
+    {label && <div class="deck-section__label">{label}</div>}
+    {eyebrow && <div class="deck-eyebrow">{eyebrow}</div>}
+    <h1 class="deck-section__title">{title}</h1>
+    {note && <p class="deck-lead deck-section__note">{note}</p>}
+  </div>
+</Slide>
