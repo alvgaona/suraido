@@ -77,6 +77,11 @@ export async function waitReady(page: Page): Promise<void> {
     return !!canvas && canvas.style.visibility === "visible" && !!document.querySelector(".deck-slide.is-active");
   });
   await page.evaluate(() => document.fonts.ready);
+  // If the deck has Mermaid diagrams, wait for them — they change slide heights,
+  // so measuring before they render would be measuring nothing.
+  await page.waitForFunction(
+    () => !document.querySelector("[data-mermaid]") || document.documentElement.dataset.mermaidReady === "1",
+  );
   await page.waitForTimeout(120); // let fit/auto-fit settle after fonts
 }
 

@@ -1,0 +1,82 @@
+---
+interface Props {
+  /** The Mermaid definition, e.g. `flowchart LR\n  A --> B`. */
+  chart: string;
+  /** Optional caption under the diagram. */
+  caption?: string;
+}
+const { chart, caption } = Astro.props;
+---
+
+<figure class="deck-mermaid">
+  <div class="deck-mermaid__graph" data-mermaid={chart}></div>
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<script>
+  // Mermaid is an optional peer: this script (and the library) is only bundled
+  // when a deck actually uses <Mermaid>, same as the Recharts islands.
+  import mermaid from "mermaid";
+
+  const graphs = () => document.querySelectorAll<HTMLElement>("[data-mermaid]");
+
+  /** Map the deck's --deck-* contract onto Mermaid's theme variables. */
+  function themeVariables() {
+    const cs = getComputedStyle(document.documentElement);
+    const v = (name: string) => cs.getPropertyValue(name).trim();
+    return {
+      background: v("--deck-bg"),
+      primaryColor: v("--deck-panel-2"),
+      primaryTextColor: v("--deck-fg"),
+      primaryBorderColor: v("--deck-accent"),
+      secondaryColor: v("--deck-panel"),
+      tertiaryColor: v("--deck-panel"),
+      lineColor: v("--deck-line-strong"),
+      textColor: v("--deck-fg"),
+      mainBkg: v("--deck-panel-2"),
+      nodeBorder: v("--deck-accent"),
+      clusterBkg: v("--deck-panel"),
+      clusterBorder: v("--deck-line"),
+      titleColor: v("--deck-fg"),
+      edgeLabelBackground: v("--deck-bg"),
+      fontFamily: v("--deck-font") || "sans-serif",
+      fontSize: "26px",
+    };
+  }
+
+  let pass = 0;
+  async function renderAll() {
+    const nodes = [...graphs()];
+    if (nodes.length === 0) return;
+    mermaid.initialize({
+      startOnLoad: false,
+      securityLevel: "loose",
+      theme: "base",
+      themeVariables: themeVariables(),
+    });
+    pass += 1;
+    await Promise.all(
+      nodes.map(async (el, i) => {
+        const definition = el.dataset.mermaid;
+        if (!definition) return;
+        try {
+          // Mermaid needs a fresh id per render (re-renders on theme change).
+          const { svg } = await mermaid.render(`deck-mermaid-${pass}-${i}`, definition);
+          el.innerHTML = svg;
+        } catch (err) {
+          console.error("suraido: Mermaid failed to render a diagram", err);
+        }
+      }),
+    );
+    document.documentElement.dataset.mermaidReady = "1";
+    // Diagrams change slide heights — let the deck runtime re-fit around them.
+    window.dispatchEvent(new Event("resize"));
+  }
+
+  void renderAll();
+
+  // Follow the deck's dark/light toggle: re-render with the new palette.
+  new MutationObserver(() => void renderAll()).observe(document.documentElement, {
+    attributeFilter: ["data-theme"],
+  });
+</script>

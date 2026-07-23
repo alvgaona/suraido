@@ -329,6 +329,12 @@ ol.deck-list { list-style: decimal; }
 .deck-event__title { font-size: 30px; font-weight: 600; color: var(--deck-fg); margin: 2px 0 6px; }
 .deck-event__body { font-size: 24px; color: var(--deck-muted); }
 
+/* ── Mermaid diagrams ──────────────────────────────────────────────── */
+.deck-mermaid { display: flex; flex-direction: column; align-items: center; gap: 16px; margin: 0; }
+.deck-mermaid__graph { display: flex; justify-content: center; width: 100%; }
+.deck-mermaid svg { max-width: 100%; height: auto; }
+.deck-mermaid figcaption { font-family: var(--deck-font-mono); font-size: 20px; color: var(--deck-faint); }
+
 /* ── Charts (Recharts, from suraido/react) ─────────────────────────── */
 /* Series colors: bars use fill:currentColor, so `color` themes them. */
 .deck-rc-0 { color: var(--deck-accent); }

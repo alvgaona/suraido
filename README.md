@@ -173,9 +173,9 @@ import Math from "suraido/components/Math.astro";
 - **Layouts:** `Cover` · `Section` · `Statement` · `Slide`
 - **Content:** `Columns` · `Grid` · `Card` · `Callout` · `Stat` · `Quote` · `Badge` · `List` · `Table` ·
   `Figure` · `Image` · `Video` · `Steps` + `Step` (fragments)
-- **Data:** `Timeline` + `Event` · charts → see below
-- **Rich:** `Portal` (native-resolution embeds) · `Math` (KaTeX, build-time) · `<Code>` (Shiki, from
-  `astro:components`)
+- **Data:** `Timeline` + `Event` · charts and diagrams → see below
+- **Rich:** `Portal` (native-resolution embeds) · `Math` (KaTeX, build-time) · `CodeBlock` (Shiki in a
+  macOS-style window: traffic lights, optional `title`, copy button, opt-in `numbers`) · `Mermaid`
 
 Underneath, components emit `deck-*` utility classes on a themeable `--deck-*` variable contract — usable
 directly too.
@@ -204,6 +204,27 @@ import { BarChart } from "suraido/react";
 
 Series colors follow the theme (`--deck-*`). `react`, `react-dom`, and `recharts` are **optional** peer
 dependencies — only needed if you import `suraido/react`.
+
+### Diagrams (Mermaid)
+
+Flowcharts, sequence diagrams and the rest via [Mermaid](https://mermaid.js.org) — same deal: opt-in, so
+decks without diagrams ship none of it.
+
+```bash
+npm i mermaid
+```
+
+```astro
+---
+import Mermaid from "suraido/components/Mermaid.astro";
+const flow = `flowchart LR
+  A[".astro slides"] --> B["Astro build"] --> C["one HTML page"]`;
+---
+<Mermaid chart={flow} caption="how a deck is built" />
+```
+
+Diagrams are themed from the `--deck-*` palette and **re-render when you flip dark/light**, so they never
+end up as a dark diagram on a light slide. `mermaid` is an **optional** peer dependency.
 
 ## Runtime
 
