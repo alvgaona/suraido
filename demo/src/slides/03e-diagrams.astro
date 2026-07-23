@@ -4,13 +4,6 @@ import Columns from "suraido/components/Columns.astro";
 import Mermaid from "suraido/components/Mermaid.astro";
 import List from "suraido/components/List.astro";
 import ListItem from "suraido/components/ListItem.astro";
-
-const flow = `flowchart LR
-  A[".astro slides"] --> B["Astro build"]
-  B --> C["one HTML page"]
-  C --> D["client runtime"]
-  D --> E["present"]
-  D --> F["PDF export"]`;
 ---
 
 <Slide title="Diagrams">
@@ -18,9 +11,16 @@ const flow = `flowchart LR
   <h1 class="deck-title">Mermaid, themed.</h1>
   <div style="margin-top: 44px">
     <Columns cols={2} gap={64} align="center">
-      <Mermaid chart={flow} caption="flowchart — renders on the client, follows the theme" />
-      <List>
-        <ListItem>Write <code class="deck-kbd">flowchart</code>, <code class="deck-kbd">sequenceDiagram</code>, and the rest</ListItem>
+      <Mermaid is:raw caption="written inline — is:raw keeps { } intact">
+        flowchart LR
+          A[".astro slides"] --> B["Astro build"]
+          B --> C["one HTML page"]
+          C --> D{"client runtime"}
+          D --> E["present"]
+          D --> F["PDF export"]
+      </Mermaid>
+      <List reveal>
+        <ListItem>Write it inline, or import a <code class="deck-kbd">.mmd</code> file</ListItem>
         <ListItem>Colors come from the <code class="deck-kbd">--deck-*</code> palette</ListItem>
         <ListItem>Re-renders when you flip dark / light</ListItem>
       </List>

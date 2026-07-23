@@ -221,11 +221,26 @@ decks without diagrams ship none of it.
 npm i mermaid
 ```
 
+Write the definition inline as children — add **`is:raw`** so Astro leaves `{ }` alone (flowchart diamonds
+and class diagrams need it). Indentation from your template is stripped for you:
+
 ```astro
 ---
 import Mermaid from "suraido/components/Mermaid.astro";
-const flow = `flowchart LR
-  A[".astro slides"] --> B["Astro build"] --> C["one HTML page"]`;
+---
+<Mermaid is:raw caption="how a deck is built">
+  flowchart LR
+    A[".astro slides"] --> B["Astro build"]
+    B --> C{"one HTML page"}
+</Mermaid>
+```
+
+Or keep the diagram in its own `.mmd` file — you get editor tooling for it, and Vite inlines it at build:
+
+```astro
+---
+import Mermaid from "suraido/components/Mermaid.astro";
+import flow from "../diagrams/pipeline.mmd?raw";
 ---
 <Mermaid chart={flow} caption="how a deck is built" />
 ```
