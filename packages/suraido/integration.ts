@@ -1,5 +1,6 @@
 import { createRequire } from "node:module";
 import { existsSync, readFileSync } from "node:fs";
+import { dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import tailwindcss from "@tailwindcss/vite";
@@ -117,8 +118,29 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
         // Both the runtime and the CSS need the design width.
         const themeCss = `\n:root{--deck-width:${width}px}` + fontOverrides(slots);
 
+        // Self-host only the bundled fonts actually selected (deduped).
+        const pkgs = new Set([slots.sans.pkg, slots.mono.pkg, slots.serif.pkg].filter(Boolean) as string[]);
+        const katexCss = math ? require.resolve("katex/dist/katex.min.css") : null;
+
+        // These assets live wherever suraido resolved them — which is inside
+        // *its* node_modules when a deck links a checkout instead of installing
+        // from npm. Vite's dev server refuses to serve files outside the project
+        // root, so the woff2 files 404 in `astro dev` (the build bundles them,
+        // so it looks fine). Allow the directories we inject from.
+        //
+        // The project root has to be listed too: setting `fs.allow` at all
+        // opts out of the default Vite would have computed, so omitting it
+        // locks the deck out of its own src/ and node_modules.
+        const assetDirs = [
+          fileURLToPath(config.root),
+          ...[...pkgs.values(), ...(katexCss ? ["katex/dist/katex.min.css"] : [])].map((id) =>
+            dirname(require.resolve(id)),
+          ),
+        ];
+
         updateConfig({
           vite: {
+            server: { fs: { allow: assetDirs } },
             // Fontsource ships CSS-only packages; keep them bundled so Vite
             // processes the .css import instead of externalizing it to Node's
             // ESM loader (which can't load .css) during dev SSR.
@@ -159,17 +181,15 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
         });
         injectRoute({ pattern: "/presenter", entrypoint: "suraido/Presenter.astro" });
 
-        // Self-host only the bundled fonts actually selected (deduped). Injected
-        // by resolved absolute path so Vite processes the CSS + its woff2.
-        const pkgs = new Set([slots.sans.pkg, slots.mono.pkg, slots.serif.pkg].filter(Boolean) as string[]);
+        // Injected by resolved absolute path so Vite processes the CSS + its
+        // woff2. `assetDirs` above keeps those paths servable in dev.
         for (const pkg of pkgs) {
           injectScript("page-ssr", `import ${JSON.stringify(require.resolve(pkg))};`);
         }
 
         // KaTeX stylesheet, globally, only when math is enabled (it lives in
         // node_modules, so an absolute-path import is fine).
-        if (math) {
-          const katexCss = require.resolve("katex/dist/katex.min.css");
+        if (katexCss) {
           injectScript("page-ssr", `import ${JSON.stringify(katexCss)};`);
         }
       },
