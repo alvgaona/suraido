@@ -60,3 +60,40 @@
     --deck-danger: #d64545;
   }
 }
+
+/* ── Type scale ─────────────────────────────────────────────────────────
+   This deck runs noticeably smaller than suraido's defaults (~0.8x), which
+   suits a dense technical talk. These are plain, unlayered rules: framework
+   styles sit in `@layer suraido`, so they win without !important even though
+   suraido's stylesheet loads first. */
+.deck-eyebrow { font-size: 16px; }
+.deck-title { font-size: 62px; }
+.deck-cover__wordmark { font-size: 104px; }
+.deck-lead { font-size: 25px; }
+.deck-section__label { font-size: 168px; }
+.deck-section__title { font-size: 104px; }
+.deck-statement { font-size: 72px; }
+
+.deck-stat__num { font-size: 60px; }
+.deck-stat__label { font-size: 16px; }
+.deck-list { font-size: 23px; }
+.deck-callout { font-size: 21px; padding: 22px 26px; }
+.deck-quote { font-size: 37px; }
+.deck-quote cite { font-size: 18px; }
+.deck-badge, .deck-pill { font-size: 15px; }
+.deck-card { padding: 32px; }
+
+.deck-table { font-size: 21px; }
+.deck-table th, .deck-table td { padding: 16px 22px; }
+.deck-table thead th { font-size: 16px; }
+
+.deck-thm { font-size: 23px; padding: 22px 28px; }
+.deck-thm__head { font-size: 21px; }
+
+.deck-event__date { font-size: 16px; }
+.deck-event__title { font-size: 24px; }
+.deck-event__body { font-size: 20px; }
+
+.astro-code { font-size: 19px; }
+.deck-code__title { font-size: 15px; }
+.deck-image figcaption, .deck-figure figcaption, .deck-mermaid figcaption { font-size: 16px; }
