@@ -56,6 +56,7 @@ export default defineConfig({ integrations: [suraido()] });
 |---------|--------------|-------------|
 | `theme` | `"midnight"` | Color theme. A built-in preset (`"midnight"` \| `"light"` \| `"branding"` \| `"pitch"` \| `"marketing"`) or a path to your own `.css` file (project-relative) that sets the `--deck-*` variables. |
 | `fonts` | Inter / JetBrains Mono / serif | Fonts for the three slots: `{ sans, mono, serif }`. Each is a bundled key or a raw `font-family` string. |
+| `width` | `1920`       | Design width of a slide, in CSS px — you author against it and the deck scales it to fill the browser. Doubles as the presentation scale: a **smaller** width renders everything **bigger**. |
 | `math`  | `true`       | KaTeX/LaTeX support (the `<Math>` component + its stylesheet). Set `false` to drop KaTeX entirely — `<Math>` renders the raw LaTeX. |
 
 ```js
@@ -94,6 +95,26 @@ remembers the choice:
   --deck-bg: #f4f2eb; /* … light palette … */
 }
 /* Optional no-JS fallback: @media (prefers-color-scheme: light) { :root:not([data-theme]) { … } } */
+```
+
+### Sizing
+
+**Everything at once.** Slides are authored against a fixed design width (`1920` by default) that the deck
+scales to fill the browser. So the `width` option *is* the presentation scale — drop it and every slide,
+including all type, gets proportionally bigger:
+
+```js
+suraido({ width: 1600 }) // ~1.2× larger on screen; still fills the window
+```
+
+**One component.** Framework styles live in a `@layer suraido`, and unlayered CSS always beats layered CSS —
+so your own stylesheet or theme file can restyle any `deck-*` component with no `!important` and no
+specificity games, even though suraido's stylesheet loads first:
+
+```css
+/* my-theme.css → suraido({ theme: "./my-theme.css" }) */
+.deck-title { font-size: 64px; }
+.deck-lead  { font-size: 26px; line-height: 1.4; }
 ```
 
 ### Fonts

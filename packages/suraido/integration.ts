@@ -22,6 +22,12 @@ export interface SuraidoOptions {
    * Defaults: sans → Inter, mono → JetBrains Mono, serif → system.
    */
   fonts?: { sans?: FontValue; mono?: FontValue; serif?: FontValue };
+  /**
+   * Design width of a slide, in CSS px. You author against this width and the
+   * deck scales it to fill the browser, so it doubles as the presentation
+   * scale: a **smaller** width renders everything **bigger**. Default: `1920`.
+   */
+  width?: number;
   /** Enable KaTeX/LaTeX math: the `<Math>` component + its stylesheet. Default: true. */
   math?: boolean;
 }
@@ -84,6 +90,10 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
   const math = options.math ?? true;
   const theme = options.theme ?? "midnight";
   const fonts = options.fonts;
+  const width = options.width ?? 1920;
+  if (!Number.isFinite(width) || width <= 0) {
+    throw new Error(`suraido: \`width\` must be a positive number of CSS px (got ${options.width}).`);
+  }
   return {
     name: "suraido",
     hooks: {
@@ -104,7 +114,8 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
           mono: resolveSlot(fonts?.mono, "mono"),
           serif: resolveSlot(fonts?.serif, "serif"),
         };
-        const themeCss = fontOverrides(slots);
+        // Both the runtime and the CSS need the design width.
+        const themeCss = `\n:root{--deck-width:${width}px}` + fontOverrides(slots);
 
         updateConfig({
           vite: {
@@ -124,7 +135,8 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
                   if (id === V_OPTIONS || id === V_THEME) return resolved(id);
                 },
                 load(id) {
-                  if (id === resolved(V_OPTIONS)) return `export const math = ${JSON.stringify(math)};`;
+                  if (id === resolved(V_OPTIONS))
+                    return `export const math = ${JSON.stringify(math)};\nexport const width = ${JSON.stringify(width)};`;
                   if (id === resolved(V_THEME)) return readFileSync(themePath, "utf8") + themeCss;
                 },
               },

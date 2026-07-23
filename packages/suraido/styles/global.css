@@ -14,6 +14,11 @@
 /* The --deck-* variable contract lives in the injected theme (see the `theme`
    integration option; default: midnight). */
 
+/* Everything below sits in a cascade layer. Unlayered CSS always beats layered
+   CSS — regardless of source order or specificity — so a deck's own stylesheet
+   or theme file can restyle any deck-* component without !important. */
+@layer suraido {
+
 * { box-sizing: border-box; }
 html, body {
   margin: 0;
@@ -45,7 +50,7 @@ html, body, #deck-stage, #deck-canvas, .slide-root {
   position: absolute;
   left: 50%;
   top: 50%;
-  width: 1920px;
+  width: var(--deck-width, 1920px);
   height: 1080px;
   transform-origin: center center;
   background: var(--deck-bg);
@@ -63,7 +68,7 @@ html, body, #deck-stage, #deck-canvas, .slide-root {
 .deck-slide.is-active { opacity: 1; pointer-events: auto; visibility: visible; }
 .slide-root {
   position: relative;
-  width: 1920px;
+  width: var(--deck-width, 1920px);
   height: 100%;
   padding: 50px 66px;
   overflow: hidden;
@@ -411,3 +416,4 @@ ol.deck-list { list-style: decimal; }
 @media (prefers-reduced-motion: reduce) {
   .deck-slide, #deck-progress, #deck-chrome, .deck-fragment, .deck-list--reveal > li { transition: none; }
 }
+} /* @layer suraido */

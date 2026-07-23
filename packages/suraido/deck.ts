@@ -1,8 +1,10 @@
 // Client runtime for the single-page Astro deck: letterbox scaling, slide
 // navigation, fragments, overview grid, native-resolution portals, and
 // presenter sync (BroadcastChannel). All same-document — no iframes for slides.
-const BASE_W = 1920;
-const BASE_H = 1080;
+import { width as BASE_W } from "virtual:suraido/options";
+
+// Nominal 16:9 height for the design width; the live height is fluid (see fit).
+const BASE_H = Math.round((BASE_W * 9) / 16);
 const SYNC = "deck-sync";
 
 type Reveal = "start" | "all";
