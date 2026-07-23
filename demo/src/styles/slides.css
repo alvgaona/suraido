@@ -5,7 +5,7 @@
 
    Declaring the order explicitly keeps it independent of import order:
    framework first, these after it, and unlayered CSS (your theme) beats both. */
-@layer suraido, slides;
+@layer theme, base, components, suraido, slides, utilities;
 
 @layer slides {
 

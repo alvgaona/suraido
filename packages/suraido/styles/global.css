@@ -1,3 +1,7 @@
+/* Cascade order, declared up front so it never depends on import order:
+   framework components < a deck's slide styles < Tailwind utilities, and
+   unlayered CSS (your theme) beats all of them. */
+@layer theme, base, components, suraido, slides, utilities;
 @import "tailwindcss";
 
 /* Tailwind tokens (utilities like bg-accent, text-muted usable in .astro). */

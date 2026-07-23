@@ -5,6 +5,8 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { DIST } from "./helpers/deck";
 
+const REPO = join(import.meta.dir, "..");
+
 const assets = readdirSync(join(DIST, "_astro"));
 const woff2 = assets.filter((f) => f.endsWith(".woff2"));
 const css = assets.filter((f) => f.endsWith(".css")).map((f) => readFileSync(join(DIST, "_astro", f), "utf8")).join("\n");
@@ -34,4 +36,17 @@ test("the injected theme carries the dual-mode contract", () => {
 test("the display font resolves to the serif slot", () => {
   expect(css).toContain("--deck-font-display");
   expect(css).toContain("Fraunces Variable");
+});
+
+test("cascade order puts Tailwind utilities above framework components", () => {
+  // Utilities must beat deck-* classes, or `class="deck-title text-6xl"` would
+  // silently ignore the utility. Order is declared up front so it never depends
+  // on import order: components < suraido < slides < utilities < unlayered.
+  const css = readFileSync(join(REPO, "packages/suraido/styles/global.css"), "utf8");
+  const decl = css.match(/@layer\s+([^;]+);/)?.[1] ?? "";
+  const at = (name: string) => decl.split(",").findIndex((l) => l.trim() === name);
+  expect(at("suraido")).toBeGreaterThan(at("base")); // beats preflight
+  expect(at("utilities")).toBeGreaterThan(at("suraido")); // utilities win
+  expect(at("slides")).toBeGreaterThan(at("suraido")); // a deck's own slide styles win
+  expect(at("utilities")).toBeGreaterThan(at("slides"));
 });

@@ -107,9 +107,16 @@ including all type, gets proportionally bigger:
 suraido({ width: 1600 }) // ~1.2× larger on screen; still fills the window
 ```
 
-**One component.** Framework styles live in a `@layer suraido`, and unlayered CSS always beats layered CSS —
-so your own stylesheet or theme file can restyle any `deck-*` component with no `!important` and no
-specificity games, even though suraido's stylesheet loads first:
+**One component.** suraido declares an explicit cascade order, so overriding never turns into a specificity
+fight:
+
+```
+Tailwind base (preflight)  <  deck-* components  <  your deck's slide styles  <  Tailwind utilities  <  your CSS
+```
+
+Two consequences worth knowing: `class="deck-title text-6xl"` does what it looks like — the **utility wins** —
+and unlayered CSS (your stylesheet or theme file) beats everything, so you can restyle any `deck-*` component
+with no `!important`, even though suraido's stylesheet loads first:
 
 ```css
 /* my-theme.css → suraido({ theme: "./my-theme.css" }) */
