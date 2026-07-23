@@ -7,6 +7,10 @@
     "dev": "bun run --filter suraido-demo dev",
     "build": "bun run --filter suraido-demo build",
     "typecheck": "bun run --filter suraido-demo check",
-    "export": "bun run --filter suraido-demo export"
+    "export": "bun run --filter suraido-demo export",
+    "test": "bun run build && bun test"
+  },
+  "devDependencies": {
+    "playwright": "^1.49.0"
   }
 }

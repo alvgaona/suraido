@@ -4,6 +4,9 @@
   "workspaces": {
     "": {
       "name": "suraido-workspace",
+      "devDependencies": {
+        "playwright": "^1.49.0",
+      },
     },
     "demo": {
       "name": "suraido-demo",
