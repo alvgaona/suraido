@@ -1,0 +1,21 @@
+/* suraido theme: branding — a studio-black identity deck with a serif display face. */
+:root {
+  --deck-bg: #0b0b0c;
+  --deck-fg: #f6f4f0;
+  --deck-muted: #a8a49d;
+  --deck-faint: #6a6660;
+  --deck-accent: #ff5a3c;
+  --deck-line: #1e1e20;
+  --deck-line-strong: #302f31;
+  --deck-panel: #131314;
+  --deck-panel-2: #191919;
+  --deck-info: #7aa2ff;
+  --deck-success: #4fc48f;
+  --deck-warn: #e5a75a;
+  --deck-danger: #ff6b6b;
+  --deck-font: "Inter Variable", system-ui, -apple-system, sans-serif;
+  --deck-font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --deck-font-serif: Georgia, "Times New Roman", serif;
+  /* Big headings run in the serif slot — the template loads Fraunces there. */
+  --deck-font-display: var(--deck-font-serif);
+}

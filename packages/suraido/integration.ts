@@ -8,11 +8,11 @@ const require = createRequire(import.meta.url);
 
 export interface SuraidoOptions {
   /**
-   * Color theme. A built-in preset name (`"midnight"` | `"light"`) or a path to
-   * your own `.css` file (relative to the project root) that sets the `--deck-*`
-   * variables. Default: `"midnight"`.
+   * Color theme. A built-in preset name (`"midnight"` | `"light"` | `"branding"`
+   * | `"pitch"` | `"marketing"`) or a path to your own `.css` file (relative to
+   * the project root) that sets the `--deck-*` variables. Default: `"midnight"`.
    */
-  theme?: string;
+  theme?: ThemePreset | (string & {});
   /**
    * Fonts for the three slots (the `--deck-font`, `--deck-font-mono`,
    * `--deck-font-serif` variables). Each value is either a **bundled font key**
@@ -25,6 +25,10 @@ export interface SuraidoOptions {
   /** Enable KaTeX/LaTeX math: the `<Math>` component + its stylesheet. Default: true. */
   math?: boolean;
 }
+
+/** Themes suraido ships in `themes/` — the `theme` option also takes a `.css` path. */
+type ThemePreset = "midnight" | "light" | "branding" | "pitch" | "marketing";
+const THEMES: ThemePreset[] = ["midnight", "light", "branding", "pitch", "marketing"];
 
 /** Fonts suraido bundles (self-hosted via Fontsource, loaded only when selected). */
 type BundledFont = "inter" | "geist" | "jetbrains-mono" | "geist-mono" | "geist-pixel" | "fraunces";
@@ -90,7 +94,7 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
           : fileURLToPath(new URL(`./themes/${theme}.css`, import.meta.url));
         if (!existsSync(themePath)) {
           throw new Error(
-            `suraido: theme "${theme}" not found. Use a built-in ("midnight" | "light") or a path to a .css file.`,
+            `suraido: theme "${theme}" not found. Use a built-in (${THEMES.join(" | ")}) or a path to a .css file.`,
           );
         }
 

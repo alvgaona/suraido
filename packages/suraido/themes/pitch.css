@@ -1,0 +1,20 @@
+/* suraido theme: pitch — a crisp, projector-safe light deck for investor rooms. */
+:root {
+  --deck-bg: #fbfbfa;
+  --deck-fg: #101114;
+  --deck-muted: #4c505a;
+  --deck-faint: #858a95;
+  --deck-accent: #1f5eff;
+  --deck-line: #e6e7ea;
+  --deck-line-strong: #d2d4d9;
+  --deck-panel: #ffffff;
+  --deck-panel-2: #f3f4f6;
+  --deck-info: #1f5eff;
+  --deck-success: #0f9d78;
+  --deck-warn: #b7791f;
+  --deck-danger: #d64545;
+  --deck-font: "Inter Variable", system-ui, -apple-system, sans-serif;
+  --deck-font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --deck-font-serif: Georgia, "Times New Roman", serif;
+  --deck-font-display: var(--deck-font);
+}

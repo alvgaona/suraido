@@ -1,0 +1,20 @@
+/* suraido theme: marketing — an energetic violet dark for launches and campaigns. */
+:root {
+  --deck-bg: #0a0a12;
+  --deck-fg: #f2f0ff;
+  --deck-muted: #a8a4c4;
+  --deck-faint: #6f6b8c;
+  --deck-accent: #8b6cff;
+  --deck-line: #1c1b2b;
+  --deck-line-strong: #2b2942;
+  --deck-panel: #12111d;
+  --deck-panel-2: #191727;
+  --deck-info: #62b6ff;
+  --deck-success: #45d6a5;
+  --deck-warn: #ffb454;
+  --deck-danger: #ff6b8a;
+  --deck-font: "Inter Variable", system-ui, -apple-system, sans-serif;
+  --deck-font-mono: "JetBrains Mono Variable", ui-monospace, monospace;
+  --deck-font-serif: Georgia, "Times New Roman", serif;
+  --deck-font-display: var(--deck-font);
+}
