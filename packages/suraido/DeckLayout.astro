@@ -1,6 +1,7 @@
 ---
 import "virtual:suraido/theme.css";
 import "./styles/global.css";
+import { transition } from "virtual:suraido/options";
 interface Props {
   title?: string;
 }
@@ -17,7 +18,7 @@ const { title = "Deck" } = Astro.props;
   <body>
     <div id="deck-progress" role="progressbar" aria-label="Deck progress" aria-valuemin="0" aria-valuemax="100"></div>
     <div id="deck-live" class="deck-sr-only" aria-live="polite" aria-atomic="true"></div>
-    <div id="deck-stage" role="region" aria-label="Slides">
+    <div id="deck-stage" role="region" aria-label="Slides" data-transition={transition}>
       <div id="deck-canvas">
         <slot />
         <div id="deck-pageno"></div>

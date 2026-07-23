@@ -31,6 +31,16 @@ export interface SuraidoOptions {
   width?: number;
   /** Enable KaTeX/LaTeX math: the `<Math>` component + its stylesheet. Default: true. */
   math?: boolean;
+  /**
+   * How one slide gives way to the next.
+   *
+   * - `"fade"` (default) — the incoming slide fades in.
+   * - `"slide"` — it also travels in from the direction you're moving, while
+   *   the outgoing one leaves the other way.
+   *
+   * Either way, `prefers-reduced-motion: reduce` drops the motion.
+   */
+  transition?: Transition;
 }
 
 /** Themes suraido ships in `themes/` — the `theme` option also takes a `.css` path. */
@@ -38,6 +48,10 @@ type ThemePreset = "midnight" | "light" | "branding" | "pitch" | "marketing";
 const THEMES: ThemePreset[] = ["midnight", "light", "branding", "pitch", "marketing"];
 
 /** Fonts suraido bundles (self-hosted via Fontsource, loaded only when selected). */
+/** Slide-to-slide transitions suraido ships. */
+export type Transition = "fade" | "slide";
+const TRANSITIONS: Transition[] = ["fade", "slide"];
+
 type BundledFont = "inter" | "geist" | "jetbrains-mono" | "geist-mono" | "geist-pixel" | "fraunces";
 // A bundled key (with autocomplete) or any raw CSS font-family string.
 type FontValue = BundledFont | (string & {});
@@ -94,6 +108,10 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
   const width = options.width ?? 1920;
   if (!Number.isFinite(width) || width <= 0) {
     throw new Error(`suraido: \`width\` must be a positive number of CSS px (got ${options.width}).`);
+  }
+  const transition = options.transition ?? "fade";
+  if (!TRANSITIONS.includes(transition)) {
+    throw new Error(`suraido: \`transition\` must be one of ${TRANSITIONS.join(" | ")} (got ${options.transition}).`);
   }
   return {
     name: "suraido",
@@ -158,7 +176,11 @@ export default function suraido(options: SuraidoOptions = {}): AstroIntegration 
                 },
                 load(id) {
                   if (id === resolved(V_OPTIONS))
-                    return `export const math = ${JSON.stringify(math)};\nexport const width = ${JSON.stringify(width)};`;
+                    return [
+                      `export const math = ${JSON.stringify(math)};`,
+                      `export const width = ${JSON.stringify(width)};`,
+                      `export const transition = ${JSON.stringify(transition)};`,
+                    ].join("\n");
                   if (id === resolved(V_THEME)) {
                     // The theme is inlined from disk, so declare the real file as a
                     // dependency — otherwise Vite has no idea this virtual module

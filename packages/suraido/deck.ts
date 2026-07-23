@@ -43,6 +43,12 @@ export function initDeck(): void {
   // sync channel, keyboard, or portals, so previews never drive the real deck.
   const preview = new URLSearchParams(location.search).has("preview");
 
+  // Covers the exit animation in global.css. A per-element timer, so navigating
+  // fast cannot strand `is-leaving` on a slide you have already come back to.
+  const LEAVE_MS = 360;
+  const leaveTimers = new Map<HTMLElement, number>();
+  let navTimer = 0;
+
   const stepOf = new Map<number, number>();
   const portals = new Map<HTMLElement, HTMLIFrameElement>(); // slot -> native iframe
   const sync = !preview && typeof BroadcastChannel !== "undefined" ? new BroadcastChannel(SYNC) : null;
@@ -176,8 +182,31 @@ export function initDeck(): void {
   function go(i: number, reveal: Reveal = "all") {
     const next = Math.max(0, Math.min(slides.length - 1, i));
     if (next === current) return;
+    const from = slides[current]!;
+    // Direction of travel, set before render() so the incoming slide picks the
+    // right keyframes on its very first frame.
+    stage?.setAttribute("data-nav", next > current ? "next" : "prev");
     current = next;
     render();
+    // render() drops `is-active`, which hides the old slide instantly and would
+    // cut its exit. `is-leaving` keeps it visible for the duration; the CSS only
+    // acts on it when the deck opts into a directional transition.
+    clearTimeout(leaveTimers.get(from));
+    from.classList.add("is-leaving");
+    leaveTimers.set(
+      from,
+      window.setTimeout(() => from.classList.remove("is-leaving"), LEAVE_MS),
+    );
+    // Portals are iframes in stage coordinates, so they cannot ride the slide's
+    // transform. Hide them while it runs, then re-measure: mid-animation the
+    // slot's rect is wherever the transform has moved it, which would park the
+    // frame in the wrong place.
+    stage?.classList.add("is-navigating");
+    clearTimeout(navTimer);
+    navTimer = window.setTimeout(() => {
+      stage?.classList.remove("is-navigating");
+      positionPortals();
+    }, LEAVE_MS);
     setFragments(current, reveal);
   }
 

@@ -70,6 +70,42 @@ html, body, #deck-stage, #deck-canvas, .slide-root {
   transition: opacity 0.25s ease;
 }
 .deck-slide.is-active { opacity: 1; pointer-events: auto; visibility: visible; }
+
+/* Directional transition — opt in with `suraido({ transition: "slide" })`. The
+   incoming slide travels in from the way you are heading; the outgoing one
+   leaves the other way. `is-leaving` (set by the runtime) keeps the old slide
+   visible for the exit: `visibility` is not transitionable, so without it the
+   slide vanishes on the first frame and there is nothing left to animate. */
+#deck-stage[data-transition="slide"] .deck-slide.is-active {
+  animation: deck-enter-next 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+#deck-stage[data-transition="slide"][data-nav="prev"] .deck-slide.is-active {
+  animation-name: deck-enter-prev;
+}
+#deck-stage[data-transition="slide"] .deck-slide.is-leaving {
+  visibility: visible;
+  animation: deck-leave-next 0.34s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+#deck-stage[data-transition="slide"][data-nav="prev"] .deck-slide.is-leaving {
+  animation-name: deck-leave-prev;
+}
+@keyframes deck-enter-next {
+  from { opacity: 0; transform: translate3d(5%, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes deck-enter-prev {
+  from { opacity: 0; transform: translate3d(-5%, 0, 0); }
+  to { opacity: 1; transform: none; }
+}
+@keyframes deck-leave-next {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translate3d(-5%, 0, 0); }
+}
+@keyframes deck-leave-prev {
+  from { opacity: 1; transform: none; }
+  to { opacity: 0; transform: translate3d(5%, 0, 0); }
+}
+
 .slide-root {
   position: relative;
   width: var(--deck-width, 1920px);
@@ -258,6 +294,13 @@ body.deck-show-chrome #deck-hint { opacity: 1; }
   background: var(--deck-bg); overflow: hidden;
 }
 .deck-portal--open { display: block; }
+/* A portal is a real iframe parked over its slot in stage coordinates, so it
+   cannot ride a slide's transform. During a transition it would hang in place
+   over moving content, and its slot's rect is mid-animation and unusable for
+   positioning. Hide it for the duration; the runtime repositions and reveals it
+   once the slide has landed. */
+#deck-stage.is-navigating .deck-portal { opacity: 0; }
+.deck-portal { transition: opacity 0.18s ease; }
 /* The in-slide slot (frame the portal sits over). */
 .deck-portal-slot {
   display: flex; align-items: center; justify-content: center;
@@ -410,5 +453,7 @@ ol.deck-list { list-style: decimal; }
 
 @media (prefers-reduced-motion: reduce) {
   .deck-slide, #deck-progress, #deck-chrome, .deck-fragment, .deck-list--reveal > li { transition: none; }
+  #deck-stage[data-transition="slide"] .deck-slide.is-active,
+  #deck-stage[data-transition="slide"] .deck-slide.is-leaving { animation: none; }
 }
 } /* @layer suraido */
