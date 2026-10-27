@@ -23,7 +23,7 @@ try {
       <div class="deck-eyebrow">{label}</div>
       {title && <h1 class="deck-title deck-portal__title">{title}</h1>}
     </div>
-    <span class="deck-badge">{host}</span>
+    <a class="deck-badge" href={src} target="_blank" rel="noreferrer" style="text-decoration: none">{host} ↗</a>
   </div>
   <div class="deck-portal-slot" data-portal-src={src} style="flex: 1">loading {host}…</div>
   {caption && <p class="deck-portal__caption">{caption}</p>}
