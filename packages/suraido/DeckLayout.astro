@@ -15,6 +15,7 @@ const { title = "Deck" } = Astro.props;
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body>
     <div id="deck-progress" role="progressbar" aria-label="Deck progress" aria-valuemin="0" aria-valuemax="100"></div>

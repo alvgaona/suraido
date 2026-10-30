@@ -11,5 +11,6 @@ const { title, slides = [] } = Astro.props;
 ---
 
 <DeckLayout title={title}>
+  <slot name="head" slot="head" />
   {slides.map((Slide: any) => <Slide />)}
 </DeckLayout>
